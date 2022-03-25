@@ -18,7 +18,7 @@ export class ApiService {
   private springUrl: string;
 
   constructor(private http: HttpClient) {
-    this.springUrl = 'http://localhost:8080/api/test';
+    this.springUrl = 'http://localhost:8081/api/test';
   }
 
   public getHello(): Observable<string[]> {
