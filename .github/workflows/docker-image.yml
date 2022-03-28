@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - docker-branch
-      - main
 
 jobs:
 
