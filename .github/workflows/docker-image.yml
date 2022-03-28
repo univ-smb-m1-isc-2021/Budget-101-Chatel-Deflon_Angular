@@ -1,0 +1,20 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - docker-branch
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    - name: Setup Node.js environment
+    - uses: actions/setup-node@v3.0.0
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag gunter-101-angu:latest
