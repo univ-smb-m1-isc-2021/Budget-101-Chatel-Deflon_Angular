@@ -33,5 +33,5 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: univ-smb-m1-isc-2021/budget-101-chatel-deflon-angular/docker-branch
+          repository: univ-smb-m1-isc-2021/budget-101-chatel-deflon-angular/docker-branch:latest
           tags: latest
