@@ -8,24 +8,21 @@ on:
 jobs:
 
   build:
-
+    name : build docker branch
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [14.x]
 
     steps:
+      - uses: actions/setup-node@v3.0.0
+      - uses: actions/checkout@v2
     
-    - name: Setup Node.js environment
-    - uses: actions/setup-node@v3.0.0
-    - uses: actions/checkout@v2
-    
-    - name: Angular Deploy gh-pages Actions
-      uses: docker/build-push-action@v1
-      with:
-        # Github access token token used to deploy on gh_pages. You can find it on Github.
-        github_access_token: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Angular Deploy gh-pages Actions
+        uses: docker/build-push-action@v1
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build the Docker image
       run: docker build -t gunter-101-angu .
