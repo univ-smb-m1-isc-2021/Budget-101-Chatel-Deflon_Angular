@@ -28,7 +28,7 @@ jobs:
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          image: gunter-101-angular:latest
+          image: gunter-101-angular
           registry: docker.pkg.github.com
 #           repository: univ-smb-m1-isc-2021/budget-101-chatel-deflon_angular/docker-branch
           tags: latest
