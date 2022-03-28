@@ -27,4 +27,5 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v5.6
         with:
           image: gunter-101-angu
+          registry: docker.pkg.github.com
           tags: latest
