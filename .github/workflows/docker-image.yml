@@ -22,7 +22,7 @@ jobs:
           
       - name: Build Docker image
         run: docker build -t gunter-101-angular .
-
+      
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v1
         with:
