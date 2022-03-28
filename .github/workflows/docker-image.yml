@@ -4,30 +4,30 @@ on:
   push:
     branches:
       - docker-branch
+      - main
 
 jobs:
 
   build:
-
+    name : build docker branch
     runs-on: ubuntu-latest
+    
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [17.x]
 
     steps:
-    
-    - name: Setup Node.js environment
-    - uses: actions/setup-node@v3.0.0
-    - uses: actions/checkout@v2
-    
-    - name: Build the Docker image
-      run: docker build -t gunter-101-angu .
+      - uses: actions/setup-node@v3.0.0
+      - uses: actions/checkout@v2
+          
+      - name: Build the Docker image
+        run: docker build -t gunter-101-angu .
       
-    - name: Push to GitHub Packages
-      uses: docker/build-push-action@v1
-      with:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-        registry: docker.pkg.github.com
-        repository: univ-smb-m1-isc-2021/budget-101-chatel-deflon-angular/docker-branch
-        tags: latest
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: univ-smb-m1-isc-2021/budget-101-chatel-deflon-angular/docker-branch
+          tags: latest
