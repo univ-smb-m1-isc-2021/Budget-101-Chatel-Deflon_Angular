@@ -23,7 +23,8 @@ jobs:
       - name: Build the Docker image
         run: docker build -t gunter-101-angu .
       
-      - name: Push to GitHub Packages
-        uses: docker/build-push-action@v2
+      - name: Docker Build & Push Action
+        uses: mr-smithers-excellent/docker-build-push@v5.6
         with:
           image: gunter-101-angu
+          tags: latest
