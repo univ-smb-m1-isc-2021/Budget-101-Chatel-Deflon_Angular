@@ -18,12 +18,15 @@ import {MatRadioModule} from "@angular/material/radio";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatTableModule} from "@angular/material/table";
 import { TransactionFormComponent } from './components/transaction-form/transaction-form.component';
+import { ExpenseListComponent } from './components/expense-list/expense-list.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    TransactionFormComponent
+    TransactionFormComponent,
+    ExpenseListComponent
   ],
   imports: [
     BrowserModule,
