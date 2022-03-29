@@ -23,28 +23,10 @@ const ELEMENT_DATA: Test[] = [
   templateUrl: './expense-list.component.html',
   styleUrls: ['./expense-list.component.css'],
 })
-export class ExpenseListComponent implements OnInit, AfterViewInit {
+export class ExpenseListComponent implements OnInit {
   displayedColumns: string[] = ['date','amount', 'budget', 'frequency'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA)
-
+  dataSource = ELEMENT_DATA;
+  clickedRows = new Set<Test>();
   ngOnInit(): void {}
-
-  @ViewChild(MatSort) sort!: MatSort;
-
-  constructor(private _liveAnnouncer: LiveAnnouncer) {}
-
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-  }
-
-  /** Announce the change in sort state for assistive technology. */
-  announceSortChange(sortState: Sort) {
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-      this._liveAnnouncer.announce('Sorting cleared');
-    }
-  }
-
-  // clickedRows = new Set<Test>();
+  constructor() {}
 }
