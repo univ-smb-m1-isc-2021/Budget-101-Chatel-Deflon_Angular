@@ -39,26 +39,4 @@ body {
   background-color: #003ac0;
 }
 
-#formAjout {
-  width: 100%;
-}
 
-.mat-radio-button {
-  margin-left: 2%;
-}
-
-/*.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {*/
-/*  border-color: blue;*/
-/*}*/
-
-/*.mat-radio-checked .mat-radio-inner-circle {*/
-/*  background-color: blue;*/
-/*}*/
-
-h1, .mat-form-field, #formType, #formFrequence {
-  margin-bottom: 2%;
-}
-
-.mat-form-field {
-  margin-right: 2%;
-}

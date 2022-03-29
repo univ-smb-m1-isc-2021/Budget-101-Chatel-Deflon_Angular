@@ -1,0 +1,65 @@
+<mat-card id="div-ajout-depense">
+  <h1>Ajout de transactions : </h1>
+  <!-- TODO : Ajout d'une nouvelle dépense -->
+  <form id="formAjout" [formGroup]="options" (ngSubmit)="Submit()">
+    <div id="formType">
+      <label>Type * :</label>
+      <mat-radio-group required [formControl]="typeValue">
+        <mat-radio-button value="depense">Dépense</mat-radio-button>
+        <mat-radio-button value="apport">Apport</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div id="formFrequence">
+      <label>Fréquence * :</label>
+      <mat-radio-group required [formControl]="freqValue">
+        <mat-radio-button value="ponctuel">Ponctuel</mat-radio-button>
+        <mat-radio-button value="mensuel">Mensuel</mat-radio-button>
+        <mat-radio-button value="etendu">Etendu</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <mat-form-field *ngIf="typeValue.value == 'depense' || typeValue.value == 'apport'"
+                    appearance="fill">
+      <mat-label>Montant</mat-label>
+      <input matInput required type="number" placeholder="10.00" min="1">
+    </mat-form-field>
+    <mat-form-field *ngIf="typeValue.value == 'depense' || typeValue.value == 'apport'"
+                    appearance="fill">
+      <mat-label>Budget</mat-label>
+      <select required matNativeControl [formControl]="selectFormControl">
+        <option label="--"></option>
+        <option value="test">Test</option> <!-- à remplir avec la liste des budgets créé par le user -->
+      </select>
+    </mat-form-field>
+    <mat-form-field appearance="fill"
+                    *ngIf="freqValue.value == 'ponctuel'">
+      <mat-label>Date</mat-label>
+      <input matInput required type="date"> <!-- TODO : setup la value du champs avec le .ts -->
+    </mat-form-field>
+    <mat-form-field appearance="fill"
+                    *ngIf="freqValue.value == 'mensuel' || freqValue.value == 'etendu'">
+      <mat-label>Premier virement</mat-label>
+      <input matInput required type="date"> <!-- TODO : setup la value du champs avec le .ts -->
+    </mat-form-field>
+    <mat-form-field appearance="fill"
+                    *ngIf="freqValue.value == 'etendu'">
+      <mat-label>Dernier virement</mat-label>
+      <input matInput required type="date"> <!-- TODO : setup la value du champs avec le .ts -->
+    </mat-form-field>
+    <mat-form-field appearance="fill"
+                    *ngIf="freqValue.value == 'mensuel' || freqValue.value == 'etendu'">
+      <mat-label>Répétition</mat-label>
+      <select matNativeControl [formControl]="selectFormControl">
+        <option label="--"></option>
+        <option value="jours">Tous les jours</option>
+        <option value="semaines">Toutes les semaines</option>
+        <option value="mois">Tous les mois</option>
+        <option value="trimestre">Tous les 3 mois</option>
+        <option value="annee">Tous les ans</option>
+      </select>
+    </mat-form-field>
+    <br/>
+    <mat-card-actions>
+      <button mat-raised-button type="submit" color="primary">Enregistrer</button> <!-- mat-raised-button -->
+    </mat-card-actions>
+  </form>
+</mat-card>

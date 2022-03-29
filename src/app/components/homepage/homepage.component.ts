@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from "../../services/api.service";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {TransactionFormComponent} from "../transaction-form/transaction-form.component";
 
 @Component({
   selector: 'app-homepage',
@@ -10,20 +10,10 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 export class HomepageComponent implements OnInit {
   // todos: Todo[] = [];
   public hello: string[] = [];
-  options: FormGroup;
-  typeValue = new FormControl(false);
-  freqValue = new FormControl('auto');
-  selectFormControl = new FormControl('');
 
   constructor(
     private apiService: ApiService,
-    fb: FormBuilder
-  ) {
-    this.options = fb.group({
-      typeValue: this.typeValue,
-      freqValue: this.freqValue,
-    });
-  }
+  ) { }
 
   ngOnInit(): void {
     // this.apiService.getTodos().subscribe(todos => {
@@ -35,9 +25,7 @@ export class HomepageComponent implements OnInit {
     })
   }
 
-  Submit() {
-    console.log("test submit");
-  }
+
 
   // removeTodos(): void {
   //   this.todos = [];
