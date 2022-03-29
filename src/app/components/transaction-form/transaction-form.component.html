@@ -1,7 +1,11 @@
 <mat-card id="div-ajout-depense">
   <h1>Ajout de transactions : </h1>
-  <!-- TODO : Ajout d'une nouvelle dépense -->
-  <form id="formAjout" [formGroup]="options" (ngSubmit)="Submit()">
+
+  <!-- TODO : Set valeur des dates à une date précise -->
+  <!-- TODO : Gestion des erreurs (non envoie du form en cas de champs vide etc) -->
+  <!-- TODO : Small corrections + revoir wording si besoin -->
+
+  <form id="formAdd" [formGroup]="options" (ngSubmit)="addNewExpense()">
     <div id="formType">
       <label>Type * :</label>
       <mat-radio-group required [formControl]="typeValue">
@@ -9,7 +13,7 @@
         <mat-radio-button value="apport">Apport</mat-radio-button>
       </mat-radio-group>
     </div>
-    <div id="formFrequence">
+    <div id="formFrequency">
       <label>Fréquence * :</label>
       <mat-radio-group required [formControl]="freqValue">
         <mat-radio-button value="ponctuel">Ponctuel</mat-radio-button>
@@ -20,46 +24,47 @@
     <mat-form-field *ngIf="typeValue.value == 'depense' || typeValue.value == 'apport'"
                     appearance="fill">
       <mat-label>Montant</mat-label>
-      <input matInput required type="number" placeholder="10.00" min="1">
+      <input matInput required type="number" placeholder="10.00" min="1" [formControl]="amountValue">
     </mat-form-field>
     <mat-form-field *ngIf="typeValue.value == 'depense' || typeValue.value == 'apport'"
                     appearance="fill">
       <mat-label>Budget</mat-label>
-      <select required matNativeControl [formControl]="selectFormControl">
+      <select required matNativeControl [formControl]="budgetValue">
         <option label="--"></option>
-        <option value="test">Test</option> <!-- à remplir avec la liste des budgets créé par le user -->
+        <option value="test">Test</option> <!-- TODO : à remplir avec la liste des budgets créé par le user -->
       </select>
     </mat-form-field>
     <mat-form-field appearance="fill"
                     *ngIf="freqValue.value == 'ponctuel'">
       <mat-label>Date</mat-label>
-      <input matInput required type="date"> <!-- TODO : setup la value du champs avec le .ts -->
+      <input matInput required type="date" [formControl]="dateValue"> <!-- [valueAsDate]="currentDate" -->
     </mat-form-field>
     <mat-form-field appearance="fill"
                     *ngIf="freqValue.value == 'mensuel' || freqValue.value == 'etendu'">
       <mat-label>Premier virement</mat-label>
-      <input matInput required type="date"> <!-- TODO : setup la value du champs avec le .ts -->
+      <input matInput required type="date" [formControl]="dateFirstValue">
     </mat-form-field>
     <mat-form-field appearance="fill"
                     *ngIf="freqValue.value == 'etendu'">
       <mat-label>Dernier virement</mat-label>
-      <input matInput required type="date"> <!-- TODO : setup la value du champs avec le .ts -->
+      <input matInput required type="date" [formControl]="dateLastValue">
     </mat-form-field>
     <mat-form-field appearance="fill"
                     *ngIf="freqValue.value == 'mensuel' || freqValue.value == 'etendu'">
       <mat-label>Répétition</mat-label>
-      <select matNativeControl [formControl]="selectFormControl">
+      <select matNativeControl required [formControl]="repetitionValue">
         <option label="--"></option>
         <option value="jours">Tous les jours</option>
         <option value="semaines">Toutes les semaines</option>
         <option value="mois">Tous les mois</option>
-        <option value="trimestre">Tous les 3 mois</option>
+        <option value="troismois">Tous les 3 mois</option>
         <option value="annee">Tous les ans</option>
       </select>
     </mat-form-field>
     <br/>
-    <mat-card-actions>
-      <button mat-raised-button type="submit" color="primary">Enregistrer</button> <!-- mat-raised-button -->
-    </mat-card-actions>
   </form>
+  <mat-card-actions>
+    <button [disabled]="(typeValue.value == '0' || freqValue.value == '0')"
+            mat-raised-button type="submit" id="submitForm" form="formAdd" color="primary">Enregistrer</button> <!-- mat-raised-button -->
+  </mat-card-actions>
 </mat-card>

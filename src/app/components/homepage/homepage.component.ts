@@ -20,11 +20,10 @@ export class HomepageComponent implements OnInit {
     //   this.todos = todos;
     // });
 
-    this.apiService.getHello().subscribe(data => {
-      this.hello = data;
-    })
+    // this.apiService.getHello().subscribe(data => {
+    //   this.hello = data;
+    // })
   }
-
 
 
   // removeTodos(): void {

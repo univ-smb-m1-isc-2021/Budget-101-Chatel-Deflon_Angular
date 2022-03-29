@@ -1,4 +1,4 @@
-#formAjout {
+#formAdd {
   width: 100%;
 }
 
@@ -6,18 +6,15 @@
   margin-left: 2%;
 }
 
-/*.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {*/
-/*  border-color: blue;*/
-/*}*/
-
-/*.mat-radio-checked .mat-radio-inner-circle {*/
-/*  background-color: blue;*/
-/*}*/
-
-h1, .mat-form-field, #formType, #formFrequence {
+h1, #formType, #formFrequency {
   margin-bottom: 2%;
 }
 
 .mat-form-field {
   margin-right: 2%;
+}
+
+#submitForm {
+  margin-left: 1%;
+  margin-bottom: 3%;
 }
