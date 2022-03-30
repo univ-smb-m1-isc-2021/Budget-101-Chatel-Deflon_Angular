@@ -19,6 +19,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatTableModule} from "@angular/material/table";
 import { TransactionFormComponent } from './components/transaction-form/transaction-form.component';
 import { ExpenseListComponent } from './components/expense-list/expense-list.component';
+import { ChartsComponent } from './components/charts/charts.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { ExpenseListComponent } from './components/expense-list/expense-list.com
     AppComponent,
     HomepageComponent,
     TransactionFormComponent,
-    ExpenseListComponent
+    ExpenseListComponent,
+    ChartsComponent
   ],
   imports: [
     BrowserModule,

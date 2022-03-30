@@ -17,10 +17,15 @@
       <label>Fréquence * :</label>
       <mat-radio-group required [formControl]="freqValue">
         <mat-radio-button value="ponctuel">Ponctuel</mat-radio-button>
-        <mat-radio-button value="mensuel">Mensuel</mat-radio-button>
-        <mat-radio-button value="etendu">Etendu</mat-radio-button>
+        <mat-radio-button value="recurrent">Récurrent</mat-radio-button>
+        <mat-radio-button value="etale">Etalé</mat-radio-button>
       </mat-radio-group>
     </div>
+    <mat-form-field *ngIf="typeValue.value == 'depense' || typeValue.value == 'apport'"
+                    appearance="fill">
+      <mat-label>Label</mat-label>
+      <input matInput required type="text" placeholder="Courses" [formControl]="labelValue">
+    </mat-form-field>
     <mat-form-field *ngIf="typeValue.value == 'depense' || typeValue.value == 'apport'"
                     appearance="fill">
       <mat-label>Montant</mat-label>
@@ -37,20 +42,20 @@
     <mat-form-field appearance="fill"
                     *ngIf="freqValue.value == 'ponctuel'">
       <mat-label>Date</mat-label>
-      <input matInput required type="date" [formControl]="dateValue"> <!-- [valueAsDate]="currentDate" -->
+      <input matInput required type="date" [formControl]="dateValue" [valueAsDate]="currentDate" >
     </mat-form-field>
     <mat-form-field appearance="fill"
-                    *ngIf="freqValue.value == 'mensuel' || freqValue.value == 'etendu'">
+                    *ngIf="freqValue.value == 'recurrent' || freqValue.value == 'etale'">
       <mat-label>Premier virement</mat-label>
-      <input matInput required type="date" [formControl]="dateFirstValue">
+      <input matInput required type="date" [formControl]="dateFirstValue" [valueAsDate]="currentDate" >
     </mat-form-field>
     <mat-form-field appearance="fill"
-                    *ngIf="freqValue.value == 'etendu'">
+                    *ngIf="freqValue.value == 'etale'">
       <mat-label>Dernier virement</mat-label>
       <input matInput required type="date" [formControl]="dateLastValue">
     </mat-form-field>
     <mat-form-field appearance="fill"
-                    *ngIf="freqValue.value == 'mensuel' || freqValue.value == 'etendu'">
+                    *ngIf="freqValue.value == 'recurrent'">
       <mat-label>Répétition</mat-label>
       <select matNativeControl required [formControl]="repetitionValue">
         <option label="--"></option>
@@ -64,7 +69,8 @@
     <br/>
   </form>
   <mat-card-actions>
-    <button [disabled]="(typeValue.value == '0' || freqValue.value == '0')"
+    <button [disabled]="((typeValue.value != 'depense' && typeValue.value != 'apport') ||
+                         (freqValue.value != 'ponctuel' && freqValue.value != 'recurrent' && freqValue.value != 'etale'))"
             mat-raised-button type="submit" id="submitForm" form="formAdd" color="primary">Enregistrer</button> <!-- mat-raised-button -->
   </mat-card-actions>
 </mat-card>

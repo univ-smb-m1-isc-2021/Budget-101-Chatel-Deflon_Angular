@@ -13,21 +13,22 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   currentDate = new Date();
 
   options: FormGroup;
-  typeValue = new FormControl('0'); // Type : dépense ou apport
-  freqValue = new FormControl('0'); // Fréquence : ponctuel, mensuel ou étendu
-  amountValue = new FormControl('0'); // Montant en €
-  budgetValue = new FormControl('0'); // Budget correspondant à la dépense
-  dateValue = new FormControl('0'); // Date de virement ponctuel
-  dateFirstValue = new FormControl('0'); // Date de premier virement
-  dateLastValue = new FormControl('0'); // Date de dernier virement
-
-  repetitionValue = new FormControl('0'); // Fréquence de répétition
+  typeValue = new FormControl(''); // Type : dépense ou apport
+  freqValue = new FormControl(''); // Fréquence : ponctuel, mensuel ou étendu
+  labelValue = new FormControl(''); // Nom de la dépense
+  amountValue = new FormControl(''); // Montant en €
+  budgetValue = new FormControl(''); // Budget correspondant à la dépense
+  dateValue = new FormControl(this.currentDate); // Date de virement ponctuel
+  dateFirstValue = new FormControl(this.currentDate); // Date de premier virement
+  dateLastValue = new FormControl(this.currentDate); // Date de dernier virement
+  repetitionValue = new FormControl(''); // Fréquence de répétition
 
   constructor(fb: FormBuilder) {
     console.log(this.currentDate);
     this.options = fb.group({
       typeValue: this.typeValue,
       freqValue: this.freqValue,
+      labelValue: this.labelValue,
       amountValue: this.amountValue,
       budgetValue: this.budgetValue,
       dateValue: this.dateValue,
@@ -47,6 +48,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   addNewExpense(): void {
     console.log("-- NEW EXPENSE --");
     let expense = [];
+    expense.push(this.labelValue.value);
 
     if (this.typeValue.value == 'depense') {
       expense.push(-1 * parseFloat(this.amountValue.value));
@@ -58,13 +60,12 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
 
     if (this.freqValue.value == 'ponctuel') {
       expense.push(this.dateValue.value);
-    } else if (this.freqValue.value == 'mensuel') {
+    } else if (this.freqValue.value == 'recurrent') {
       expense.push(this.dateFirstValue.value);
       expense.push(this.repetitionValue.value);
     } else {
       expense.push(this.dateFirstValue.value);
       expense.push(this.dateLastValue.value);
-      expense.push(this.repetitionValue.value);
     }
 
     this.expenses.push(expense)
