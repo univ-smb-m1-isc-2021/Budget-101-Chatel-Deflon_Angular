@@ -21,6 +21,10 @@ import { TransactionFormComponent } from './components/transaction-form/transact
 import { ExpenseListComponent } from './components/expense-list/expense-list.component';
 import { ChartsComponent } from './components/charts/charts.component';
 
+import * as PlotlyJS from 'plotly.js-dist-min';
+import { PlotlyModule } from 'angular-plotly.js';
+
+PlotlyModule.plotlyjs = PlotlyJS;
 
 @NgModule({
   declarations: [
@@ -33,10 +37,12 @@ import { ChartsComponent } from './components/charts/charts.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
+    // Imports pour les formulaires
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
+    // Imports Angular Material
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
@@ -47,6 +53,8 @@ import { ChartsComponent } from './components/charts/charts.component';
     MatCheckboxModule,
     MatRadioModule,
     MatTableModule,
+    // Import pour les graphiques
+    PlotlyModule
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'always'}}
