@@ -1,28 +1,13 @@
 <!-- TODO : align username & déconnexion à droite -->
-<mat-toolbar>
-  <mat-toolbar-row class="topnav">
-    <img id="logo" routerLink="/" src="./assets/logo.png" alt="logo"/>
-    <a routerLink="/">Accueil</a>
-    <a routerLink="/gestion">Gestion</a>
-    <a routerLink="/user">[Username]</a>
-    <a routerLink="/logout">Déconnexion</a>
-  </mat-toolbar-row>
-</mat-toolbar>
+<app-header></app-header>
 <mat-card>
   <!--  <ul>-->
   <!--    <li *ngFor="let book of hello">{{ book }}</li>-->
   <!--  </ul>-->
   <app-transaction-form></app-transaction-form>
 
-  <!-- TODO : Dashboard avec graphs -->
   <br/>
   <app-charts></app-charts>
 
-  <!-- TODO : Liste des dépenses -->
-  <br/>
-  <app-expense-list></app-expense-list>
-
 </mat-card>
-<footer id="footer">
-  <div>GUNTER 101 -- Application de gestion de budgets -- Antoine Chatel & Elodie Deflon</div>
-</footer>
+<app-footer></app-footer>

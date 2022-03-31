@@ -1,0 +1,15 @@
+<mat-card>
+  <h1>Nouveau budget : </h1>
+  <form id="formAdd" [formGroup]="options" (ngSubmit)="addNewBudget()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput required type="text" placeholder="Voiture" [formControl]="labelValue">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Solde</mat-label>
+      <input matInput type="number" placeholder="0.00" min="1" [formControl]="amountValue">
+    </mat-form-field>
+    <button [disabled]="labelValue.value == ''"
+            mat-raised-button type="submit" id="submitForm" form="formAdd" color="primary">Enregistrer</button> <!-- mat-raised-button -->
+  </form>
+</mat-card>

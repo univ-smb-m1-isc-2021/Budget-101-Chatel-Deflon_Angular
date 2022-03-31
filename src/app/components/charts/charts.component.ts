@@ -51,7 +51,7 @@ export class ChartsComponent {
         type: 'pie'
       },
     ],
-    layout: {width: "100%", height: "100%", title: 'Dépenses par budgets'}
+    layout: {width: "100%", height: "100%", title: 'Vue globale des budgets'}
   }
 }
 

@@ -1,0 +1,54 @@
+<mat-card>
+  <h1>Liste des dépenses :</h1>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td mat-cell *matCellDef="let element">{{element.date}}</td>
+    </ng-container>
+
+    <!-- Amount Column -->
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef>amount</th>
+      <td mat-cell *matCellDef="let element">{{element.amount}}</td>
+    </ng-container>
+
+    <!-- Budget Column -->
+    <ng-container matColumnDef="budget">
+      <th mat-header-cell *matHeaderCellDef>budget</th>
+      <td mat-cell *matCellDef="let element">{{element.budget}}</td>
+    </ng-container>
+
+    <!-- Frequency Column -->
+    <ng-container matColumnDef="frequency">
+      <th mat-header-cell *matHeaderCellDef>frequency</th>
+      <td mat-cell *matCellDef="let element">{{element.frequency}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      (click)="clickedRows.add(row)"
+      [class.demo-row-is-clicked]="clickedRows.has(row)"
+      *matRowDef="let row; columns: displayedColumns;"
+    ></tr>
+  </table>
+
+  <div>
+    <h3>
+      Click Log
+    </h3>
+  </div>
+
+  <div *ngIf="!clickedRows.size">
+    Clicked rows will be logged here
+  </div>
+
+  <ul>
+    <li *ngFor="let clickedRow of clickedRows">
+      Clicked on {{clickedRow.budget}}
+    </li>
+  </ul>
+
+  <div>**En construction**</div>
+</mat-card>

@@ -23,6 +23,11 @@ import { ChartsComponent } from './components/charts/charts.component';
 
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { ManagingDataComponent } from './components/managing-data/managing-data.component';
+import { BudgetListComponent } from './components/budget-list/budget-list.component';
+import { BudgetFormComponent } from './components/budget-form/budget-form.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -32,7 +37,12 @@ PlotlyModule.plotlyjs = PlotlyJS;
     HomepageComponent,
     TransactionFormComponent,
     ExpenseListComponent,
-    ChartsComponent
+    ChartsComponent,
+    HeaderComponent,
+    FooterComponent,
+    ManagingDataComponent,
+    BudgetListComponent,
+    BudgetFormComponent
   ],
   imports: [
     BrowserModule,
