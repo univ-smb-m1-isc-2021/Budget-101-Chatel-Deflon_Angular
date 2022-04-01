@@ -28,6 +28,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { ManagingDataComponent } from './components/managing-data/managing-data.component';
 import { BudgetListComponent } from './components/budget-list/budget-list.component';
 import { BudgetFormComponent } from './components/budget-form/budget-form.component';
+import { TransactionEditComponent } from './components/transaction-edit/transaction-edit.component';
+import { BudgetEditComponent } from './components/budget-edit/budget-edit.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -42,7 +44,9 @@ PlotlyModule.plotlyjs = PlotlyJS;
     FooterComponent,
     ManagingDataComponent,
     BudgetListComponent,
-    BudgetFormComponent
+    BudgetFormComponent,
+    TransactionEditComponent,
+    BudgetEditComponent
   ],
   imports: [
     BrowserModule,

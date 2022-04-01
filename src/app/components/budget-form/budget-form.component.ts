@@ -24,6 +24,7 @@ export class BudgetFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // Ajout d'un nouveau budget
   addNewBudget(): void {
     console.log("-- NEW BUDGET --");
     let label = this.labelValue.value;
@@ -34,5 +35,8 @@ export class BudgetFormComponent implements OnInit {
     this.budget.push([label, amount]); // solde initial du budget
 
     console.log(this.budget);
+
+    // TODO : envoyer le nouveau budget au back
+    // TODO : update le tableau au front
   }
 }

@@ -1,21 +1,22 @@
-import { Component, OnInit, AfterViewInit , ViewChild} from '@angular/core';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
-import {MatSort, Sort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import {Component, Input, OnInit} from '@angular/core';
+import {formatDate} from "@angular/common";
+import {Subject} from "rxjs";
 
-export interface Test {
-  date : Date;
+// TODO : retirer les id après avoir fini le debug
+export interface Budget {
+  id: number;
+  label: string;
   amount: number;
-  budget: string;
-  frequency: string;
+  lastexpense: any[];
 }
 
-const ELEMENT_DATA: Test[] = [
-  { date : new Date(), amount: 100, budget: 'Test1', frequency: 'Journalière' },
-  { date : new Date(), amount: 200, budget: 'Test2', frequency: 'Hebdomadaire' },
-  { date : new Date(), amount: 150, budget: 'Test3', frequency: 'Journalière' },
-  { date : new Date(), amount: 120, budget: 'Test4', frequency: 'Hebdomadaire' },
-  { date : new Date(), amount: 100, budget: 'Test5', frequency: 'Annuel' },
+let ELEMENT_DATA: Budget[] = [
+  { id: 1, label: "Test1" , amount: -1000, lastexpense: ["Repas midi", 100, formatDate(new Date(), 'dd-MM-yyy', "en")] },
+  { id: 2, label: "Test2" , amount: 2500, lastexpense: ["Plein d'essence", 200, formatDate(new Date(), 'dd-MM-yyy', "en") ] },
+  { id: 3, label: "Test3" , amount: -150, lastexpense: ["Virement maman", 150, formatDate(new Date(), 'dd-MM-yyy', "en") ] },
+  { id: 4, label: "Test4" , amount: 120, lastexpense: ["Pension Henry", 120, formatDate(new Date(), 'dd-MM-yyy', "en")] },
+  { id: 5, label: "Test5" , amount: 70, lastexpense: ["Révision annuelle voiture", 100, formatDate(new Date(), 'dd-MM-yyy', "en")] },
+  { id: 6, label: "NewBudget" , amount: 0, lastexpense: [] },
 ];
 
 @Component({
@@ -24,9 +25,37 @@ const ELEMENT_DATA: Test[] = [
   styleUrls: ['./budget-list.component.css']
 })
 export class BudgetListComponent implements OnInit {
-  displayedColumns: string[] = ['date','amount', 'budget', 'frequency'];
+  displayedColumns: string[] = ['id', 'label', 'amount', 'lastexpense', 'actions'];
   dataSource = ELEMENT_DATA;
-  clickedRows = new Set<Test>();
+  clickedRows = new Set<Budget>();
+
+  editRow = false;
+  currentId = -1;
+
   ngOnInit(): void {}
+
   constructor() {}
+
+  getElement(id: number): any {
+    for (let i = 0; i < ELEMENT_DATA.length; i++) {
+      if (ELEMENT_DATA[i].id == id) {
+        return ELEMENT_DATA[i];
+      }
+    }
+  }
+
+  deleteRow(id: number) {
+    console.log("delete " + id);
+    for (let i = 0; i < ELEMENT_DATA.length; i++) {
+      console.log("id elem: " + ELEMENT_DATA[i].id + ", id: " + id + " = " + (ELEMENT_DATA[i].id == id));
+      if (ELEMENT_DATA[i].id == id) {
+        ELEMENT_DATA.splice(i, 1);
+        console.log(ELEMENT_DATA);
+        break;
+      }
+    }
+
+    // TODO : prévoir rechargement de la page ou au moins du module pour afficher les changements
+    this.ngOnInit();
+  }
 }

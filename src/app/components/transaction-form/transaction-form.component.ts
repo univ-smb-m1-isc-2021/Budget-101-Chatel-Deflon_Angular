@@ -45,6 +45,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
   }
 
+  // Ajout une nouvelle dépense
   addNewExpense(): void {
     console.log("-- NEW EXPENSE --");
     let expense = [];
@@ -70,5 +71,8 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
 
     this.expenses.push(expense)
     console.log(this.expenses);
+
+    // TODO : Envoyer la nouvelle dépense au back
+    // TODO : Mettre à jour les graphiques au front
   }
 }
