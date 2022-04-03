@@ -1,48 +1,48 @@
 <mat-card>
   <h1>Liste des dépenses :</h1>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+  <table mat-table [dataSource]="data" class="mat-elevation-z8 demo-table">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>N°</th>
-      <td mat-cell *matCellDef="let element">{{element.id}}</td>
+      <td mat-cell *matCellDef="let transaction">{{transaction.id}}</td>
     </ng-container>
 
     <!-- Label Column -->
     <ng-container matColumnDef="label">
       <th mat-header-cell *matHeaderCellDef>Nom</th>
-      <td mat-cell *matCellDef="let element">{{element.label}}</td>
+      <td mat-cell *matCellDef="let transaction">{{transaction.label}}</td>
     </ng-container>
 
     <!-- Amount Column -->
     <ng-container matColumnDef="amount">
       <th mat-header-cell *matHeaderCellDef>Montant</th>
-      <td mat-cell *matCellDef="let element">{{element.amount}}</td>
+      <td mat-cell *matCellDef="let transaction">{{transaction.amount}}</td>
     </ng-container>
 
     <!-- Date Column -->
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef>Date</th>
-      <td mat-cell *matCellDef="let element">{{element.date}}</td>
+      <td mat-cell *matCellDef="let transaction">{{transaction.date}}</td>
     </ng-container>
 
     <!-- Budget Column -->
     <ng-container matColumnDef="budget">
       <th mat-header-cell *matHeaderCellDef>Budget</th>
-      <td mat-cell *matCellDef="let element">{{element.budget}}</td>
+      <td mat-cell *matCellDef="let transaction">{{transaction.budget}}</td>
     </ng-container>
 
     <!-- Frequency Column -->
     <ng-container matColumnDef="frequency">
       <th mat-header-cell *matHeaderCellDef>Fréquence</th>
-      <td mat-cell *matCellDef="let element">{{element.frequency}}</td>
+      <td mat-cell *matCellDef="let transaction">{{transaction.frequency}}</td>
     </ng-container>
 
     <!-- Frequency Column -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-raised-button >Modifier</button>
-        <button mat-raised-button >Supprimer</button>
+      <td mat-cell *matCellDef="let transaction">
+        <button mat-raised-button (click)="editTransaction(transaction.id)">Modifier</button>
+        <button mat-raised-button (click)="deleteTransaction(transaction.id)" >Supprimer</button>
       </td>
     </ng-container>
 
@@ -53,6 +53,8 @@
     <!--      [class.demo-row-is-clicked]="clickedRows.has(row)"-->
   </table>
 
+  <br/>
+  <app-transaction-edit *ngIf="editT == true;" [dataT]=getTransaction(transactionId) [updateT]="true" ></app-transaction-edit> <!---->
   <!--  <div>-->
   <!--    <h3>-->
   <!--      Click Log-->

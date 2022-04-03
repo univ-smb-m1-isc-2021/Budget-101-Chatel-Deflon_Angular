@@ -29,8 +29,8 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let element">
-        <button mat-raised-button (click)="editRow = true; currentId = element.id;">Modifier</button>
-        <button mat-raised-button (click)="deleteRow(element.id)" >Supprimer</button>
+        <button mat-raised-button (click)="editBudget(element.id)">Modifier</button>
+        <button mat-raised-button (click)="deleteBudget(element.id)" >Supprimer</button>
       </td>
     </ng-container>
 
@@ -42,7 +42,7 @@
   </table>
 
   <br/>
-  <app-budget-edit *ngIf="editRow == true;" [data]=getElement(currentId) [update]="true"></app-budget-edit>
+  <app-budget-edit *ngIf="editRow == true;" [data]=getElement(currentId) [update]="true"></app-budget-edit> <!--"-->
 
 <!--  <div>-->
 <!--    <h3>-->

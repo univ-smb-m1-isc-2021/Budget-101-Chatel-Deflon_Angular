@@ -1,1 +1,42 @@
-<p>transaction-edit works!</p>
+<mat-card>
+  <h1>Modifier dépense : </h1>
+  <form id="formEditTransaction" [formGroup]="options" (ngSubmit)="editBudget()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput required type="text" placeholder="Voiture" [formControl]="label">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Solde</mat-label>
+      <input matInput required type="number" placeholder="0.00" min="1" [formControl]="amount">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Date</mat-label>
+      <input matInput required type="date" placeholder="" [formControl]="date">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Date de fin</mat-label>
+      <input matInput type="date" placeholder="" [formControl]="enddate">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Budget</mat-label>
+      <select required matNativeControl [formControl]="budget">
+        <option label="--"></option>
+        <option value="test">Test</option> <!-- TODO : à remplir avec la liste des budgets créé par le user -->
+      </select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Fréquence</mat-label>
+      <select matNativeControl [formControl]="frequency">
+        <option label="--"></option>
+        <option value="jours">Tous les jours</option>
+        <option value="semaines">Toutes les semaines</option>
+        <option value="mois">Tous les mois</option>
+        <option value="troismois">Tous les 3 mois</option>
+        <option value="annee">Tous les ans</option>
+        <option value="annee">Tous les 2 ans</option>
+      </select>
+    </mat-form-field>
+    <button [disabled]="label.value == ''"
+            mat-raised-button type="submit" id="editFormT" form="formEditTransaction" color="primary">Modifier</button>
+  </form>
+</mat-card>

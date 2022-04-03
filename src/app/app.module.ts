@@ -18,7 +18,7 @@ import {MatRadioModule} from "@angular/material/radio";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatTableModule} from "@angular/material/table";
 import { TransactionFormComponent } from './components/transaction-form/transaction-form.component';
-import { ExpenseListComponent } from './components/expense-list/expense-list.component';
+// import { ExpenseListComponent } from './components/expense-list/expense-list.component';
 import { ChartsComponent } from './components/charts/charts.component';
 
 import * as PlotlyJS from 'plotly.js-dist-min';
@@ -30,6 +30,9 @@ import { BudgetListComponent } from './components/budget-list/budget-list.compon
 import { BudgetFormComponent } from './components/budget-form/budget-form.component';
 import { TransactionEditComponent } from './components/transaction-edit/transaction-edit.component';
 import { BudgetEditComponent } from './components/budget-edit/budget-edit.component';
+import { LoginComponent } from './components/login/login.component';
+import { UserSettingsComponent } from './components/user-settings/user-settings.component';
+import { TransactionListComponent } from './components/transaction-list/transaction-list.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -37,16 +40,19 @@ PlotlyModule.plotlyjs = PlotlyJS;
   declarations: [
     AppComponent,
     HomepageComponent,
-    TransactionFormComponent,
-    ExpenseListComponent,
     ChartsComponent,
     HeaderComponent,
     FooterComponent,
     ManagingDataComponent,
     BudgetListComponent,
     BudgetFormComponent,
+    BudgetEditComponent,
+    TransactionFormComponent,
     TransactionEditComponent,
-    BudgetEditComponent
+    TransactionListComponent,
+    // ExpenseListComponent,
+    LoginComponent,
+    UserSettingsComponent
   ],
   imports: [
     BrowserModule,

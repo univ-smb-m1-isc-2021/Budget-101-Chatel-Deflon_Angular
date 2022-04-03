@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {formatDate} from "@angular/common";
 import {Subject} from "rxjs";
+import {BudgetEditComponent} from "../budget-edit/budget-edit.component";
 
 // TODO : retirer les id après avoir fini le debug
 export interface Budget {
@@ -25,6 +26,8 @@ let ELEMENT_DATA: Budget[] = [
   styleUrls: ['./budget-list.component.css']
 })
 export class BudgetListComponent implements OnInit {
+  @ViewChild(BudgetEditComponent) budgetEditComponent: BudgetEditComponent | undefined;
+
   displayedColumns: string[] = ['id', 'label', 'amount', 'lastexpense', 'actions'];
   dataSource = ELEMENT_DATA;
   clickedRows = new Set<Budget>();
@@ -33,8 +36,19 @@ export class BudgetListComponent implements OnInit {
   currentId = -1;
 
   ngOnInit(): void {}
-
   constructor() {}
+
+  editBudget(id: number) {
+    this.editRow = true;
+    this.currentId = id;
+    if (this.budgetEditComponent !== undefined) {
+      // @ts-ignore
+      this.budgetEditComponent?.update = true;
+      // @ts-ignore
+      this.budgetEditComponent?.data = this.getElement(id);
+      this.budgetEditComponent?.ngOnChanges();
+    }
+  }
 
   getElement(id: number): any {
     for (let i = 0; i < ELEMENT_DATA.length; i++) {
@@ -44,7 +58,7 @@ export class BudgetListComponent implements OnInit {
     }
   }
 
-  deleteRow(id: number) {
+  deleteBudget(id: number) {
     console.log("delete " + id);
     for (let i = 0; i < ELEMENT_DATA.length; i++) {
       console.log("id elem: " + ELEMENT_DATA[i].id + ", id: " + id + " = " + (ELEMENT_DATA[i].id == id));

@@ -1,0 +1,19 @@
+<div id="login-page">
+  <mat-card>
+    <h1>Connexion - Gunter 101</h1>
+    <mat-card-content>
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+        <mat-error *ngIf="!loginValid">
+          Identifiant et/ou mot de passe inconnus.
+        </mat-error>
+        <mat-form-field>
+          <input matInput placeholder="E-mail" [(ngModel)]="username" name="username" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="password" placeholder="Mot de passe" [(ngModel)]="password" name="password" required>
+        </mat-form-field>
+        <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid">Se connecter</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

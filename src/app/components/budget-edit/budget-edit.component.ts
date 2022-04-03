@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, OnDestroy} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
 // TODO : retirer les id après avoir fini le debug
@@ -30,6 +30,11 @@ export class BudgetEditComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    if (this.data != undefined && this.update) {
+      this.labelValue = new FormControl(this.data.label);
+      this.amountValue = new FormControl(this.data.amount);
+      this.update = false;
+    }
   }
 
   ngOnChanges(): void {

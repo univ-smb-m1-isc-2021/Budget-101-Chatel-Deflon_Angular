@@ -1,0 +1,7 @@
+form {
+  width: 100%;
+}
+
+mat-form-field, button {
+  margin: 0.5% 0.5% 0.5% 0.5%;
+}
