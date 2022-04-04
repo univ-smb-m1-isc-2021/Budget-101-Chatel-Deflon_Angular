@@ -3,14 +3,14 @@ name: Docker Image CI
 on:
   push:
     branches:
-      - docker-branch
+      - 'guillaume'
 
 jobs:
 
   build:
     name : build docker branch
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         node-version: [17.x]
@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v3.0.0
       - uses: actions/checkout@v2
-          
+
       - name: Build Docker image
         run: docker build -t gunter-101-angular .
 
@@ -28,5 +28,5 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: univ-smb-m1-isc-2021/budget-101-chatel-deflon_angular/docker-branch
+          repository: univ-smb-m1-isc-2021/budget-101-chatel-deflon_angular/guillaume
           tags: latest
