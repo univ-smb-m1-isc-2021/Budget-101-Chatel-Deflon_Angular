@@ -10,6 +10,7 @@ import { filter, Subject, take, takeUntil } from 'rxjs';
 export class LoginComponent implements OnInit, OnDestroy {
 
   public loginValid = true;
+  public inscValid = true;
   public username = '';
   public password = '';
 
@@ -35,8 +36,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this._destroySub$.next();
   }
 
-  public onSubmit(): void {
-    this.loginValid = true;
+  public logIn(): void {
+    this.loginValid = false; // display error message
+    this.inscValid = true; // hide other message
 
     // this._authService.login(this.username, this.password).pipe(
     //   take(1)
@@ -47,6 +49,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     //   },
     //   error: _ => this.loginValid = false
     // });
+  }
+
+  public inscription(): void {
+    this.inscValid = false; // display error message
+    this.loginValid = true; // hide other message
   }
 
 }

@@ -1,0 +1,18 @@
+<mat-card>
+  <h1>Mettre à jour les informations : </h1>
+  <form id="formUser" [formGroup]="options" (ngSubmit)="editUser()">
+    <mat-form-field appearance="fill">
+      <mat-label>Pseudo</mat-label>
+      <input matInput type="text" placeholder="JGren" [formControl]="nicknameValue">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>E-mail</mat-label>
+      <input matInput type="text" placeholder="jean.grenat@gmail.com" [formControl]="emailValue">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Mot de Passe</mat-label>
+      <input matInput type="text" placeholder="***********" [formControl]="passwordValue">
+    </mat-form-field>
+    <button mat-raised-button type="submit" id="editUser" form="formUser" color="primary">Modifier</button>
+  </form>
+</mat-card>
