@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Input} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {formatDate} from '@angular/common';
 
@@ -8,6 +8,7 @@ import {formatDate} from '@angular/common';
   styleUrls: ['./transaction-form.component.css'],
 })
 export class TransactionFormComponent implements OnInit, AfterViewInit {
+  @Input() budgets: any[] = [];
   expenses: any[] = [];
 
   currentDate = new Date();

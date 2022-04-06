@@ -1,24 +1,23 @@
-import { Component, OnInit, AfterViewInit , ViewChild} from '@angular/core';
+import {Component, OnInit, AfterViewInit, ViewChild, Input} from '@angular/core';
 import {formatDate} from "@angular/common";
 import {TransactionEditComponent} from "../transaction-edit/transaction-edit.component";
+import {BudgetService} from "../../services/budget.service";
+import {ExpensesService} from "../../services/expenses.service";
 
-export interface Transaction {
+export interface Expenses {
   id: number;
-  label: string;
   amount: number;
-  date : string;
-  enddate: string;
-  budget: string;
-  frequency: string;
+  label: string;
+  budgetid : number;
 }
 
-const TRANSACTION_DATA: Transaction[] = [
-  { id: 1, label: "Repas midi",amount: 100, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test1', frequency: 'Journalière' },
-  { id: 2, label: "Plein d'essence",amount: 200, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test2', frequency: 'Hebdomadaire' },
-  { id: 3, label: "Virement maman",amount: 150, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test3', frequency: '--' },
-  { id: 4, label: "Pension Henry",amount: 120, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test4', frequency: 'Hebdomadaire' },
-  { id: 5, label: "Révision annuelle voiture",amount: 100, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test5', frequency: 'Annuel' },
-];
+// const TRANSACTION_DATA: Transaction[] = [
+//   { id: 1, label: "Repas midi",amount: 100, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test1', frequency: 'Journalière' },
+//   { id: 2, label: "Plein d'essence",amount: 200, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test2', frequency: 'Hebdomadaire' },
+//   { id: 3, label: "Virement maman",amount: 150, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test3', frequency: '--' },
+//   { id: 4, label: "Pension Henry",amount: 120, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test4', frequency: 'Hebdomadaire' },
+//   { id: 5, label: "Révision annuelle voiture",amount: 100, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test5', frequency: 'Annuel' },
+// ];
 
 @Component({
   selector: 'app-transaction-list',
@@ -28,15 +27,23 @@ const TRANSACTION_DATA: Transaction[] = [
 export class TransactionListComponent implements OnInit {
   @ViewChild(TransactionEditComponent) transactionEditComponent: TransactionEditComponent | undefined;
 
-  displayedColumns: string[] = ['id', 'label', 'amount', 'date', 'budget', 'frequency', 'actions'];
-  data = TRANSACTION_DATA;
-  clickedRows = new Set<Transaction>();
+  displayedColumns: string[] = ['label', 'amount', 'budget', 'actions'];
+  clickedRows = new Set<Expenses>();
+
+  @Input() expenses: any[] = [];
+  @Input() budgets: any[] = [];
 
   editT = false;
   transactionId = -1;
 
   ngOnInit(): void {}
   constructor() {}
+
+  ngOnChanges(): void {
+    for (let i = 0; i < this.expenses.length; i++) {
+      this.expenses[i]["budget"] = this.getBudget(this.expenses[i].budgetId);
+    }
+  }
 
   editTransaction(id: number) {
     this.editT = true;
@@ -51,20 +58,29 @@ export class TransactionListComponent implements OnInit {
   }
 
   getTransaction(id: number): any {
-    for (let i = 0; i < TRANSACTION_DATA.length; i++) {
-      if (TRANSACTION_DATA[i].id == id) {
-        return TRANSACTION_DATA[i];
+    for (let i = 0; i < this.expenses.length; i++) {
+      if (this.expenses[i].budgetid == id) {
+        return this.expenses[i];
+      }
+    }
+  }
+
+  getBudget(id: number): any {
+    for (let i = 0; i < this.budgets.length; i++) {
+      console.log(this.budgets[i].id + ", " + id);
+      if (this.budgets[i].id == id) {
+        return this.budgets[i].name;
       }
     }
   }
 
   deleteTransaction(id: number) {
     console.log("delete " + id);
-    for (let i = 0; i < TRANSACTION_DATA.length; i++) {
-      console.log("id elem: " + TRANSACTION_DATA[i].id + ", id: " + id + " = " + (TRANSACTION_DATA[i].id == id));
-      if (TRANSACTION_DATA[i].id == id) {
-        TRANSACTION_DATA.splice(i, 1);
-        console.log(TRANSACTION_DATA);
+    for (let i = 0; i < this.expenses.length; i++) {
+      console.log("id elem: " + this.expenses[i].id + ", id: " + id + " = " + (this.expenses[i].id == id));
+      if (this.expenses[i].id == id) {
+        this.expenses.splice(i, 1);
+        console.log(this.expenses);
         break;
       }
     }

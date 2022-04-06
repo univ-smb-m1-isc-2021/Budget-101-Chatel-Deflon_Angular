@@ -21,7 +21,10 @@
       <mat-label>Budget</mat-label>
       <select required matNativeControl [formControl]="budget">
         <option label="--"></option>
-        <option value="test">Test</option> <!-- TODO : à remplir avec la liste des budgets créé par le user -->
+        <option *ngFor="let budget of this.budgetsT"
+                [value]="budget.name">
+          {{budget.name}}
+        </option>
       </select>
     </mat-form-field>
     <mat-form-field appearance="fill">

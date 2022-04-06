@@ -5,10 +5,10 @@
 
   <!-- TODO : Liste des budgets -->
   <br/>
-  <app-budget-list></app-budget-list>
+  <app-budget-list [budgets]="budgets" [expenses]="expenses"></app-budget-list>
 
   <!-- TODO : Liste des dépenses -->
   <br/>
-  <app-transaction-list></app-transaction-list>
+  <app-transaction-list [budgets]="budgets" [expenses]="expenses"></app-transaction-list>
 </mat-card>
 <app-footer></app-footer>

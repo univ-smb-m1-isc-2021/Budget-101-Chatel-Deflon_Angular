@@ -2,12 +2,12 @@
   <mat-toolbar-row class="topnav">
     <img id="logo" routerLink="/" src="./assets/logo.png" alt="logo"/>
     <div id="left-menu">
-      <a routerLink="/">Accueil</a>
-      <a routerLink="/gestion">Gestion</a>
+      <a routerLinkActive="active" routerLink="/">Accueil</a>
+      <a routerLinkActive="active" routerLink="/gestion">Gestion</a>
     </div>
     <div id="right-menu">
-      <a routerLink="/utilisateur">[Username]</a>
-      <a routerLink="/deconnexion">Déconnexion</a>
+      <a routerLinkActive="active" routerLink="/utilisateur">[Username]</a>
+      <a routerLink="/deconnexion" (click)="logout()">Déconnexion</a>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

@@ -2,6 +2,7 @@
   <h1>Dashboard avec graphs :</h1>
 
   <!--The content below is only a placeholder and can be replaced.-->
+  <!-- TODO : if all charts at 0 or no budgets add warning message: "Aucun budget/dépense, veuillez en créer un/e pour commencer" -->
   <div class="dashboard-charts">
     <plotly-plot [data]="graphAnnual.data" [layout]="graphAnnual.layout"></plotly-plot>
   </div>
@@ -9,34 +10,5 @@
   <div class="dashboard-charts">
     <plotly-plot [data]="graphGlobal.data" [layout]="graphGlobal.layout"></plotly-plot>
   </div>
-<!--  <div>-->
-<!--    <div>-->
-<!--      <div>-->
-<!--        <canvas baseChart-->
-<!--                [data]="lineChartData"-->
-<!--                [options]="lineChartOptions"-->
-<!--                [type]="lineChartType"-->
-<!--                (chartHover)="chartHovered($event)"-->
-<!--                (chartClick)="chartClicked($event)"></canvas>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="flex-item">-->
-<!--      <table class="table table-responsive table-condensed">-->
-<!--        <tr>-->
-<!--          <th *ngFor="let label of lineChartData.labels">{{label}}</th>-->
-<!--        </tr>-->
-<!--        <tr *ngFor="let d of lineChartData.datasets; let i=index" [class]="'line-'+i">-->
-<!--          <td *ngFor="let label of lineChartData.labels; let j=index">{{d && d.data[j]}}</td>-->
-<!--        </tr>-->
-<!--      </table>-->
-<!--&lt;!&ndash;      <div class="button-row">&ndash;&gt;-->
-<!--&lt;!&ndash;        <button mat-button mat-raised-button color="primary" (click)="randomize()">Randomize</button>&ndash;&gt;-->
-<!--&lt;!&ndash;        <button mat-button mat-raised-button color="primary" (click)="pushOne()">Push</button>&ndash;&gt;-->
-<!--&lt;!&ndash;        <button mat-button mat-raised-button color="primary" (click)="changeColor()">Recolor</button>&ndash;&gt;-->
-<!--&lt;!&ndash;        <button mat-button mat-raised-button color="primary" (click)="hideOne()">Toggle Series B</button>&ndash;&gt;-->
-<!--&lt;!&ndash;        <button mat-button mat-raised-button color="primary" (click)="changeLabel()">Change Label</button>&ndash;&gt;-->
-<!--&lt;!&ndash;      </div>&ndash;&gt;-->
-<!--    </div>-->
-<!--  </div>-->
 
 </mat-card>

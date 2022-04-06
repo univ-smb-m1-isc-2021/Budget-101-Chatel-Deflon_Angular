@@ -18,7 +18,7 @@ export interface Transaction {
   styleUrls: ['./transaction-edit.component.css']
 })
 export class TransactionEditComponent implements OnInit, OnChanges {
-
+  @Input() budgetsT: any[] | undefined;
   @Input() dataT: Transaction | undefined;
   @Input() updateT: boolean = false;
 

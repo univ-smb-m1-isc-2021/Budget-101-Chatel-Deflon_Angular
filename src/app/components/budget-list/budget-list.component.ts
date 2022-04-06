@@ -7,7 +7,7 @@ import {BudgetService} from "../../services/budget.service";
 // TODO : retirer les id après avoir fini le debug
 export interface Budget {
   id: number;
-  label: string;
+  name: string;
   amount: number;
   lastexpense: any[];
 }
@@ -20,23 +20,36 @@ export interface Budget {
 export class BudgetListComponent implements OnInit {
   @ViewChild(BudgetEditComponent) budgetEditComponent: BudgetEditComponent | undefined;
 
-  displayedColumns: string[] = ['id', 'label']; //, 'amount', 'lastexpense', 'actions'
+  displayedColumns: string[] = ['name', 'amount', 'lastexpense', 'actions']; //, 'amount', 'lastexpense', 'actions'
   clickedRows = new Set<Budget>();
-  dataSource: any[] = [];
+
+  @Input() budgets: any[] = [];
+  @Input() expenses: any[] = [];
 
   editRow = false;
   currentId = -1;
 
   ngOnInit(): void {}
 
-  constructor(private budgetApi: BudgetService) {
-    budgetApi.getBudgets().subscribe(
-      budgets => {
-        this.dataSource = budgets;
-        console.log(this.dataSource);
+  ngOnChanges(): void {
+    // Set the missing properties of budgets : amount & lastexpense
+    for (let i = 0; i < this.budgets.length; i++) {
+      this.budgets[i].amount = 0; // Set amount
+      this.budgets[i].lastexpense = "--"; // Set lastexpense
+      for (let j = 0; j < this.expenses.length; j++) {
+        // Set amount
+        if (this.budgets[i].id == this.expenses[j].budgetId) {
+          this.budgets[i].amount += this.expenses[j].amount;
+          // TODO : check la date pour prendre la plus récente
+          if (this.budgets[i].lastexpense == "--") {
+            this.budgets[i].lastexpense = this.expenses[j].label;
+          }
+        }
       }
-    );
+    }
   }
+
+  constructor() {}
 
   editBudget(id: number) {
     this.editRow = true;

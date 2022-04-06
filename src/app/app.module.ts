@@ -60,7 +60,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    AppRoutingModule, // Correspond à RouterModule.forRoot(routes)
     HttpClientModule,
     BrowserAnimationsModule,
     // Imports pour les formulaires

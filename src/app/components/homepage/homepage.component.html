@@ -1,13 +1,9 @@
 <!-- TODO : align username & déconnexion à droite -->
 <app-header></app-header>
 <mat-card>
-  <!--  <ul>-->
-  <!--    <li *ngFor="let book of hello">{{ book }}</li>-->
-  <!--  </ul>-->
-  <app-transaction-form></app-transaction-form>
-
+  <app-transaction-form [budgets]="budgets"></app-transaction-form>
   <br/>
-  <app-charts></app-charts>
+  <app-charts [budgets]="budgets" [expenses]="expenses"></app-charts>
 
 </mat-card>
 <app-footer></app-footer>

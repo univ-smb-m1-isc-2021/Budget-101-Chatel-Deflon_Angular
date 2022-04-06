@@ -9,9 +9,13 @@ import { filter, Subject, take, takeUntil } from 'rxjs';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
+  public connexion = true;
+  public inscription = false;
   public loginValid = true;
   public inscValid = true;
+
   public username = '';
+  public email = '';
   public password = '';
 
   private _destroySub$ = new Subject<void>();
@@ -51,7 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     // });
   }
 
-  public inscription(): void {
+  public inscriptionUser(): void {
     this.inscValid = false; // display error message
     this.loginValid = true; // hide other message
   }

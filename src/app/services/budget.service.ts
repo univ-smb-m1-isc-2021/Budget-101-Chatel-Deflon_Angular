@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 
 export interface Budget {
   id: number;
-  label: string;
+  name: string;
 }
 
 @Injectable({

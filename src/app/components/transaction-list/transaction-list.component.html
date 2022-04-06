@@ -1,11 +1,11 @@
 <mat-card>
   <h1>Liste des dépenses :</h1>
-  <table mat-table [dataSource]="data" class="mat-elevation-z8 demo-table">
+  <table mat-table [dataSource]="expenses" class="mat-elevation-z8 demo-table">
     <!-- Id Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>N°</th>
-      <td mat-cell *matCellDef="let transaction">{{transaction.id}}</td>
-    </ng-container>
+<!--    <ng-container matColumnDef="id">-->
+<!--      <th mat-header-cell *matHeaderCellDef>N°</th>-->
+<!--      <td mat-cell *matCellDef="let transaction">{{transaction.id}}</td>-->
+<!--    </ng-container>-->
 
     <!-- Label Column -->
     <ng-container matColumnDef="label">
@@ -54,22 +54,5 @@
   </table>
 
   <br/>
-  <app-transaction-edit *ngIf="editT == true;" [dataT]=getTransaction(transactionId) [updateT]="true" ></app-transaction-edit> <!---->
-  <!--  <div>-->
-  <!--    <h3>-->
-  <!--      Click Log-->
-  <!--    </h3>-->
-  <!--  </div>-->
-
-  <!--  <div *ngIf="!clickedRows.size">-->
-  <!--    Clicked rows will be logged here-->
-  <!--  </div>-->
-
-  <!--  <ul>-->
-  <!--    <li *ngFor="let clickedRow of clickedRows">-->
-  <!--      Clicked on {{clickedRow.budget}}-->
-  <!--    </li>-->
-  <!--  </ul>-->
-
-  <!--  <div>**En construction**</div>-->
+  <app-transaction-edit *ngIf="editT == true;" [budgetsT]="budgets" [dataT]=getTransaction(transactionId) [updateT]="true" ></app-transaction-edit> <!---->
 </mat-card>
