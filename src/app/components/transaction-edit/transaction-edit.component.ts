@@ -4,7 +4,7 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 // TODO : retirer les id après avoir fini le debug
 export interface Transaction {
   id: number;
-  label: string;
+  name: string;
   amount: number;
   date : string;
   enddate: string;
@@ -46,7 +46,7 @@ export class TransactionEditComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     if (this.dataT != undefined && this.updateT) {
-      this.label = new FormControl(this.dataT.label);
+      this.label = new FormControl(this.dataT.name);
       this.amount = new FormControl(this.dataT.amount);
       this.date = new FormControl(this.dataT.date);
       this.enddate = new FormControl(this.dataT.enddate);
@@ -56,11 +56,10 @@ export class TransactionEditComponent implements OnInit, OnChanges {
     }
   }
 
-  // Modification d'un budget
-  editBudget(): void {
-    console.log("-- EDIT BUDGET --");
+  // Modification d'une transaction
+  editTransaction(): void {
     if (this.dataT != undefined) {
-      this.dataT.label = this.label.value;
+      this.dataT.name = this.label.value;
       this.dataT.amount = this.amount.value;
 
       if (this.dataT.amount == null) this.dataT.amount = 0.0;
@@ -71,8 +70,8 @@ export class TransactionEditComponent implements OnInit, OnChanges {
       this.dataT.frequency = this.frequency.value;
 
       console.log(this.dataT);
-      // TODO : envoyer le budget modifié au back
-      // TODO : update le front avec la nouvelle liste de budgets
+      // TODO : envoyer la transaction modifié au back
+      // TODO : update le front avec la nouvelle liste de transactions
     }
   }
 }

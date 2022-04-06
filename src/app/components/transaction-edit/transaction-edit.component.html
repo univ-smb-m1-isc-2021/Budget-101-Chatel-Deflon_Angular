@@ -1,6 +1,6 @@
 <mat-card>
   <h1>Modifier dépense : </h1>
-  <form id="formEditTransaction" [formGroup]="options" (ngSubmit)="editBudget()">
+  <form id="formEditTransaction" [formGroup]="options" (ngSubmit)="editTransaction()">
     <mat-form-field appearance="fill">
       <mat-label>Nom</mat-label>
       <input matInput required type="text" placeholder="Voiture" [formControl]="label">

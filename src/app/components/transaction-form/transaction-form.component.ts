@@ -1,6 +1,7 @@
 import {Component, OnInit, AfterViewInit, Input} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {formatDate} from '@angular/common';
+import {ExpensesService} from "../../services/expenses.service";
 
 @Component({
   selector: 'app-transaction-form',
@@ -24,7 +25,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   dateLastValue = new FormControl(this.currentDate); // Date de dernier virement
   repetitionValue = new FormControl(''); // Fréquence de répétition
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, private expensesApi: ExpensesService) {
     console.log(this.currentDate);
     this.options = fb.group({
       typeValue: this.typeValue,
@@ -48,32 +49,45 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
 
   // Ajout une nouvelle dépense
   addNewExpense(): void {
-    console.log("-- NEW EXPENSE --");
-    let expense = [];
-    expense.push(this.labelValue.value);
+    let expense = {
+      name: "",
+      amount: 0,
+      budgetId: 0
+    };
+
+    expense.name = this.labelValue.value;
 
     if (this.typeValue.value == 'depense') {
-      expense.push(-1 * parseFloat(this.amountValue.value));
+      expense.amount = (-1 * parseFloat(this.amountValue.value));
     } else {
-      expense.push(parseFloat(this.amountValue.value));
+      expense.amount = parseFloat(this.amountValue.value);
     }
 
-    expense.push(this.budgetValue.value)
 
-    if (this.freqValue.value == 'ponctuel') {
-      expense.push(this.dateValue.value);
-    } else if (this.freqValue.value == 'recurrent') {
-      expense.push(this.dateFirstValue.value);
-      expense.push(this.repetitionValue.value);
-    } else {
-      expense.push(this.dateFirstValue.value);
-      expense.push(this.dateLastValue.value);
-    }
+    expense.budgetId = this.getBudgetId(this.budgetValue.value);
 
-    this.expenses.push(expense)
-    console.log(this.expenses);
+    // TODO : add other properties: date, datedebut, datefin, type
+    // if (this.freqValue.value == 'ponctuel') {
+    //   expense.push(this.dateValue.value);
+    // } else if (this.freqValue.value == 'recurrent') {
+    //   expense.push(this.dateFirstValue.value);
+    //   expense.push(this.repetitionValue.value);
+    // } else {
+    //   expense.push(this.dateFirstValue.value);
+    //   expense.push(this.dateLastValue.value);
+    // }
 
     // TODO : Envoyer la nouvelle dépense au back
+    this.expensesApi.addExpense(expense);
     // TODO : Mettre à jour les graphiques au front
+  }
+
+  getBudgetId(name: string): number {
+    for (let i = 0; i < this.budgets.length; i++) {
+      if (this.budgets[i].name == name) {
+        return this.budgets[i].id;
+      }
+    }
+    return -1;
   }
 }

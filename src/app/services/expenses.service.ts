@@ -14,24 +14,34 @@ export interface Expense {
   providedIn: 'root'
 })
 export class ExpensesService {
-  private expenseListUrl: string;
+  private addExpenseUrl: string;
+  private editExpenseUrl: string;
+  private deleteExpenseUrl: string;
+  private expensesListUrl: string;
 
   constructor(private http: HttpClient) {
-    this.expenseListUrl = 'http://localhost:8081/expenses';
+    this.addExpenseUrl = 'http://localhost:8081/addexpense';
+    this.editExpenseUrl = 'http://localhost:8081/editexpense';
+    this.deleteExpenseUrl = 'http://localhost:8081/deleteexpense';
+    this.expensesListUrl = 'http://localhost:8081/expenses';
   }
 
-  //
   public getExpenses(): Observable<Expense[]> {
-    // return new Observable<Expense[]>( observer => {
-    //   [
-    //     { id: 1, name: "Repas midi",amount: 100, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Voiture', frequency: 'Journalière' },
-    //     { id: 2, name: "Plein d'essence",amount: 200, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Courses', frequency: 'Hebdomadaire' },
-    //     { id: 3, name: "Virement maman",amount: 150, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Rénovations', frequency: '--' },
-    //     { id: 4, name: "Pension Henry",amount: 120, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Vacances', frequency: 'Hebdomadaire' },
-    //     { id: 5, name: "Révision annuelle voiture",amount: 100, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Voiture', frequency: 'Annuel' },
-    //   ]
-    // });
+    return this.http.get<Expense[]>(this.expensesListUrl);
+  }
 
-    return this.http.get<Expense[]>(this.expenseListUrl);
+  public addExpense(expense: {}): void {
+    console.log(expense);
+    this.http.post<{}>(this.addExpenseUrl, expense);
+  }
+
+  public editExpense(expense: {}): void {
+    console.log(expense);
+    this.http.post<{}>(this.editExpenseUrl, expense);
+  }
+
+  public deleteExpense(expenseid: number): void {
+    console.log(expenseid);
+    this.http.post<{}>(this.deleteExpenseUrl, expenseid);
   }
 }

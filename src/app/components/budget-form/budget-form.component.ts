@@ -1,5 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {ExpensesService} from "../../services/expenses.service";
+import {BudgetService} from "../../services/budget.service";
 
 @Component({
   selector: 'app-budget-form',
@@ -7,13 +9,11 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
   styleUrls: ['./budget-form.component.css']
 })
 export class BudgetFormComponent implements OnInit {
-  budget: any[] = [];
-
   options: FormGroup;
   labelValue = new FormControl(''); // Nom du budget
   amountValue = new FormControl(''); // Montant du budget
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, private budgetApi: BudgetService) {
     this.options = fb.group({
       labelValue: this.labelValue,
       amountValue: this.amountValue
@@ -21,22 +21,20 @@ export class BudgetFormComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   // Ajout d'un nouveau budget
   addNewBudget(): void {
-    console.log("-- NEW BUDGET --");
-    let label = this.labelValue.value;
     let amount = this.amountValue.value;
-
     if (amount == '') amount = 0.0;
 
-    this.budget.push([label, amount]); // solde initial du budget
-
-    console.log(this.budget);
+    let budget = {
+      name: this.labelValue.value,
+      amount: amount
+    };
 
     // TODO : envoyer le nouveau budget au back
+    this.budgetApi.addBudget(budget);
     // TODO : update le tableau au front
   }
 }

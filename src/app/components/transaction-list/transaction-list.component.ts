@@ -4,11 +4,15 @@ import {TransactionEditComponent} from "../transaction-edit/transaction-edit.com
 import {BudgetService} from "../../services/budget.service";
 import {ExpensesService} from "../../services/expenses.service";
 
+// TODO : WARNING MANQUE INFOS : Date, type de transaction
 export interface Expenses {
   id: number;
   amount: number;
   label: string;
-  budgetid : number;
+  budgetId : number;
+  budget: string;
+  date: string;
+  type: string;
 }
 
 // const TRANSACTION_DATA: Transaction[] = [
@@ -27,7 +31,7 @@ export interface Expenses {
 export class TransactionListComponent implements OnInit {
   @ViewChild(TransactionEditComponent) transactionEditComponent: TransactionEditComponent | undefined;
 
-  displayedColumns: string[] = ['label', 'amount', 'budget', 'actions'];
+  displayedColumns: string[] = ['label', 'amount', 'budget', 'date', 'type', 'actions'];
   clickedRows = new Set<Expenses>();
 
   @Input() expenses: any[] = [];
@@ -37,11 +41,13 @@ export class TransactionListComponent implements OnInit {
   transactionId = -1;
 
   ngOnInit(): void {}
-  constructor() {}
+  constructor(private expensesApi: ExpensesService) {}
 
   ngOnChanges(): void {
     for (let i = 0; i < this.expenses.length; i++) {
       this.expenses[i]["budget"] = this.getBudget(this.expenses[i].budgetId);
+      this.expenses[i]["date"] = "2022-XX-YY"; // TODO : get Date de la dépense
+      this.expenses[i]["type"] = "needatype"; // TODO : get Type de la dépense (Ponctuel, Mensuel, Etalé)
     }
   }
 
@@ -67,7 +73,6 @@ export class TransactionListComponent implements OnInit {
 
   getBudget(id: number): any {
     for (let i = 0; i < this.budgets.length; i++) {
-      console.log(this.budgets[i].id + ", " + id);
       if (this.budgets[i].id == id) {
         return this.budgets[i].name;
       }
@@ -75,15 +80,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   deleteTransaction(id: number) {
-    console.log("delete " + id);
-    for (let i = 0; i < this.expenses.length; i++) {
-      console.log("id elem: " + this.expenses[i].id + ", id: " + id + " = " + (this.expenses[i].id == id));
-      if (this.expenses[i].id == id) {
-        this.expenses.splice(i, 1);
-        console.log(this.expenses);
-        break;
-      }
-    }
+    this.expensesApi.deleteExpense(id);
 
     // TODO : prévoir rechargement de la page ou au moins du module pour afficher les changements
     this.ngOnInit();

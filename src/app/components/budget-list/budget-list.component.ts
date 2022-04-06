@@ -49,7 +49,7 @@ export class BudgetListComponent implements OnInit {
     }
   }
 
-  constructor() {}
+  constructor(private budgetApi: BudgetService) {}
 
   editBudget(id: number) {
     this.editRow = true;
@@ -64,23 +64,15 @@ export class BudgetListComponent implements OnInit {
   }
 
   getElement(id: number): any {
-    // for (let i = 0; i < ELEMENT_DATA.length; i++) {
-    //   if (ELEMENT_DATA[i].id == id) {
-    //     return ELEMENT_DATA[i];
-    //   }
-    // }
+    for (let i = 0; i < this.budgets.length; i++) {
+      if (this.budgets[i].id == id) {
+        return this.budgets[i];
+      }
+    }
   }
 
   deleteBudget(id: number) {
-    // console.log("delete " + id);
-    // for (let i = 0; i < ELEMENT_DATA.length; i++) {
-    //   console.log("id elem: " + ELEMENT_DATA[i].id + ", id: " + id + " = " + (ELEMENT_DATA[i].id == id));
-    //   if (ELEMENT_DATA[i].id == id) {
-    //     ELEMENT_DATA.splice(i, 1);
-    //     console.log(ELEMENT_DATA);
-    //     break;
-    //   }
-    // }
+    this.budgetApi.deleteBudget(id);
 
     // TODO : prévoir rechargement de la page ou au moins du module pour afficher les changements
     this.ngOnInit();
