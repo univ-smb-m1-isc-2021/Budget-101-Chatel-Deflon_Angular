@@ -36,6 +36,7 @@ import {TokenInterceptor} from "./auth/token.interceptor";
 
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
+import { RegisterComponent } from './components/register/register.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -56,7 +57,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     // ExpenseListComponent,
     LoginComponent,
     UserSettingsComponent,
-    UserEditComponent
+    UserEditComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

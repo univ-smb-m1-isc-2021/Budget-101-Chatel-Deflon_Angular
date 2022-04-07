@@ -22,7 +22,7 @@ interface MyApiResponse {
 }
 
 import {HttpClient, HttpRequest} from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {map, tap} from 'rxjs/operators';
 
 @Injectable({
@@ -36,7 +36,8 @@ export class AuthService {
   public username: String = '';
   public password: String = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   setToken(token: string) {
     return localStorage.setItem('jwt', token);
@@ -57,6 +58,12 @@ export class AuthService {
     //     localStorage.setItem('jwt', response.token);
     //   }
     // }));
+  }
+
+  register(email: string, username: string, password: string) {
+    return this.http.post('http://localhost:8081/register',
+      {email, username, password},
+    );
   }
 
   public isAuthenticated(): boolean {

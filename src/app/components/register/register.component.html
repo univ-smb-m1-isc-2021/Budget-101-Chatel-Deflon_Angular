@@ -1,22 +1,25 @@
-<div id="login-page">
+<div id="register-page">
   <mat-card>
-    <h1>Connexion - Gunter 101</h1>
+    <h1>Inscription - Gunter 101</h1>
     <mat-card-content>
       <form #loginForm="ngForm" id="ngForm" [formGroup]="options" (ngSubmit)="onSubmit()">
-        <mat-error *ngIf="invalidLogin">
-          Pseudo et/ou mot de passe inconnus.
+        <mat-error *ngIf="invalidRegister">
+          Email incorrect ou déjà utilisé
         </mat-error>
+        <mat-form-field>
+          <input matInput type="email" placeholder="Email" [formControl]="emailValue" id="email" name="pseudo" required>
+        </mat-form-field>
         <mat-form-field>
           <input matInput placeholder="Pseudo" [formControl]="usernameValue" id="pseudo" name="pseudo" required>
         </mat-form-field>
         <mat-form-field>
           <input matInput type="password" placeholder="Mot de passe" [formControl]="passwordValue" id="password" name="password" required>
         </mat-form-field>
-        <button mat-raised-button form="ngForm" color="primary" id="login">Se connecter</button>
+        <button mat-raised-button form="ngForm" color="primary" id="subscribe">S'inscrire</button>
       </form>
       <div id="links">
-        <a href="/inscription">
-          M'inscrire
+        <a href="/connexion">
+          Me connecter
         </a>
       </div>
     </mat-card-content>
