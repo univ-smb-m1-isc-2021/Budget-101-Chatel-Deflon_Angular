@@ -11,12 +11,14 @@ export class UserEditComponent implements OnInit {
 
   options: FormGroup;
   nicknameValue = new FormControl(this.user.pseudo); // Nom du budget
+  emailValue = new FormControl(this.user.email); // Montant du budget
   passwordValue = new FormControl(''); // Montant du budget
   oldPasswordValue = new FormControl(''); // Montant du budget
 
   constructor(fb: FormBuilder) {
     this.options = fb.group({
       nicknameValue: this.nicknameValue,
+      emailValue: this.emailValue,
       passwordValue: this.passwordValue,
       oldPasswordValue: this.oldPasswordValue,
     });
