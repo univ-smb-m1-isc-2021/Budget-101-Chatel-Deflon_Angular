@@ -58,7 +58,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     LoginComponent,
     UserSettingsComponent,
     UserInformationsComponent,
-    UserEditComponent,
+    UserEditComponent
   ],
   imports: [
     BrowserModule,
@@ -79,11 +79,13 @@ PlotlyModule.plotlyjs = PlotlyJS;
     MatCheckboxModule,
     MatRadioModule,
     MatTableModule,
-  ],
-  exports: [
     // Import pour les graphiques
     PlotlyModule
   ],
+  exports: [
+
+  ]
+  ,
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
@@ -93,7 +95,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    },
+    }
   ],
   bootstrap: [AppComponent]
 })
