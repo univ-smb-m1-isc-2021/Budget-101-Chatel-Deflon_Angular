@@ -31,7 +31,6 @@ import { BudgetEditComponent } from './components/budget-edit/budget-edit.compon
 import { LoginComponent } from './components/login/login.component';
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 import { TransactionListComponent } from './components/transaction-list/transaction-list.component';
-import { UserInformationsComponent } from './components/user-informations/user-informations.component';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import {TokenInterceptor} from "./auth/token.interceptor";
 
@@ -57,7 +56,6 @@ PlotlyModule.plotlyjs = PlotlyJS;
     // ExpenseListComponent,
     LoginComponent,
     UserSettingsComponent,
-    UserInformationsComponent,
     UserEditComponent
   ],
   imports: [
