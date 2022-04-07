@@ -6,13 +6,16 @@ import {ExpensesService} from "../../services/expenses.service";
 
 // TODO : WARNING MANQUE INFOS : Date, type de transaction
 export interface Expenses {
-  id: number;
-  amount: number;
-  label: string;
-  budgetId : number;
-  budget: string;
-  date: string;
-  type: string;
+  id: number,
+  amount: number,
+  label: string,
+  budgetId: number,
+  budget: string,
+  date: string,
+  start: string,
+  end: string,
+  type: string,
+  repetition: string,
 }
 
 // const TRANSACTION_DATA: Transaction[] = [
@@ -31,7 +34,8 @@ export interface Expenses {
 export class TransactionListComponent implements OnInit {
   @ViewChild(TransactionEditComponent) transactionEditComponent: TransactionEditComponent | undefined;
 
-  displayedColumns: string[] = ['label', 'amount', 'budget', 'date', 'type', 'actions'];
+  expensesList: Expenses[] = [];
+  displayedColumns: string[] = ['label', 'amount', 'budget', 'date', 'start', 'end', 'type', 'repetition', 'actions'];
   clickedRows = new Set<Expenses>();
 
   @Input() expenses: any[] = [];
@@ -40,14 +44,50 @@ export class TransactionListComponent implements OnInit {
   editT = false;
   transactionId = -1;
 
-  ngOnInit(): void {}
-  constructor(private expensesApi: ExpensesService) {}
+  ngOnInit(): void {
+  }
+
+  constructor(private expensesApi: ExpensesService) {
+  }
 
   ngOnChanges(): void {
-    for (let i = 0; i < this.expenses.length; i++) {
-      this.expenses[i]["budget"] = this.getBudget(this.expenses[i].budgetId);
-      this.expenses[i]["date"] = "2022-XX-YY"; // TODO : get Date de la dépense
-      this.expenses[i]["type"] = "needatype"; // TODO : get Type de la dépense (Ponctuel, Mensuel, Etalé)
+    console.log(this.expenses);
+    this.expensesList = this.expenses;
+    for (let i = 0; i < this.expensesList.length; i++) {
+      this.expensesList[i].budget = this.getBudget(this.expensesList[i].budgetId);
+      if (this.expensesList[i].date == undefined) this.expensesList[i].date = "--";
+      if (this.expensesList[i].start == undefined) this.expensesList[i].start = "--";
+      if (this.expensesList[i].end == undefined) this.expensesList[i].end = "--";
+
+      if (this.expensesList[i].type == "SPREAD") {
+        this.expensesList[i].type = "Etalé";
+      } else if (this.expensesList[i].type == "RECURRENT") {
+        this.expensesList[i].type = "Récurrent";
+      } else {
+        this.expensesList[i].type = "Ponctuel";
+      }
+
+      if (this.expensesList[i].repetition == undefined) this.expensesList[i].repetition = "--";
+      switch (this.expensesList[i].repetition) {
+        case "DAILY":
+          this.expensesList[i].repetition = "Journalière";
+          break;
+        case "WEEKLY":
+          this.expensesList[i].repetition = "Hebdomadaire";
+          break;
+        case "MONTHLY":
+          this.expensesList[i].repetition = "Mensuelle";
+          break;
+        case "THIRDLY":
+          this.expensesList[i].repetition = "Trimestrielle";
+          break;
+        case "YEARLY":
+          this.expensesList[i].repetition = "Annuelle";
+          break;
+        case "BIYEARLY":
+          this.expensesList[i].repetition = "Bi-Annuelle";
+          break;
+      }
     }
   }
 

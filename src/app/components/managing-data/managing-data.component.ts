@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {BudgetService} from "../../services/budget.service";
 import {ExpensesService} from "../../services/expenses.service";
 import {AuthService} from "../../auth/auth.service";
@@ -26,6 +26,7 @@ export class ManagingDataComponent implements OnInit {
   public expenses: Expenses[] = [];
 
   constructor(
+    private cdr:ChangeDetectorRef,
     private budgetApi: BudgetService,
     private expensesApi: ExpensesService,
     private authService: AuthService,

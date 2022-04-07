@@ -49,36 +49,43 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
 
   // Ajout une nouvelle dépense
   addNewExpense(): void {
-    let expense = {
-      name: "",
-      amount: 0,
-      budgetId: 0
-    };
 
-    expense.name = this.labelValue.value;
-
+    let amount = parseFloat(this.amountValue.value);
     if (this.typeValue.value == 'depense') {
-      expense.amount = (-1 * parseFloat(this.amountValue.value));
-    } else {
-      expense.amount = parseFloat(this.amountValue.value);
+      amount *= -1;
     }
 
-
-    expense.budgetId = this.getBudgetId(this.budgetValue.value);
-
     // TODO : add other properties: date, datedebut, datefin, type
-    // if (this.freqValue.value == 'ponctuel') {
-    //   expense.push(this.dateValue.value);
-    // } else if (this.freqValue.value == 'recurrent') {
-    //   expense.push(this.dateFirstValue.value);
-    //   expense.push(this.repetitionValue.value);
-    // } else {
-    //   expense.push(this.dateFirstValue.value);
-    //   expense.push(this.dateLastValue.value);
-    // }
+    if (this.freqValue.value == 'ponctuel') {
+      let punctualExpense = {
+        label: this.labelValue.value,
+        amount: amount,
+        budgetId: this.getBudgetId(this.budgetValue.value),
+        date: this.dateValue.value
+      }
+      this.expensesApi.addPunctualExpense(punctualExpense);
+    } else if (this.freqValue.value == 'recurrent') {
+      let reccurentExpense = {
+        label: this.labelValue.value,
+        amount: amount,
+        budgetId: this.getBudgetId(this.budgetValue.value),
+        date: this.dateFirstValue.value,
+        repetition: this.repetitionValue.value,
+      }
+      this.expensesApi.addReccurentExpense(reccurentExpense);
+    } else {
+      let spreadExpense = {
+        label: this.labelValue.value,
+        amount: amount,
+        budgetId: this.getBudgetId(this.budgetValue.value),
+        start: this.dateFirstValue.value,
+        end: this.dateLastValue.value,
+      }
+      this.expensesApi.addSpreadExpense(spreadExpense);
+    }
 
     // TODO : Envoyer la nouvelle dépense au back
-    this.expensesApi.addExpense(expense);
+
     // TODO : Mettre à jour les graphiques au front
   }
 

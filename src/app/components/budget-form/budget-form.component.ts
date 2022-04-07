@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {ExpensesService} from "../../services/expenses.service";
 import {BudgetService} from "../../services/budget.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-budget-form',
@@ -13,7 +14,11 @@ export class BudgetFormComponent implements OnInit {
   labelValue = new FormControl(''); // Nom du budget
   amountValue = new FormControl(''); // Montant du budget
 
-  constructor(fb: FormBuilder, private budgetApi: BudgetService) {
+  constructor(
+    fb: FormBuilder,
+    private budgetApi: BudgetService,
+    private router: Router
+  ) {
     this.options = fb.group({
       labelValue: this.labelValue,
       amountValue: this.amountValue

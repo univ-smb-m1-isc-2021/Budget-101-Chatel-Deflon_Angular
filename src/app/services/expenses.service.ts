@@ -8,21 +8,29 @@ export interface Expense {
   amount: number;
   label: string;
   budgetid : number;
+  date: string;
+  start: string;
+  end: string;
+  repetition: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpensesService {
-  private addExpenseUrl: string;
+  private addPunctualExpenseUrl: string;
+  private addReccurentExpenseUrl: string;
+  private addSpreadExpenseUrl: string;
   private editExpenseUrl: string;
   private deleteExpenseUrl: string;
   private expensesListUrl: string;
 
   constructor(private http: HttpClient) {
-    this.addExpenseUrl = 'http://localhost:8081/addexpense';
+    this.addPunctualExpenseUrl = 'http://localhost:8081/newpuncexpense';
+    this.addReccurentExpenseUrl = 'http://localhost:8081/newrecexpense';
+    this.addSpreadExpenseUrl = 'http://localhost:8081/newsprexpense';
     this.editExpenseUrl = 'http://localhost:8081/editexpense';
-    this.deleteExpenseUrl = 'http://localhost:8081/deleteexpense';
+    this.deleteExpenseUrl = 'http://localhost:8081/rmexpense';
     this.expensesListUrl = 'http://localhost:8081/expenses';
   }
 
@@ -30,9 +38,16 @@ export class ExpensesService {
     return this.http.get<Expense[]>(this.expensesListUrl);
   }
 
-  public addExpense(expense: {}): void {
-    console.log(expense);
-    this.http.post<{}>(this.addExpenseUrl, expense);
+  public addPunctualExpense(expense: {}): void {
+    this.http.post<{}>(this.addPunctualExpenseUrl, expense).subscribe(expense => console.log("Punctual expense ok"));
+  }
+
+  public addReccurentExpense(expense: {}): void {
+    this.http.post<{}>(this.addReccurentExpenseUrl, expense).subscribe(expense => console.log("Reccurent expense ok"));
+  }
+
+  public addSpreadExpense(expense: {}): void {
+    this.http.post<{}>(this.addSpreadExpenseUrl, expense).subscribe(expense => console.log("Spread expense ok"));
   }
 
   public editExpense(expense: {}): void {
@@ -42,6 +57,6 @@ export class ExpensesService {
 
   public deleteExpense(expenseid: number): void {
     console.log(expenseid);
-    this.http.post<{}>(this.deleteExpenseUrl, expenseid);
+    this.http.post<{}>(this.deleteExpenseUrl, {id: expenseid}).subscribe(expense => console.log("Expense rm"));
   }
 }
