@@ -67,7 +67,8 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../auth/auth.service';
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-login',
@@ -82,28 +83,47 @@ export class LoginComponent implements OnInit {
   invalidLogin = false;
   loginSuccess = false;
 
+  options: FormGroup;
+  usernameValue = new FormControl('');
+  passwordValue = new FormControl('');
+
   constructor(
+    fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthService
-  ) {}
+  ) {
+    this.options = fb.group({
+      usernameValue: this.usernameValue,
+      passwordValue: this.passwordValue
+    })
+  }
 
   ngOnInit() {}
 
+  onSubmit() {
+    this.invalidLogin = false;
+    this.username = this.usernameValue.value;
+    this.password = this.passwordValue.value;
+    console.log(this.username + ', ' + this.password);
+    this.handleLogin();
+  }
+
   handleLogin() {
+    console.log("login");
     this.authenticationService
-      .authenticationService(this.username, this.password)
-      // .subscribe(
-      //   (result) => {
-      //     this.invalidLogin = false;
-      //     this.loginSuccess = true;
-      //     this.successMessage = 'Login Successful.';
-      //     this.router.navigate(['/hello-world']);
-      //   },
-        // () => {
-        //   this.invalidLogin = true;
-        //   this.loginSuccess = false;
-        // }
-      // );
+      .login(this.username, this.password)
+      .subscribe(
+        result => {
+          console.log('logged', result)
+          // this.invalidLogin = false;
+          // this.loginSuccess = true;
+          // this.successMessage = 'Login Successful.';
+          // this.router.navigate(['/hello-world']);
+        },
+        error => {
+          this.invalidLogin = true;
+        }
+      );
   }
 }

@@ -1,72 +1,47 @@
-<!-- <div id="login-page">
+<div id="login-page">
   <mat-card>
-    <h1 *ngIf="!inscription && connexion">Connexion - Gunter 101</h1>
-    <h1 *ngIf="inscription && !connexion">Inscription - Gunter 101</h1>
+    <h1>Connexion - Gunter 101</h1>
     <mat-card-content>
-      <form #loginForm="ngForm"> <!-- (ngSubmit)="onSubmit()
-        <mat-error *ngIf="!loginValid">
+      <form #loginForm="ngForm" id="ngForm" [formGroup]="options" (ngSubmit)="onSubmit()">
+        <mat-error *ngIf="invalidLogin">
           Email et/ou mot de passe inconnus.
         </mat-error>
-        <mat-error *ngIf="!inscValid">
-          Email déjà utilisé.
-        </mat-error>
-        <mat-form-field *ngIf="inscription || connexion">
-          <input matInput placeholder="Pseudo" [(ngModel)]="username" name="pseudo" required>
+        <mat-form-field>
+          <input matInput placeholder="Pseudo" [formControl]="usernameValue" id="pseudo" name="pseudo" required>
         </mat-form-field>
-        <mat-form-field *ngIf="inscription && connexion">
-          <input matInput placeholder="E-mail" [(ngModel)]="email" name="e-mail" required>
+        <mat-form-field>
+          <input matInput type="password" placeholder="Mot de passe" [formControl]="passwordValue" id="password" name="password" required>
         </mat-form-field>
-        <mat-form-field *ngIf="inscription || connexion">
-          <input matInput type="password" placeholder="Mot de passe" [(ngModel)]="password" name="password" required>
-        </mat-form-field>
+        <button mat-raised-button form="ngForm" color="primary" id="login">Se connecter</button>
       </form>
-      <button *ngIf="!inscription && connexion"
-              mat-raised-button color="primary" id="login" [disabled]="!loginForm.form.valid" (click)="logIn()">Se
-        connecter
-      </button>
-      <button *ngIf="inscription && !connexion"
-              mat-raised-button color="primary" id="insc" [disabled]="!loginForm.form.valid"
-              (click)="inscriptionUser()">S'inscrire
-      </button>
-      <div id="links">
-        <a *ngIf="inscription && !connexion"
-           (click)="connexion = true;
-                    inscription = false;
-                    loginValid = true;
-                    inscValid = true;">
-          Me connecter
-        </a>
-        <a *ngIf="!inscription && connexion"
-           (click)="inscription = true;
-                    connexion = false;
-                    loginValid = true;
-                    inscValid = true;">
-          M'inscrire
-        </a>
-      </div>
+<!--      <div id="links">-->
+<!--        <a>-->
+<!--          M'inscrire-->
+<!--        </a>-->
+<!--      </div>-->
     </mat-card-content>
   </mat-card>
-</div> -->
+</div>
 
-<div class="container col-lg-6">
-    <h1 class="text-center">Login</h1>
-    <div class="card">
-      <div class="card-body">
-        <form class="form-group">
-          <div class="alert alert-warning" *ngIf='invalidLogin'>{{errorMessage}}</div>
-          <div class="alert alert-success" *ngIf='loginSuccess'>{{successMessage}}</div>
-          <div class="form-group">
-            <label for="email">User Name :</label>
-            <input type="text" class="form-control" id="username" [(ngModel)]="username" placeholder="Enter User Name"
-              name="username">
-          </div>
-          <div class="form-group">
-            <label for="pwd">Password:</label>
-            <input type="password" class="form-control" [(ngModel)]="password" id="password" placeholder="Enter password"
-              name="password">
-          </div>
-          <button (click)=handleLogin() class="btn btn-success">Login</button>
-        </form>
-      </div>
-    </div>
-  </div>
+<!--<div class="container col-lg-6">-->
+<!--    <h1 class="text-center">Login</h1>-->
+<!--    <div class="card">-->
+<!--      <div class="card-body">-->
+<!--        <form class="form-group">-->
+<!--          <div class="alert alert-warning" *ngIf='invalidLogin'>{{errorMessage}}</div>-->
+<!--          <div class="alert alert-success" *ngIf='loginSuccess'>{{successMessage}}</div>-->
+<!--          <div class="form-group">-->
+<!--            <label for="email">User Name :</label>-->
+<!--            <input type="text" class="form-control" id="username" [(ngModel)]="username" placeholder="Enter User Name"-->
+<!--              name="username">-->
+<!--          </div>-->
+<!--          <div class="form-group">-->
+<!--            <label for="pwd">Password:</label>-->
+<!--            <input type="password" class="form-control" [(ngModel)]="password" id="password" placeholder="Enter password"-->
+<!--              name="password">-->
+<!--          </div>-->
+<!--          <button (click)=handleLogin() class="btn btn-success">Login</button>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
