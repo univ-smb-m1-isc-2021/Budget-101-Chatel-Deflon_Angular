@@ -115,18 +115,14 @@ export class LoginComponent implements OnInit {
       .login(this.username, this.password)
       .subscribe(
         result => {
-          console.log("CONNEXION REUSSIE");
+          // console.log("CONNEXION REUSSIE");
           this.authenticationService.setToken(result.token);
-          console.log('logged', result)
-          console.log(this.authenticationService.getToken());
+          // console.log('logged', result)
+          // console.log(this.authenticationService.getToken());
           this.router.navigate(["/"]);
-          // this.invalidLogin = false;
-          // this.loginSuccess = true;
-          // this.successMessage = 'Login Successful.';
-          // this.router.navigate(['/hello-world']);
         },
         error => {
-          console.log("CONNEXION ECHOUEE")
+          // console.log("CONNEXION ECHOUEE")
           this.invalidLogin = true;
           console.log(this.authenticationService.getToken());
         }

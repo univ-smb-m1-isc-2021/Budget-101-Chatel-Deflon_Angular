@@ -51,7 +51,6 @@ export class AuthService {
       'http://localhost:8081/authenticate',
       {username, password},
     );
-
     // pipe(tap((response: MyApiResponse) => {
     //   console.log("LALALILALOU : " + response.token);
     //   if (response) {
