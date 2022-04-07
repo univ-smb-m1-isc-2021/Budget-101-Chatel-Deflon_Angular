@@ -44,7 +44,7 @@ export class AuthService {
 
   login(username: string, password: string) {
     return this.http.post<MyApiResponse>(
-      'http://localhost:8081/login',
+      'http://localhost:8081/authenticate',
       {username, password},
     ).pipe(tap((response: MyApiResponse) => {
       console.log(response.token);
