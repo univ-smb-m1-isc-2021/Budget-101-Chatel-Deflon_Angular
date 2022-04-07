@@ -116,6 +116,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         result => {
           console.log("CONNEXION REUSSIE");
+          this.authenticationService.setToken(result.token);
           console.log('logged', result)
           console.log(this.authenticationService.getToken());
           this.router.navigate(["/"]);

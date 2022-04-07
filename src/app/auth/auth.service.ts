@@ -38,6 +38,10 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  setToken(token: string) {
+    return localStorage.setItem('jwt', token);
+  }
+
   getToken() {
     return localStorage.getItem('jwt');
   }
@@ -46,13 +50,6 @@ export class AuthService {
     return this.http.post<MyApiResponse>(
       'http://localhost:8081/authenticate',
       {username, password},
-    ).subscribe(
-      result => {
-        console.log("LALALILALOU : " + result.token);
-          if (result) {
-            localStorage.setItem('jwt', result.token);
-          }
-      }
     );
 
     // pipe(tap((response: MyApiResponse) => {
