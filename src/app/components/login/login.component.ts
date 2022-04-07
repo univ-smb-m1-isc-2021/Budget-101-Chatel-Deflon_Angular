@@ -116,6 +116,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         result => {
           console.log('logged', result)
+          this.router.navigate(["/"]);
           // this.invalidLogin = false;
           // this.loginSuccess = true;
           // this.successMessage = 'Login Successful.';
