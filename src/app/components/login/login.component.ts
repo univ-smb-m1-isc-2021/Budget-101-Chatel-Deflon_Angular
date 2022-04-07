@@ -116,6 +116,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         result => {
           console.log('logged', result)
+          console.log(this.authenticationService.getToken());
           this.router.navigate(["/"]);
           // this.invalidLogin = false;
           // this.loginSuccess = true;
