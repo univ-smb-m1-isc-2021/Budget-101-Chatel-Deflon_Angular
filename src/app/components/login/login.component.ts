@@ -115,6 +115,7 @@ export class LoginComponent implements OnInit {
       .login(this.username, this.password)
       .subscribe(
         result => {
+          console.log("CONNEXION REUSSIE");
           console.log('logged', result)
           console.log(this.authenticationService.getToken());
           this.router.navigate(["/"]);
@@ -124,7 +125,9 @@ export class LoginComponent implements OnInit {
           // this.router.navigate(['/hello-world']);
         },
         error => {
+          console.log("CONNEXION ECHOUEE")
           this.invalidLogin = true;
+          console.log(this.authenticationService.getToken());
         }
       );
   }
