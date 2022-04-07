@@ -30,7 +30,7 @@ export class BudgetFormComponent implements OnInit {
 
     let budget = {
       name: this.labelValue.value,
-      amount: amount
+      // amount: amount si amount != 0 créer une depense
     };
 
     // TODO : envoyer le nouveau budget au back

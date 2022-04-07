@@ -17,9 +17,9 @@ export class BudgetService {
   private budgetListUrl: string;
 
   constructor(private http: HttpClient) {
-    this.addBudgetUrl = 'http://localhost:8081/addbudget';
+    this.addBudgetUrl = 'http://localhost:8081/newbudget';
     this.editBudgetUrl = 'http://localhost:8081/editbudget';
-    this.deleteBudgetUrl = 'http://localhost:8081/deletebudget';
+    this.deleteBudgetUrl = 'http://localhost:8081/rmbudget';
     this.budgetListUrl = 'http://localhost:8081/budgets';
   }
 
@@ -28,17 +28,19 @@ export class BudgetService {
   }
 
   public addBudget(budget: {}): void {
+    console.log("Call new budget")
     console.log(budget);
-    this.http.post<{}>(this.addBudgetUrl, budget);
+    this.http.post<{}>(this.addBudgetUrl, budget).subscribe(Budget => {console.log(Budget);});
+    
   }
 
   public editBudget(budget: {}): void {
     console.log(budget);
-    this.http.post<{}>(this.editBudgetUrl, budget);
+    this.http.post<{}>(this.editBudgetUrl, budget).subscribe(data => {console.log(data);});
   }
 
   public deleteBudget(budgetid: number): void {
     console.log(budgetid);
-    this.http.post<{}>(this.deleteBudgetUrl, budgetid);
+    this.http.post<{}>(this.deleteBudgetUrl, {'id':budgetid}).subscribe(data => {console.log(data);});
   }
 }
