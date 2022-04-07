@@ -46,12 +46,21 @@ export class AuthService {
     return this.http.post<MyApiResponse>(
       'http://localhost:8081/authenticate',
       {username, password},
-    ).pipe(tap((response: MyApiResponse) => {
-      console.log("LALALILALOU : " + response.token);
-      if (response) {
-        localStorage.setItem('jwt', response.token);
+    ).subscribe(
+      result => {
+        console.log("LALALILALOU : " + result.token);
+          if (result) {
+            localStorage.setItem('jwt', result.token);
+          }
       }
-    }));
+    );
+
+    // pipe(tap((response: MyApiResponse) => {
+    //   console.log("LALALILALOU : " + response.token);
+    //   if (response) {
+    //     localStorage.setItem('jwt', response.token);
+    //   }
+    // }));
   }
 
   public isAuthenticated(): boolean {
