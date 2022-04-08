@@ -3,11 +3,6 @@ import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
-export interface User {
-  username: string;
-  email: string;
-}
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -21,7 +16,7 @@ export class HeaderComponent implements OnInit {
     public userService: UserService,
     private router: Router
   ) {
-    userService.getUser().subscribe((data: User) => {
+    userService.getUser().subscribe((data: any) => {
       this.username = data.username;
     });
   }

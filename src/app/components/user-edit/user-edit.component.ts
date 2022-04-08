@@ -1,26 +1,30 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
-  styleUrls: ['./user-edit.component.css']
+  styleUrls: ['./user-edit.component.css'],
 })
 export class UserEditComponent implements OnInit {
-  public user = { pseudo: "Luke", email: "lukesky@hotmail.fr" }; // TODO : rplace avec un get
+  public user = { username: '', email: '' }; // TODO : rplace avec un get
 
   options: FormGroup;
-  nicknameValue = new FormControl(this.user.pseudo); // Nom du budget
+  nicknameValue = new FormControl(this.user.username); // Nom du budget
   emailValue = new FormControl(this.user.email); // Montant du budget
   passwordValue = new FormControl(''); // Montant du budget
   oldPasswordValue = new FormControl(''); // Montant du budget
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, public userService: UserService) {
     this.options = fb.group({
       nicknameValue: this.nicknameValue,
       emailValue: this.emailValue,
       passwordValue: this.passwordValue,
       oldPasswordValue: this.oldPasswordValue,
+    });
+    userService.getUser().subscribe((data: any) => {
+      this.user = data;
     });
   }
 
@@ -31,7 +35,6 @@ export class UserEditComponent implements OnInit {
   }
 
   editUser(): void {
-    console.log("edit user");
+    console.log('edit user');
   }
-
 }
