@@ -68,18 +68,21 @@ export class ExpensesService {
   }
 
   public addPunctualExpense(expense: {}): void {
+    this.addExpenseLocal(expense)
     this.http.post<{}>(this.addPunctualExpenseUrl, expense)
-      .subscribe(_ => this.addExpenseLocal(expense));
+      .subscribe();
   }
 
   public addRecurrentExpense(expense: {}): void {
+    this.addExpenseLocal(expense)
     this.http.post<{}>(this.addRecurrentExpenseUrl, expense)
-      .subscribe(_ => this.addExpenseLocal(expense));
+      .subscribe();
   }
 
   public addSpreadExpense(expense: {}): void {
+    this.addExpenseLocal(expense)
     this.http.post<{}>(this.addSpreadExpenseUrl, expense)
-      .subscribe(_ => this.addExpenseLocal(expense));
+      .subscribe();
   }
 
   public editExpense(expense: {}): void {
