@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { UserService } from 'src/app/services/user.service';
+import { User, UserService } from 'src/app/services/user.service';
+
+export interface ModifUser {
+  username: string;
+  email: string;
+}
 
 @Component({
   selector: 'app-user-edit',
@@ -8,20 +13,20 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./user-edit.component.css'],
 })
 export class UserEditComponent implements OnInit {
-  public user = { username: '', email: '' }; // TODO : rplace avec un get
+  public user = { username: '', email: '' };
 
   options: FormGroup;
-  nicknameValue = new FormControl(this.user.username); // Nom du budget
-  emailValue = new FormControl(this.user.email); // Montant du budget
-  passwordValue = new FormControl(''); // Montant du budget
-  oldPasswordValue = new FormControl(''); // Montant du budget
+  nicknameValue = new FormControl(this.user.username);
+  emailValue = new FormControl(this.user.email);
+  // passwordValue = new FormControl('');
+  // oldPasswordValue = new FormControl('');
 
   constructor(fb: FormBuilder, public userService: UserService) {
     this.options = fb.group({
       nicknameValue: this.nicknameValue,
       emailValue: this.emailValue,
-      passwordValue: this.passwordValue,
-      oldPasswordValue: this.oldPasswordValue,
+      // passwordValue: this.passwordValue,
+      // oldPasswordValue: this.oldPasswordValue,
     });
     userService.getUser().subscribe((data: any) => {
       this.user = data;
@@ -36,5 +41,9 @@ export class UserEditComponent implements OnInit {
 
   editUser(): void {
     console.log('edit user');
+    const data = {username: this.nicknameValue.value, email: this.emailValue.value};
+    this.userService.editMail(data).subscribe((data : User) =>{
+      console.log(data);
+    });
   }
 }
