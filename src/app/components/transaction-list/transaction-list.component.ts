@@ -18,14 +18,6 @@ export interface Expenses {
   repetition: string,
 }
 
-// const TRANSACTION_DATA: Transaction[] = [
-//   { id: 1, label: "Repas midi",amount: 100, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test1', frequency: 'Journalière' },
-//   { id: 2, label: "Plein d'essence",amount: 200, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test2', frequency: 'Hebdomadaire' },
-//   { id: 3, label: "Virement maman",amount: 150, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test3', frequency: '--' },
-//   { id: 4, label: "Pension Henry",amount: 120, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test4', frequency: 'Hebdomadaire' },
-//   { id: 5, label: "Révision annuelle voiture",amount: 100, date : formatDate(new Date(), 'dd-MM-yyy', "en"), enddate: "", budget: 'Test5', frequency: 'Annuel' },
-// ];
-
 @Component({
   selector: 'app-transaction-list',
   templateUrl: './transaction-list.component.html',

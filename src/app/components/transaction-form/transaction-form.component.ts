@@ -65,14 +65,14 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
       }
       this.expensesApi.addPunctualExpense(punctualExpense);
     } else if (this.freqValue.value == 'recurrent') {
-      let reccurentExpense = {
+      let recurrentExpense = {
         label: this.labelValue.value,
         amount: amount,
         budgetId: this.getBudgetId(this.budgetValue.value),
         date: this.dateFirstValue.value,
         repetition: this.repetitionValue.value,
       }
-      this.expensesApi.addReccurentExpense(reccurentExpense);
+      this.expensesApi.addRecurrentExpense(recurrentExpense);
     } else {
       let spreadExpense = {
         label: this.labelValue.value,

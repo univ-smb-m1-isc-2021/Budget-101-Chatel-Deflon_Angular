@@ -12,7 +12,7 @@ export interface annualData {
   marker: { color: string }
 }
 
-export interface reccurentExpense {
+export interface recurrentExpense {
   amount: number,
   budgetId: number,
   date: string,
@@ -73,7 +73,7 @@ export class ChartsComponent implements OnInit {
     return year % 4 == 0;
   }
 
-  calculateReccurentExpenseMonthly(data: annualData, expense: reccurentExpense, month: number) {
+  calculateRecurrentExpenseMonthly(data: annualData, expense: recurrentExpense, month: number) {
     let updatedData = data;
     switch (expense.repetition) {
       case "DAILY":
@@ -191,7 +191,7 @@ export class ChartsComponent implements OnInit {
             let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
             if (this.expenses[j].repetition !== undefined) {
               // Dépenses récurrentes
-              currentData = this.calculateReccurentExpenseMonthly(currentData, this.expenses[j], month);
+              currentData = this.calculateRecurrentExpenseMonthly(currentData, this.expenses[j], month);
             } else {
               // Dépenses ponctuelles
               currentData.y[month] += this.expenses[j].amount;
@@ -209,7 +209,7 @@ export class ChartsComponent implements OnInit {
   }
 
   // FONCTIONS POUR CALCULER LA DATA DU GRAPH ANNUEL
-  calculateReccurentExpenseAnnual(expense: reccurentExpense, month: number) {
+  calculateRecurrentExpenseAnnual(expense: recurrentExpense, month: number) {
     let value = 0;
     switch (expense.repetition) {
       case "DAILY":
@@ -335,7 +335,7 @@ export class ChartsComponent implements OnInit {
             let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
             if (this.expenses[j].repetition !== undefined) {
               // Dépenses récurrentes
-              value += this.calculateReccurentExpenseAnnual(this.expenses[j], month);
+              value += this.calculateRecurrentExpenseAnnual(this.expenses[j], month);
             } else {
               // Dépenses ponctuelles
               value += this.expenses[j].amount;

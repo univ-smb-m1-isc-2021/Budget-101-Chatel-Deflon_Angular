@@ -19,7 +19,7 @@ export interface Expense {
 })
 export class ExpensesService {
   private addPunctualExpenseUrl: string;
-  private addReccurentExpenseUrl: string;
+  private addRecurrentExpenseUrl: string;
   private addSpreadExpenseUrl: string;
   private editExpenseUrl: string;
   private deleteExpenseUrl: string;
@@ -27,7 +27,7 @@ export class ExpensesService {
 
   constructor(private http: HttpClient) {
     this.addPunctualExpenseUrl = 'http://localhost:8081/newpuncexpense';
-    this.addReccurentExpenseUrl = 'http://localhost:8081/newrecexpense';
+    this.addRecurrentExpenseUrl = 'http://localhost:8081/newrecexpense';
     this.addSpreadExpenseUrl = 'http://localhost:8081/newsprexpense';
     this.editExpenseUrl = 'http://localhost:8081/editexpense';
     this.deleteExpenseUrl = 'http://localhost:8081/rmexpense';
@@ -42,8 +42,8 @@ export class ExpensesService {
     this.http.post<{}>(this.addPunctualExpenseUrl, expense).subscribe(expense => console.log("Punctual expense ok"));
   }
 
-  public addReccurentExpense(expense: {}): void {
-    this.http.post<{}>(this.addReccurentExpenseUrl, expense).subscribe(expense => console.log("Reccurent expense ok"));
+  public addRecurrentExpense(expense: {}): void {
+    this.http.post<{}>(this.addRecurrentExpenseUrl, expense).subscribe(expense => console.log("Recurrent expense ok"));
   }
 
   public addSpreadExpense(expense: {}): void {
