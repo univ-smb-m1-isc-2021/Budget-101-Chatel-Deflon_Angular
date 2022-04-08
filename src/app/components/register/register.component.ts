@@ -51,6 +51,7 @@ export class RegisterComponent implements OnInit {
       .register(this.email, this.username, this.password)
       .subscribe(
         result => {
+          console.log(result);
           console.log("INSCRIPTION REUSSIE");
           this.router.navigate(["/connexion"]);
         },

@@ -62,7 +62,7 @@ export class AuthService {
 
   register(email: string, username: string, password: string) {
     return this.http.post('http://localhost:8081/register',
-      {email, username, password},
+      {username, password, email},
     );
   }
 
