@@ -55,7 +55,6 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
       amount *= -1;
     }
 
-    // TODO : add other properties: date, datedebut, datefin, type
     if (this.freqValue.value == 'ponctuel') {
       let punctualExpense = {
         label: this.labelValue.value,
@@ -84,9 +83,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
       this.expensesApi.addSpreadExpense(spreadExpense);
     }
 
-    // TODO : Envoyer la nouvelle dépense au back
-
-    // TODO : Mettre à jour les graphiques au front
+    this.expensesApi.sendUpdate("add expense");
   }
 
   getBudgetId(name: string): number {

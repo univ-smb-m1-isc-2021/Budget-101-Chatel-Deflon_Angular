@@ -1,7 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../services/api.service";
-import {TransactionFormComponent} from "../transaction-form/transaction-form.component";
-import {BudgetService} from "../../services/budget.service";
+import { Component, OnInit } from '@angular/core';import {BudgetService} from "../../services/budget.service";
 import {ExpensesService} from "../../services/expenses.service";
 import {AuthService} from "../../auth/auth.service";
 import {Router} from "@angular/router";
@@ -39,11 +36,8 @@ export class HomepageComponent implements OnInit {
       }
     );
 
-    this.expensesApi.getExpenses().subscribe(
-      expenses => {
-        this.expenses = expenses;
-      }
-    )
+    this.expensesApi.getExpenses();
+    this.expenses = this.expensesApi.expenses;
   }
 
 

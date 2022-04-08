@@ -23,7 +23,7 @@ export interface Expenses {
 })
 export class ManagingDataComponent implements OnInit {
   public budgets: Budget[] = [];
-  public expenses: Expenses[] = [];
+  public expenses: any[] = [];
 
   constructor(
     private cdr:ChangeDetectorRef,
@@ -41,11 +41,13 @@ export class ManagingDataComponent implements OnInit {
         }
       );
 
-      expensesApi.getExpenses().subscribe(
-        expenses => {
-          this.expenses = expenses;
-        }
-      );
+      this.expensesApi.getExpenses();
+      this.expenses = this.expensesApi.expenses;
+      // expensesApi.getExpenses().subscribe(
+      //   expenses => {
+      //     this.expenses = expenses;
+      //   }
+      // );
     }
   }
 

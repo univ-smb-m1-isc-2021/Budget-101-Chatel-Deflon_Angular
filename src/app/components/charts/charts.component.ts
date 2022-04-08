@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {BudgetService} from "../../services/budget.service";
-import {coerceBooleanProperty} from "@angular/cdk/coercion";
 import {formatDate} from "@angular/common";
+import {ExpensesService} from "../../services/expenses.service";
+import {Subscription} from "rxjs";
 
 export interface annualData {
   name: string;
@@ -12,22 +13,15 @@ export interface annualData {
   marker: { color: string }
 }
 
-export interface recurrentExpense {
-  amount: number,
-  budgetId: number,
-  date: string,
-  id: number,
-  label: string,
-  repetition: string
-}
-
-export interface spreadExpense {
-  amount: number,
-  budgetId: number,
-  start: string,
-  end: string,
-  id: number,
-  label: string
+export interface Expense {
+  id: number;
+  amount: number;
+  label: string;
+  budgetId : number;
+  date: string;
+  start: string;
+  end: string;
+  repetition: string;
 }
 
 @Component({
@@ -36,8 +30,11 @@ export interface spreadExpense {
   styleUrls: ['./charts.component.css']
 })
 export class ChartsComponent implements OnInit {
+  private subscriptionName: Subscription;
+
   @Input() budgets: any[] = [];
-  @Input() expenses: any[] = [];
+  expenses: any[] = [];
+
   colors = ['red', 'blue', 'green', 'purple', 'brown', 'pink', 'cyan', 'grey', 'black', 'yellow'];
   public months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
@@ -45,7 +42,6 @@ export class ChartsComponent implements OnInit {
     data: [],
     layout: {width: "100%", height: "100%", title: 'Evolution des budgets sur l\'année'}
   };
-
   public graphGlobal = {
     data: [],
     layout: {
@@ -56,9 +52,16 @@ export class ChartsComponent implements OnInit {
     }
   }
 
-  constructor() {}
+  constructor(public expensesApi: ExpensesService) {
+    this.expenses = this.expensesApi.expenses;
+    this.subscriptionName = this.expensesApi.getUpdate()
+      .subscribe((_) => {
+        this.expenses = this.expensesApi.expenses;
+        this.ngOnChanges();
+      });
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngOnChanges(): void {
     // @ts-ignore
@@ -73,7 +76,7 @@ export class ChartsComponent implements OnInit {
     return year % 4 == 0;
   }
 
-  calculateRecurrentExpenseMonthly(data: annualData, expense: recurrentExpense, month: number) {
+  calculateRecurrentExpenseMonthly(data: annualData, expense: Expense, month: number) {
     let updatedData = data;
     switch (expense.repetition) {
       case "DAILY":
@@ -151,7 +154,7 @@ export class ChartsComponent implements OnInit {
     return updatedData;
   }
 
-  calculateSpreadExpenseMonthly(data: annualData, expense: spreadExpense) {
+  calculateSpreadExpenseMonthly(data: annualData, expense: Expense) {
     let updatedData = data;
     let startMonth = (parseInt(expense.start.substring(5, 7)) - 1);
     let endMonth = (parseInt(expense.end.substring(5, 7)) - 1);
@@ -185,20 +188,20 @@ export class ChartsComponent implements OnInit {
         mode: 'lines+points',
         marker: {color: this.colors[i % this.colors.length]}
       }
-      for (let j = 0; j < this.expenses.length; j++) {
-        if (this.expenses[j].budgetId == this.budgets[i].id) {
-          if (this.expenses[j].date !== undefined) {
-            let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
-            if (this.expenses[j].repetition !== undefined) {
+      for (let j = 0; j < this.expensesApi.expenses.length; j++) {
+        if (this.expensesApi.expenses[j].budgetId == this.budgets[i].id) {
+          if (this.expensesApi.expenses[j].date !== undefined) {
+            let month = (parseInt(this.expensesApi.expenses[j].date.substring(5, 7)) - 1);
+            if (this.expensesApi.expenses[j].repetition !== undefined) {
               // Dépenses récurrentes
-              currentData = this.calculateRecurrentExpenseMonthly(currentData, this.expenses[j], month);
+              currentData = this.calculateRecurrentExpenseMonthly(currentData, this.expensesApi.expenses[j], month);
             } else {
               // Dépenses ponctuelles
-              currentData.y[month] += this.expenses[j].amount;
+              currentData.y[month] += this.expensesApi.expenses[j].amount;
             }
           } else {
             // Dépenses étalées
-            currentData = this.calculateSpreadExpenseMonthly(currentData, this.expenses[j]);
+            currentData = this.calculateSpreadExpenseMonthly(currentData, this.expensesApi.expenses[j]);
           }
         }
       }
@@ -209,7 +212,7 @@ export class ChartsComponent implements OnInit {
   }
 
   // FONCTIONS POUR CALCULER LA DATA DU GRAPH ANNUEL
-  calculateRecurrentExpenseAnnual(expense: recurrentExpense, month: number) {
+  calculateRecurrentExpenseAnnual(expense: Expense, month: number) {
     let value = 0;
     switch (expense.repetition) {
       case "DAILY":
@@ -307,7 +310,7 @@ export class ChartsComponent implements OnInit {
     return totalMonths;
   }
 
-  calculateSpreadExpenseAnnual(expense: spreadExpense) {
+  calculateSpreadExpenseAnnual(expense: Expense) {
     let startYear = parseInt(expense.start.substring(0, 4));
     let endYear = parseInt(expense.end.substring(0, 4));
     if (startYear !== endYear) {
@@ -329,20 +332,20 @@ export class ChartsComponent implements OnInit {
     for (let i = 0; i < this.budgets.length; i++) {
       let value = 0;
       result.labels.push(this.budgets[i].name);
-      for (let j = 0; j < this.expenses.length; j++) {
-        if (this.expenses[j].budgetId == this.budgets[i].id) {
-          if (this.expenses[j].date !== undefined) {
-            let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
-            if (this.expenses[j].repetition !== undefined) {
+      for (let j = 0; j < this.expensesApi.expenses.length; j++) {
+        if (this.expensesApi.expenses[j].budgetId == this.budgets[i].id) {
+          if (this.expensesApi.expenses[j].date !== undefined) {
+            let month = (parseInt(this.expensesApi.expenses[j].date.substring(5, 7)) - 1);
+            if (this.expensesApi.expenses[j].repetition !== undefined) {
               // Dépenses récurrentes
-              value += this.calculateRecurrentExpenseAnnual(this.expenses[j], month);
+              value += this.calculateRecurrentExpenseAnnual(this.expensesApi.expenses[j], month);
             } else {
               // Dépenses ponctuelles
-              value += this.expenses[j].amount;
+              value += this.expensesApi.expenses[j].amount;
             }
           } else {
             // Dépenses étalées
-            value += this.calculateSpreadExpenseAnnual(this.expenses[j]);
+            value += this.calculateSpreadExpenseAnnual(this.expensesApi.expenses[j]);
           }
         }
       }

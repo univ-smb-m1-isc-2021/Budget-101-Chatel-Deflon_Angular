@@ -3,6 +3,7 @@ import {formatDate} from "@angular/common";
 import {TransactionEditComponent} from "../transaction-edit/transaction-edit.component";
 import {BudgetService} from "../../services/budget.service";
 import {ExpensesService} from "../../services/expenses.service";
+import {Subscription} from "rxjs";
 
 // TODO : WARNING MANQUE INFOS : Date, type de transaction
 export interface Expenses {
@@ -24,26 +25,33 @@ export interface Expenses {
   styleUrls: ['./transaction-list.component.css']
 })
 export class TransactionListComponent implements OnInit {
+  private subscriptionName: Subscription;
+
   @ViewChild(TransactionEditComponent) transactionEditComponent: TransactionEditComponent | undefined;
 
   expensesList: Expenses[] = [];
   displayedColumns: string[] = ['label', 'amount', 'budget', 'date', 'start', 'end', 'type', 'repetition', 'actions'];
   clickedRows = new Set<Expenses>();
 
-  @Input() expenses: any[] = [];
   @Input() budgets: any[] = [];
+  expenses: any[] = [];
 
   editT = false;
   transactionId = -1;
 
   ngOnInit(): void {
+    this.expenses = this.expensesApi.expenses;
   }
 
   constructor(private expensesApi: ExpensesService) {
+    this.subscriptionName= this.expensesApi.getUpdate()
+      .subscribe((_) => {
+        this.expenses = this.expensesApi.expenses;
+        this.ngOnChanges();
+      });
   }
 
   ngOnChanges(): void {
-    console.log(this.expenses);
     this.expensesList = this.expenses;
     for (let i = 0; i < this.expensesList.length; i++) {
       this.expensesList[i].budget = this.getBudget(this.expensesList[i].budgetId);
@@ -113,8 +121,7 @@ export class TransactionListComponent implements OnInit {
 
   deleteTransaction(id: number) {
     this.expensesApi.deleteExpense(id);
-
+    this.expensesApi.sendUpdate("del Trans");
     // TODO : prévoir rechargement de la page ou au moins du module pour afficher les changements
-    this.ngOnInit();
   }
 }

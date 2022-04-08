@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {formatDate} from "@angular/common";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 
 export interface Expense {
   id: number;
   amount: number;
   label: string;
-  budgetid : number;
+  budgetId : number;
   date: string;
   start: string;
   end: string;
@@ -18,6 +17,9 @@ export interface Expense {
   providedIn: 'root'
 })
 export class ExpensesService {
+  public expenses: Expense[] = [];
+  private subjectName = new BehaviorSubject<any>(this.expenses); //need to create a subject
+
   private addPunctualExpenseUrl: string;
   private addRecurrentExpenseUrl: string;
   private addSpreadExpenseUrl: string;
@@ -34,20 +36,50 @@ export class ExpensesService {
     this.expensesListUrl = 'http://localhost:8081/expenses';
   }
 
-  public getExpenses(): Observable<Expense[]> {
-    return this.http.get<Expense[]>(this.expensesListUrl);
+  sendUpdate(message: string) { //the component that wants to update something, calls this fn
+    this.subjectName.next(message); //next() will feed the value in Subject
+  }
+
+  getUpdate(): Observable<any> { //the receiver component calls this function
+    return this.subjectName.asObservable(); //it returns as an observable to which the receiver funtion will subscribe
+  }
+
+  public getExpenses(): void {
+    this.http.get<Expense[]>(this.expensesListUrl)
+      .subscribe(
+        data => {
+          this.expenses = data;
+        }
+      );
+    this.sendUpdate("init");
+  }
+
+  public addExpenseLocal(expense: any): void {
+    this.expenses.push( {
+      id: expense.id,
+      amount: expense.amount,
+      label: expense.label,
+      budgetId : expense.budgetId ,
+      date: expense.date,
+      start: expense.start,
+      end: expense.end,
+      repetition: expense.repetition,
+    })
   }
 
   public addPunctualExpense(expense: {}): void {
-    this.http.post<{}>(this.addPunctualExpenseUrl, expense).subscribe(expense => console.log("Punctual expense ok"));
+    this.http.post<{}>(this.addPunctualExpenseUrl, expense)
+      .subscribe(_ => this.addExpenseLocal(expense));
   }
 
   public addRecurrentExpense(expense: {}): void {
-    this.http.post<{}>(this.addRecurrentExpenseUrl, expense).subscribe(expense => console.log("Recurrent expense ok"));
+    this.http.post<{}>(this.addRecurrentExpenseUrl, expense)
+      .subscribe(_ => this.addExpenseLocal(expense));
   }
 
   public addSpreadExpense(expense: {}): void {
-    this.http.post<{}>(this.addSpreadExpenseUrl, expense).subscribe(expense => console.log("Spread expense ok"));
+    this.http.post<{}>(this.addSpreadExpenseUrl, expense)
+      .subscribe(_ => this.addExpenseLocal(expense));
   }
 
   public editExpense(expense: {}): void {
@@ -55,8 +87,17 @@ export class ExpensesService {
     this.http.post<{}>(this.editExpenseUrl, expense);
   }
 
+  public rmExpenseLocal(expenseid: number) {
+    let newExpenses = [];
+    for (let i = 0; i < this.expenses.length; i++) {
+      if (this.expenses[i].id !== expenseid) newExpenses.push(this.expenses[i]);
+    }
+    this.expenses = newExpenses;
+  }
+
   public deleteExpense(expenseid: number): void {
-    console.log(expenseid);
-    this.http.post<{}>(this.deleteExpenseUrl, {id: expenseid}).subscribe(expense => console.log("Expense rm"));
+    this.rmExpenseLocal(expenseid);
+    this.http.post<{}>(this.deleteExpenseUrl, {id: expenseid})
+      .subscribe();
   }
 }
