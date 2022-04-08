@@ -6,7 +6,7 @@
       <a routerLinkActive="active" routerLink="/gestion">Gestion</a>
     </div>
     <div id="right-menu">
-      <a routerLinkActive="active" routerLink="/utilisateur">[Username]</a>
+      <a routerLinkActive="active" routerLink="/utilisateur">{{username}}</a>
       <a routerLink="/deconnexion" (click)="logout()">Déconnexion</a>
     </div>
   </mat-toolbar-row>
