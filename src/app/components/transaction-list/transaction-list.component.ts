@@ -25,7 +25,8 @@ export interface Expenses {
   styleUrls: ['./transaction-list.component.css']
 })
 export class TransactionListComponent implements OnInit {
-  private subscriptionName: Subscription;
+  private subscriptionExpenseListB: Subscription;
+  private subscriptionExpenseListE: Subscription;
 
   @ViewChild(TransactionEditComponent) transactionEditComponent: TransactionEditComponent | undefined;
 
@@ -33,18 +34,28 @@ export class TransactionListComponent implements OnInit {
   displayedColumns: string[] = ['label', 'amount', 'budget', 'date', 'start', 'end', 'type', 'repetition', 'actions'];
   clickedRows = new Set<Expenses>();
 
-  @Input() budgets: any[] = [];
+  budgets: any[] = [];
   expenses: any[] = [];
 
   editT = false;
   transactionId = -1;
 
   ngOnInit(): void {
+    this.budgets = this.budgetApi.budgets;
     this.expenses = this.expensesApi.expenses;
   }
 
-  constructor(private expensesApi: ExpensesService) {
-    this.subscriptionName= this.expensesApi.getUpdate()
+  constructor(
+    private budgetApi: BudgetService,
+    private expensesApi: ExpensesService
+  ) {
+    this.subscriptionExpenseListB= this.budgetApi.getUpdate()
+      .subscribe((_) => {
+        this.budgets = this.budgetApi.budgets;
+        this.ngOnChanges();
+      });
+
+    this.subscriptionExpenseListE= this.expensesApi.getUpdate()
       .subscribe((_) => {
         this.expenses = this.expensesApi.expenses;
         this.ngOnChanges();
@@ -52,7 +63,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   ngOnChanges(): void {
-    this.expensesList = this.expenses;
+    this.expenses.forEach(val => this.expensesList.push(Object.assign({}, val)));
     for (let i = 0; i < this.expensesList.length; i++) {
       this.expensesList[i].budget = this.getBudget(this.expensesList[i].budgetId);
       if (this.expensesList[i].date == undefined) this.expensesList[i].date = "--";

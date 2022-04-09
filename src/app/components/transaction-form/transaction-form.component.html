@@ -16,9 +16,9 @@
     <div id="formFrequency">
       <label>Fréquence * :</label>
       <mat-radio-group required [formControl]="freqValue">
-        <mat-radio-button value="ponctuel">Ponctuel</mat-radio-button>
-        <mat-radio-button value="recurrent">Récurrent</mat-radio-button>
-        <mat-radio-button value="etale">Etalé</mat-radio-button>
+        <mat-radio-button value="PUNCTUAL">Ponctuel</mat-radio-button>
+        <mat-radio-button value="RECURRENT">Récurrent</mat-radio-button>
+        <mat-radio-button value="SPREAD">Etalé</mat-radio-button>
       </mat-radio-group>
     </div>
     <mat-form-field *ngIf="typeValue.value == 'depense' || typeValue.value == 'apport'"
@@ -43,22 +43,22 @@
       </select>
     </mat-form-field>
     <mat-form-field appearance="fill"
-                    *ngIf="freqValue.value == 'ponctuel'">
+                    *ngIf="freqValue.value == 'PUNCTUAL'">
       <mat-label>Date</mat-label>
       <input matInput required type="date" [formControl]="dateValue" [valueAsDate]="currentDate" >
     </mat-form-field>
     <mat-form-field appearance="fill"
-                    *ngIf="freqValue.value == 'recurrent' || freqValue.value == 'etale'">
+                    *ngIf="freqValue.value == 'RECURRENT' || freqValue.value == 'SPREAD'">
       <mat-label>Premier virement</mat-label>
       <input matInput required type="date" [formControl]="dateFirstValue" [valueAsDate]="currentDate" >
     </mat-form-field>
     <mat-form-field appearance="fill"
-                    *ngIf="freqValue.value == 'etale'">
+                    *ngIf="freqValue.value == 'SPREAD'">
       <mat-label>Dernier virement</mat-label>
       <input matInput required type="date" [formControl]="dateLastValue">
     </mat-form-field>
     <mat-form-field appearance="fill"
-                    *ngIf="freqValue.value == 'recurrent'">
+                    *ngIf="freqValue.value == 'RECURRENT'">
       <mat-label>Répétition</mat-label>
       <select matNativeControl required [formControl]="repetitionValue">
         <option label="--"></option>
@@ -74,7 +74,7 @@
   </form>
   <mat-card-actions>
     <button [disabled]="((typeValue.value != 'depense' && typeValue.value != 'apport') ||
-                         (freqValue.value != 'ponctuel' && freqValue.value != 'recurrent' && freqValue.value != 'etale'))"
+                         (freqValue.value != 'PUNCTUAL' && freqValue.value != 'RECURRENT' && freqValue.value != 'SPREAD'))"
             mat-raised-button type="submit" id="submitForm" form="formAdd" color="primary">Enregistrer</button> <!-- mat-raised-button -->
   </mat-card-actions>
 </mat-card>

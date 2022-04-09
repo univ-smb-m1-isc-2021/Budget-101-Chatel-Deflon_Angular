@@ -9,15 +9,15 @@ import {RegisterComponent} from "./components/register/register.component";
 const routes: Routes = [
   {
     path: '',
-    component: HomepageComponent,
+    component: HomepageComponent
   },
   {
     path: 'gestion',
-    component: ManagingDataComponent,
+    component: ManagingDataComponent
   },
   {
     path: 'utilisateur',
-    component: UserSettingsComponent,
+    component: UserSettingsComponent
   },
   {
     path: 'connexion',

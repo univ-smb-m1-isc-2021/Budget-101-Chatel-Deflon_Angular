@@ -54,11 +54,13 @@ export class BudgetEditComponent implements OnInit, OnChanges {
       let budget = {
         id : this.data.id,
         name: this.labelValue.value,
+        amount: this.amountValue.value,
       };
 
       // TODO : envoyer le nouveau budget au back
       this.budgetApi.editBudget(budget);
       // TODO : update le tableau au front
+      this.budgetApi.sendUpdate("edit Budget");
     }
   }
 }

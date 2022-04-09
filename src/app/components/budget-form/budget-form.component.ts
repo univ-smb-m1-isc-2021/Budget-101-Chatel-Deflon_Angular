@@ -41,5 +41,6 @@ export class BudgetFormComponent implements OnInit {
     // TODO : envoyer le nouveau budget au back
     this.budgetApi.addBudget(budget);
     // TODO : update le tableau au front
+    this.budgetApi.sendUpdate("add Budget");
   }
 }

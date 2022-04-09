@@ -22,32 +22,13 @@ export interface Expenses {
   styleUrls: ['./managing-data.component.css']
 })
 export class ManagingDataComponent implements OnInit {
-  public budgets: Budget[] = [];
-  public expenses: any[] = [];
-
   constructor(
     private cdr:ChangeDetectorRef,
-    private budgetApi: BudgetService,
-    private expensesApi: ExpensesService,
     private authService: AuthService,
     private router: Router
   ) {
     if (!authService.isAuthenticated()) {
       this.router.navigate(["/connexion"]);
-    } else {
-      budgetApi.getBudgets().subscribe(
-        budgets => {
-          this.budgets = budgets;
-        }
-      );
-
-      this.expensesApi.getExpenses();
-      this.expenses = this.expensesApi.expenses;
-      // expensesApi.getExpenses().subscribe(
-      //   expenses => {
-      //     this.expenses = expenses;
-      //   }
-      // );
     }
   }
 

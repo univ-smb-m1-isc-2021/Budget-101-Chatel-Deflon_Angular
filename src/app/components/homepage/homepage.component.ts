@@ -9,14 +9,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-  public hello: string[] = [];
-  public budgets: any[] = [];
-  public expenses: any[] = [];
-
   constructor(
-    // private apiService: ApiService,
-    private budgetApi: BudgetService,
-    private expensesApi: ExpensesService,
     private authService: AuthService,
     private router: Router
   ) {
@@ -26,23 +19,5 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.apiService.getHello().subscribe(data => {
-    //   this.hello = data;
-    // })
-
-    this.budgetApi.getBudgets().subscribe(
-      budgets => {
-        this.budgets = budgets;
-      }
-    );
-
-    this.expensesApi.getExpenses();
-    this.expenses = this.expensesApi.expenses;
   }
-
-
-  // removeTodos(): void {
-  //   this.todos = [];
-  // }
-
 }

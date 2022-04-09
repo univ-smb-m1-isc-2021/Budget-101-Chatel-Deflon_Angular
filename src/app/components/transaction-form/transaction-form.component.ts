@@ -1,16 +1,17 @@
-import {Component, OnInit, AfterViewInit, Input} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {formatDate} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {ExpensesService} from "../../services/expenses.service";
+import {Subscription} from "rxjs";
+import {BudgetService} from "../../services/budget.service";
 
 @Component({
   selector: 'app-transaction-form',
   templateUrl: './transaction-form.component.html',
   styleUrls: ['./transaction-form.component.css'],
 })
-export class TransactionFormComponent implements OnInit, AfterViewInit {
-  @Input() budgets: any[] = [];
-  expenses: any[] = [];
+export class TransactionFormComponent implements OnInit {
+  budgets: any[] = [];
+  private subscriptionExpenseForm: Subscription;
 
   currentDate = new Date();
 
@@ -25,7 +26,10 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   dateLastValue = new FormControl(this.currentDate); // Date de dernier virement
   repetitionValue = new FormControl(''); // Fréquence de répétition
 
-  constructor(fb: FormBuilder, private expensesApi: ExpensesService) {
+  constructor(
+    fb: FormBuilder,
+    private budgetApi: BudgetService,
+    private expensesApi: ExpensesService) {
     console.log(this.currentDate);
     this.options = fb.group({
       typeValue: this.typeValue,
@@ -39,12 +43,15 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
       repetitionValue: this.repetitionValue
     });
 
+    this.subscriptionExpenseForm= this.budgetApi.getUpdate()
+      .subscribe((_) => {
+        this.budgets = this.budgetApi.budgets;
+      });
+
   }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
+    this.budgets = this.budgetApi.budgets;
   }
 
   // Ajout une nouvelle dépense

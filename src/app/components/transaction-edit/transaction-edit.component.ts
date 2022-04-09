@@ -1,5 +1,7 @@
 import {AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {BudgetService} from "../../services/budget.service";
+import {Subscription} from "rxjs";
 
 // TODO : retirer les id après avoir fini le debug
 export interface Transaction {
@@ -18,9 +20,11 @@ export interface Transaction {
   styleUrls: ['./transaction-edit.component.css']
 })
 export class TransactionEditComponent implements OnInit, OnChanges {
-  @Input() budgetsT: any[] | undefined;
   @Input() dataT: Transaction | undefined;
   @Input() updateT: boolean = false;
+  budgetsT: any[] = [];
+
+  private subscriptionExpenseEdit: Subscription;
 
   options: FormGroup;
   label = new FormControl(''); // Nom de la dépense
@@ -30,7 +34,10 @@ export class TransactionEditComponent implements OnInit, OnChanges {
   budget = new FormControl(''); // Budget lié à la dépense
   frequency = new FormControl(''); // Fréquence de la dépense
 
-  constructor(fb: FormBuilder) {
+  constructor(
+    fb: FormBuilder,
+    private budgetApi: BudgetService
+  ) {
     this.options = fb.group({
       label: this.label,
       amount: this.amount,
@@ -39,12 +46,20 @@ export class TransactionEditComponent implements OnInit, OnChanges {
       budget: this.budget,
       frequency: this.frequency
     });
+
+    this.subscriptionExpenseEdit = this.budgetApi.getUpdate()
+      .subscribe((_) => {
+        this.budgetsT = this.budgetApi.budgets;
+        this.ngOnChanges();
+      });
   }
 
   ngOnInit(): void {
+    this.budgetsT = this.budgetApi.budgets;
   }
 
   ngOnChanges(): void {
+    this.budgetsT = this.budgetApi.budgets;
     if (this.dataT != undefined && this.updateT) {
       this.label = new FormControl(this.dataT.name);
       this.amount = new FormControl(this.dataT.amount);
