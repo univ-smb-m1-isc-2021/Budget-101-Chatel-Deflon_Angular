@@ -1,11 +1,10 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {formatDate} from "@angular/common";
-import {Observable, Subject, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {BudgetEditComponent} from "../budget-edit/budget-edit.component";
 import {BudgetService} from "../../services/budget.service";
 import {Expense, ExpensesService} from "../../services/expenses.service";
 
-// TODO : retirer les id après avoir fini le debug
 export interface Budget {
   id: number;
   name: string;
@@ -24,10 +23,10 @@ export class BudgetListComponent implements OnInit {
   private subscriptionBudgetListB: Subscription;
   private subscriptionBudgetListE: Subscription;
 
-  currentDate = formatDate(new Date(), "yyyy-MM-dd", "en");
-  currentYear = this.currentDate.substring(0, 4);
+  // Récupère l'année courante
+  currentYear = formatDate(new Date(), "yyyy-MM-dd", "en").substring(0, 4);
 
-  budgetsList: Budget[] = [];
+  budgetsList: Budget[] = []; // Liste des budgets du composant
   displayedColumns: string[] = ['name', 'amount', 'lastexpense', 'actions'];
   clickedRows = new Set<Budget>();
 
@@ -41,11 +40,13 @@ export class BudgetListComponent implements OnInit {
     private budgetApi: BudgetService,
     private expensesApi: ExpensesService
   ) {
+    // Recharge le composant si la liste des budgets est mise à jour
     this.subscriptionBudgetListB = this.budgetApi.getUpdate()
       .subscribe((_) => {
         this.budgets = this.budgetApi.budgets;
         this.ngOnChanges();
       });
+    // Recharge le composant si la liste des dépenses est mise à jour
     this.subscriptionBudgetListE = this.expensesApi.getUpdate()
       .subscribe((_) => {
         this.expenses = this.expensesApi.expenses;
@@ -53,35 +54,37 @@ export class BudgetListComponent implements OnInit {
       });
   }
 
+  // Initialise les listes
   ngOnInit(): void {
     this.budgets = this.budgetApi.budgets;
     this.expenses = this.expensesApi.expenses;
-
     this.budgets.forEach(val => this.budgetsList.push(Object.assign({}, val)));
   }
 
   ngOnChanges(): void {
     this.budgetsList = [];
     this.budgets.forEach(val => this.budgetsList.push(Object.assign({}, val)));
-    // Set the missing properties of budgets : amount & lastexpense
+    // Set les informations "amount" et "last expense" de chaque budget
     for (let i = 0; i < this.budgetsList.length; i++) {
-      this.budgetsList[i].amount = 0; // Set amount
-      this.budgetsList[i].lastexpense = "--"; // Set lastexpense
+      this.budgetsList[i].amount = 0;
+      this.budgetsList[i].lastexpense = "--";
       for (let j = 0; j < this.expenses.length; j++) {
-        // Set amount
         if (this.budgetsList[i].id == this.expenses[j].budgetId) {
-          this.budgetsList[i].lastexpense = this.expenses[j].label; // Dernière dépense rentrée dans l'app
-          this.budgetsList[i].amount += this.calculateExpense(this.expenses[j]);
+          this.budgetsList[i].lastexpense = this.expenses[j].label; // Récupère le nom de la dépense
+          this.budgetsList[i].amount += this.calculateExpense(this.expenses[j]); // Calcul le montant annuel du budget
         }
       }
     }
   }
 
+  // FONCTIONS POUR CALCULER LE MONTANT DES DEPENSES D'UN BUDGET
+  // Retourne si une année est bissextile ou non
   leap(year: number) {
     if (year % 100 == 0) year = year / 100;
     return year % 4 == 0;
   }
 
+  // Calcule le montant d'une dépense récurrente sur une année
   calculateRecurrentExpenseAnnual(expense: Expense, month: number) {
     let value = 0;
     switch (expense.repetition) {
@@ -128,6 +131,7 @@ export class BudgetListComponent implements OnInit {
               limit = 28;
             }
           }
+          // Calcul du nombre de semaines dans le mois
           while (day < limit) {
             week += 1;
             day += 7;
@@ -160,13 +164,14 @@ export class BudgetListComponent implements OnInit {
     return value;
   }
 
+  // Calcule le nombre de mois sur lequel s'étend une dépense étalée
   calculateTotalMonthSpreadExpense(start: string, end: string) {
-    let startYear = parseInt(start.substring(0, 4));
-    let startMonth = parseInt(start.substring(5, 7));
-    let lastMonthY1 = 13; // On part de 13 pour ne pas fausser les calculs, car 12 mois séparent janvier de décembre et non 11
-    let endYear = parseInt(end.substring(0, 4));
-    let endMonth = parseInt(end.substring(5, 7));
-    let firstMonthLY = 1;
+    let startYear = parseInt(start.substring(0, 4)); // première année
+    let startMonth = parseInt(start.substring(5, 7)); // premier mois
+    let lastMonthY1 = 13; // On part de 13 pour ne pas fausser les calculs car (13-1) mois séparent janvier de décembre
+    let endYear = parseInt(end.substring(0, 4)); // dernière année
+    let endMonth = parseInt(end.substring(5, 7)); // dernier mois
+    let firstMonthLY = 1; // premier mois de la dernière année
 
     // + 1 an pour compenser les mois restants qui composent l'année restante: startMonth à lastMonthY1 et firstMonthLY à endMonth
     let monthBetweenYears = ((endYear) - (startYear + 1)) * 12;
@@ -180,11 +185,13 @@ export class BudgetListComponent implements OnInit {
     return totalMonths;
   }
 
+  // Calcule le montant d'une dépense étalée sur une année
   calculateSpreadExpenseAnnual(expense: Expense) {
     let startYear = parseInt(expense.start.substring(0, 4));
     let endYear = parseInt(expense.end.substring(0, 4));
+    // Si l'année de début est différente de l'année de fin
     if (startYear !== endYear) {
-      let totalMonths = this.calculateTotalMonthSpreadExpense(expense.start, expense.end); //expense.end
+      let totalMonths = this.calculateTotalMonthSpreadExpense(expense.start, expense.end);
       let spreadAmount = Math.round(expense.amount / totalMonths * 10) / 10;
       let startMonth = parseInt(expense.start.substring(5, 7));
       let amount = 0;
@@ -192,11 +199,13 @@ export class BudgetListComponent implements OnInit {
         amount += spreadAmount;
       }
       return amount;
-    } else {
+    } // Sinon on retourne le montant de la dépense
+    else {
       return expense.amount;
     }
   }
 
+  // Calcule le montant total d'une dépense sur un an
   calculateExpense(expense: Expense): number {
     if (expense.type == "SPREAD") {
       let year = expense.start.substring(0, 4);
@@ -222,6 +231,7 @@ export class BudgetListComponent implements OnInit {
     }
   }
 
+  // Génère le composant pour modifier un budget suite au clic sur le bouton "Modifier"
   editBudget(id: number) {
     this.editRow = true;
     this.currentId = id;
@@ -234,6 +244,7 @@ export class BudgetListComponent implements OnInit {
     }
   }
 
+  // Récupère le budget de l'id donné
   getElement(id: number): any {
     for (let i = 0; i < this.budgets.length; i++) {
       if (this.budgets[i].id == id) {
@@ -242,10 +253,12 @@ export class BudgetListComponent implements OnInit {
     }
   }
 
+  // Supprime un budget suite au clic sur le bouton "Supprimer"
   deleteBudget(id: number) {
+    // Supprime toutes les dépenses associées au budget
     for (let i = 0; i < this.expensesApi.expenses.length; i++) {
       if (this.expensesApi.expenses[i].budgetId == id) this.expensesApi.deleteExpense(this.expensesApi.expenses[i].id);
     }
-    this.budgetApi.deleteBudget(id);
+    this.budgetApi.deleteBudget(id); // Supprime le budget via le service budget
   }
 }

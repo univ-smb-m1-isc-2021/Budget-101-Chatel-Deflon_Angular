@@ -1,14 +1,14 @@
 <mat-card>
-  <h1>Dashboard avec graphs :</h1>
+  <h1>Tableau de bord :</h1>
 
-  <!--The content below is only a placeholder and can be replaced.-->
-  <!-- TODO : if all charts at 0 or no budgets add warning message: "Aucun budget/dépense, veuillez en créer un/e pour commencer" -->
   <div class="dashboard-charts">
-    <plotly-plot *ngIf="graphAnnual.data !== null" [data]="graphAnnual.data" [layout]="graphAnnual.layout"></plotly-plot>
+    <plotly-plot *ngIf="graphAnnual.data !== null" [data]="graphAnnual.data"
+                 [layout]="graphAnnual.layout"></plotly-plot>
   </div>
 
   <div class="dashboard-charts">
-    <plotly-plot *ngIf="graphGlobal.data !== null" [data]="graphGlobal.data" [layout]="graphGlobal.layout"></plotly-plot>
+    <plotly-plot *ngIf="graphGlobal.data !== null" [data]="graphGlobal.data"
+                 [layout]="graphGlobal.layout"></plotly-plot>
   </div>
 
 </mat-card>

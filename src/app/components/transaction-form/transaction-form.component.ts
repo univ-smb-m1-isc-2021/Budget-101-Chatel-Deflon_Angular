@@ -16,9 +16,9 @@ export class TransactionFormComponent implements OnInit {
 
   options: FormGroup;
   typeValue = new FormControl(''); // Type : dépense ou apport
-  freqValue = new FormControl(''); // Fréquence : ponctuel, mensuel ou étendu
+  freqValue = new FormControl(''); // Fréquence : ponctuelle, mensuelle ou étalée
   labelValue = new FormControl(''); // Nom de la dépense
-  amountValue = new FormControl(''); // Montant en €
+  amountValue = new FormControl(''); // Montant en euros
   budgetValue = new FormControl(''); // Budget correspondant à la dépense
   dateValue = new FormControl(formatDate(new Date(), "yyyy-MM-dd", "en")); // Date de virement ponctuel
   dateFirstValue = new FormControl(formatDate(new Date(), "yyyy-MM-dd", "en")); // Date de premier virement
@@ -29,6 +29,7 @@ export class TransactionFormComponent implements OnInit {
     fb: FormBuilder,
     private budgetApi: BudgetService,
     private expensesApi: ExpensesService) {
+    // Initialisation des champs du formulaire
     this.options = fb.group({
       typeValue: this.typeValue,
       freqValue: this.freqValue,
@@ -41,25 +42,26 @@ export class TransactionFormComponent implements OnInit {
       repetitionValue: this.repetitionValue
     });
 
-    this.subscriptionExpenseForm= this.budgetApi.getUpdate()
+    // Recharge le composant si la liste des budgets est mise à jour
+    this.subscriptionExpenseForm = this.budgetApi.getUpdate()
       .subscribe((_) => {
         this.budgets = this.budgetApi.budgets;
       });
-
   }
 
+  // Initialisation de la liste des budgets du composant
   ngOnInit(): void {
     this.budgets = this.budgetApi.budgets;
   }
 
   // Ajout une nouvelle dépense
   addNewExpense() {
-
     let amount = parseFloat(this.amountValue.value);
     if (this.typeValue.value == 'depense') {
-      amount *= -1;
+      amount *= -1; // Le montant est négatif s'il s'agit d'une dépense
     }
 
+    // Ajout d'une dépense ponctuelle
     if (this.freqValue.value == 'PUNCTUAL') {
       let punctualExpense = {
         label: this.labelValue.value,
@@ -68,7 +70,8 @@ export class TransactionFormComponent implements OnInit {
         date: this.dateValue.value
       }
       this.expensesApi.addPunctualExpense(punctualExpense);
-    } else if (this.freqValue.value == 'RECURRENT') {
+    } // Ajout d'une dépense récurrente
+    else if (this.freqValue.value == 'RECURRENT') {
       let recurrentExpense = {
         label: this.labelValue.value,
         amount: amount,
@@ -77,7 +80,8 @@ export class TransactionFormComponent implements OnInit {
         repetition: this.repetitionValue.value,
       }
       this.expensesApi.addRecurrentExpense(recurrentExpense);
-    } else {
+    } // Ajout d'une dépense étalée
+    else {
       let spreadExpense = {
         label: this.labelValue.value,
         amount: amount,
@@ -89,6 +93,7 @@ export class TransactionFormComponent implements OnInit {
     }
   }
 
+  // Récupération d'un budget via son id
   getBudgetId(name: string): number {
     for (let i = 0; i < this.budgets.length; i++) {
       if (this.budgets[i].name == name) {

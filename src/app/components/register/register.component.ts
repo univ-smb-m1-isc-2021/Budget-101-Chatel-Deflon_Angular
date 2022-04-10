@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
@@ -27,6 +27,7 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthService
   ) {
+    // Initialisation des paramètres du formulaire
     this.options = fb.group({
       emailValue: this.emailValue,
       usernameValue: this.usernameValue,
@@ -34,8 +35,10 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
+  // Soumission du formulaire d'inscription
   onSubmit() {
     this.invalidRegister = false;
     this.email = this.emailValue.value;
@@ -45,18 +48,16 @@ export class RegisterComponent implements OnInit {
     this.handleRegister();
   }
 
+  // Gestion de l'inscription d'un utilisateur
   handleRegister() {
-    console.log("register");
     this.authenticationService
       .register(this.email, this.username, this.password)
       .subscribe(
         result => {
-          console.log(result);
-          console.log("INSCRIPTION REUSSIE");
+          // Si l'inscription est réussite, l'utilisateur est redirigé vers la page de connexion
           this.router.navigate(["/connexion"]);
         },
         error => {
-          // console.log("CONNEXION ECHOUEE")
           this.invalidRegister = true;
         }
       );

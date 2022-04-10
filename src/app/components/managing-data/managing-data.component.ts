@@ -1,6 +1,4 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {BudgetService} from "../../services/budget.service";
-import {ExpensesService} from "../../services/expenses.service";
 import {AuthService} from "../../auth/auth.service";
 import {Router} from "@angular/router";
 
@@ -13,7 +11,7 @@ export interface Expenses {
   id: number;
   amount: number;
   label: string;
-  budgetid : number;
+  budgetid: number;
 }
 
 @Component({
@@ -23,10 +21,11 @@ export interface Expenses {
 })
 export class ManagingDataComponent implements OnInit {
   constructor(
-    private cdr:ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     private authService: AuthService,
     private router: Router
   ) {
+    // Si la personne n'est pas authentifiée, elle est redirigée vers la page de connexion
     if (!authService.isAuthenticated()) {
       this.router.navigate(["/connexion"]);
     }

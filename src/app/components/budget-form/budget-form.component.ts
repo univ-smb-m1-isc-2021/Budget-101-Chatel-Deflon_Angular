@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {ExpensesService} from "../../services/expenses.service";
 import {BudgetService} from "../../services/budget.service";
-import {formatDate} from "@angular/common";
 import {Subscription} from "rxjs";
 
 @Component({
@@ -18,14 +16,14 @@ export class BudgetFormComponent implements OnInit {
 
   constructor(
     fb: FormBuilder,
-    private budgetApi: BudgetService,
-    private expensesApi: ExpensesService
+    private budgetApi: BudgetService
   ) {
     this.options = fb.group({
       labelValue: this.labelValue,
       amountValue: this.amountValue
     });
 
+    // Recharge le composant en cas d'update de la liste de budgets
     this.subscriptionBudgetForm = this.budgetApi.getUpdate()
       .subscribe((_) => {
         this.ngOnChanges();
@@ -45,8 +43,10 @@ export class BudgetFormComponent implements OnInit {
 
     let amount = this.amountValue.value;
     if (amount != '') {
+      // Ajout d'un budget avec un montant de départ
       this.budgetApi.addBudgetWithValue(budget, this.amountValue.value);
     } else {
+      // Ajout d'un budget sans montant de départ
       this.budgetApi.addBudget(budget);
     }
   }

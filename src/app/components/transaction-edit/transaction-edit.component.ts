@@ -1,11 +1,10 @@
-import {AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {BudgetService} from "../../services/budget.service";
 import {Subscription} from "rxjs";
 import {ExpensesService} from "../../services/expenses.service";
 import {formatDate} from "@angular/common";
 
-// TODO : retirer les id après avoir fini le debug
 export interface Transaction {
   id: number,
   userId: number,
@@ -26,6 +25,7 @@ export interface Transaction {
   styleUrls: ['./transaction-edit.component.css']
 })
 export class TransactionEditComponent implements OnInit, OnChanges {
+  // Transaction à modifier
   @Input() dataT: Transaction = {
     id: 0,
     amount: 0,
@@ -48,7 +48,7 @@ export class TransactionEditComponent implements OnInit, OnChanges {
   label = new FormControl(''); // Nom de la dépense
   amount = new FormControl(''); // Montant de la dépense
   date = new FormControl(formatDate(new Date(), "yyyy-MM-dd", "en")); // Date de la dépense
-  enddate = new FormControl(formatDate(new Date(), "yyyy-MM-dd", "en")); // Date de fin de la dépense (si étalé)
+  enddate = new FormControl(formatDate(new Date(), "yyyy-MM-dd", "en")); // Date de fin de la dépense (étalée)
   budget = new FormControl(''); // Budget lié à la dépense
   frequency = new FormControl(''); // Fréquence de la dépense
 
@@ -57,6 +57,7 @@ export class TransactionEditComponent implements OnInit, OnChanges {
     private budgetApi: BudgetService,
     private expensesApi: ExpensesService,
   ) {
+    // Initialisation des champs du formulaire
     this.options = fb.group({
       label: this.label,
       amount: this.amount,
@@ -66,6 +67,7 @@ export class TransactionEditComponent implements OnInit, OnChanges {
       frequency: this.frequency
     });
 
+    // Recharge le composant si la liste des budgets est mise à jour
     this.subscriptionExpenseEdit = this.budgetApi.getUpdate()
       .subscribe((_) => {
         this.budgetsT = this.budgetApi.budgets;
@@ -73,6 +75,7 @@ export class TransactionEditComponent implements OnInit, OnChanges {
       });
   }
 
+  // Initialisation des champs du formulaire
   ngOnInit(): void {
     this.budgetsT = this.budgetApi.budgets;
     if (this.dataT != undefined) {
@@ -89,6 +92,7 @@ export class TransactionEditComponent implements OnInit, OnChanges {
     }
   }
 
+  // Mise à jour des champs du formulaire
   ngOnChanges(): void {
     this.budgetsT = this.budgetApi.budgets;
     if (this.dataT != undefined && this.updateT) {
@@ -102,7 +106,7 @@ export class TransactionEditComponent implements OnInit, OnChanges {
     }
   }
 
-  // Modification d'une transaction
+  // Modification d'une dépense
   editTransaction(): void {
     this.dataT.label = this.label.value;
     this.dataT.amount = this.amount.value;
@@ -111,20 +115,21 @@ export class TransactionEditComponent implements OnInit, OnChanges {
 
     if (this.dataT.amount == null) this.dataT.amount = 0.0;
 
+    // Dépense ponctuelle
     if (this.dataT.type == "PUNCTUAL") {
       this.dataT.date = this.date.value;
       this.expensesApi.editPunctualExpense(this.dataT);
-    } else if (this.dataT.type == "RECURRENT") {
+    } // Dépense récurrente
+    else if (this.dataT.type == "RECURRENT") {
       this.dataT.start = this.date.value;
       this.dataT.repetition = this.frequency.value;
       this.expensesApi.editRecurrentExpense(this.dataT);
-    } else {
+    } // Dépense étalée
+    else {
       this.dataT.start = this.date.value;
       this.dataT.end = this.enddate.value;
       this.expensesApi.editSpreadExpense(this.dataT);
     }
-
-
   }
 }
 

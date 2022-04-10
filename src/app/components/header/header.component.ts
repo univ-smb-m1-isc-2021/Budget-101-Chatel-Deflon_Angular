@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth/auth.service';
-import { Router } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../../auth/auth.service';
+import {Router} from '@angular/router';
+import {UserService} from 'src/app/services/user.service';
 import {ExpensesService} from "../../services/expenses.service";
 import {Subscription} from "rxjs";
 import {BudgetService} from "../../services/budget.service";
@@ -24,15 +24,15 @@ export class HeaderComponent implements OnInit {
   ) {
     this.loadData();
     this.username = this.userService.user.username;
+    // Recharge le composant si les informations de l'utilisateur courant sont mises à jour
     this.subscriptionUser = this.userService.getUpdate()
       .subscribe((_) => {
         this.username = this.userService.user.username;
         this.ngOnChange();
       });
-
-
   }
 
+  // Premier appel aux API pour récupérer les listes des dépenses, des budgets et les informations de l'utilisateur courant
   loadData() {
     this.userService.getUser();
     this.expensesApi.getExpenses();
@@ -47,6 +47,7 @@ export class HeaderComponent implements OnInit {
     this.username = this.userService.user.username;
   }
 
+  // Déconnexion de l'utilisateur
   logout(): void {
     this.auth.logout();
     this.router.navigate(['/connexion']);

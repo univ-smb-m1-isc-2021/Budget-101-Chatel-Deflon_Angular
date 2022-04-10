@@ -1,10 +1,9 @@
-import {AfterViewInit, Component, Input, OnChanges, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {BudgetService} from "../../services/budget.service";
 import {formatDate} from "@angular/common";
 import {ExpensesService} from "../../services/expenses.service";
 
-// TODO : retirer les id après avoir fini le debug
 export interface Budget {
   id: number;
   name: string;
@@ -30,6 +29,7 @@ export class BudgetEditComponent implements OnInit, OnChanges {
     private budgetApi: BudgetService,
     private expensesApi: ExpensesService
   ) {
+    // Paramétrage du formulaire de modification de budget
     this.options = fb.group({
       labelValue: this.labelValue,
       amountValue: this.amountValue
@@ -53,6 +53,7 @@ export class BudgetEditComponent implements OnInit, OnChanges {
   // Modification d'un budget
   editBudget(): void {
     if (this.data != undefined) {
+      // Si une valeur est donnée au budget, une dépense est ajoutée pour correspondre à la valeur
       if (this.amountValue.value != '') {
         this.expensesApi.addPunctualExpense({
           label: 'Montant mis à jour ' + this.labelValue.value,
@@ -63,6 +64,7 @@ export class BudgetEditComponent implements OnInit, OnChanges {
         });
       }
 
+      // Ajout du nouveau budget
       let budget = {
         id : this.data.id,
         name: this.labelValue.value,
@@ -70,6 +72,7 @@ export class BudgetEditComponent implements OnInit, OnChanges {
         userId: this.data.userId
       };
 
+      // Call du service en lien avec l'API
       this.budgetApi.editBudget(budget);
     }
   }

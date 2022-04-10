@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BudgetService} from "../../services/budget.service";
 import {formatDate} from "@angular/common";
 import {ExpensesService} from "../../services/expenses.service";
@@ -39,10 +39,12 @@ export class ChartsComponent implements OnInit {
   colors = ['red', 'blue', 'green', 'purple', 'brown', 'pink', 'cyan', 'grey', 'black', 'yellow'];
   public months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
+  // Paramétrage des graphiques annuel et global
   public graphAnnual = {
     data: [],
     layout: {width: "100%", height: "100%", title: 'Evolution des budgets sur l\'année'}
   };
+
   public graphGlobal = {
     data: [],
     layout: {
@@ -58,6 +60,7 @@ export class ChartsComponent implements OnInit {
     public expensesApi: ExpensesService
   ) {
     this.budgets = this.budgetApi.budgets;
+    // Recharge le composant si la liste des budgets est mise à jour
     this.subscriptionChart = this.budgetApi.getUpdate()
       .subscribe((_) => {
         this.budgets = this.budgetApi.budgets;
@@ -65,6 +68,7 @@ export class ChartsComponent implements OnInit {
       });
 
     this.expenses = this.expensesApi.expenses;
+    // Recharge le composant si la liste des dépenses est mise à jour
     this.subscriptionName = this.expensesApi.getUpdate()
       .subscribe((_) => {
         this.expenses = this.expensesApi.expenses;
@@ -72,6 +76,7 @@ export class ChartsComponent implements OnInit {
       });
   }
 
+  // Initialisation des chiffres des graphiques
   ngOnInit(): void {
     // @ts-ignore
     this.graphAnnual.data = this.setMonthlyData();
@@ -79,6 +84,7 @@ export class ChartsComponent implements OnInit {
     this.graphGlobal.data = this.setAnnualData();
   }
 
+  // Mise à jour des chiffres des graphiques
   ngOnChanges(): void {
     // @ts-ignore
     this.graphAnnual.data = this.setMonthlyData();
@@ -86,12 +92,14 @@ export class ChartsComponent implements OnInit {
     this.graphGlobal.data = this.setAnnualData();
   }
 
-  // FONCTIONS POUR CALCULER LA DATA DU GRAPH MENSUEL
+  // FONCTIONS POUR CALCULER LE MONTANT DES DEPENSES D'UN BUDGET (MENSUEL)
+  // Retourne si une année est bissextile ou non
   leap(year: number) {
     if (year % 100 == 0) year = year / 100;
     return year % 4 == 0;
   }
 
+  // Calcule le montant d'une dépense récurrente pour chaque mois de l'année
   calculateRecurrentExpenseMonthly(data: annualData, expense: Expense, month: number) {
     let updatedData = data;
     switch (expense.repetition) {
@@ -138,6 +146,7 @@ export class ChartsComponent implements OnInit {
               limit = 28;
             }
           }
+          // Calcul du nombre de semaines pour le mois
           while (day < limit) {
             week += 1;
             day += 7;
@@ -170,33 +179,37 @@ export class ChartsComponent implements OnInit {
     return updatedData;
   }
 
+  // Calcule le montant d'une dépense étalée pour chaque mois de l'année
   calculateSpreadExpenseMonthly(data: annualData, expense: Expense) {
     let updatedData = data;
     let startMonth = (parseInt(expense.start.substring(5, 7)) - 1);
     let endMonth = (parseInt(expense.end.substring(5, 7)) - 1);
     let startYear = parseInt(expense.start.substring(0, 4));
     let endYear = parseInt(expense.end.substring(0, 4));
+    // Si l'année de départ est différente de l'année de fin
     if (startYear !== endYear) {
       let totalMonths = this.calculateTotalMonthSpreadExpense(expense.start, expense.end);
       let spreadAmount = Math.round(expense.amount / totalMonths * 10) / 10;
       for (let i = startMonth; i <= 12; i++) {
         updatedData.y[i] += spreadAmount;
       }
-    } else {
+    } // Si l'année de départ est l'année courante
+    else {
       let spreadExpense = Math.round(expense.amount / ((endMonth + 1) - (startMonth + 1) + 1) * 10) / 10;
       for (let i = startMonth; i <= endMonth; i++) {
         updatedData.y[i] += spreadExpense;
       }
     }
-
     return updatedData;
   }
 
+  // Défini les informations mensuelles pour le graphique annuel
   setMonthlyData(): any[] {
     let currentYear = formatDate(new Date(), "yyyy-MM-DD", "en").substring(0, 4);
     let currentData: annualData;
     let result = [];
     for (let i = 0; i < this.budgets.length; i++) {
+      // Défini la base de la data du graphique
       currentData = {
         name: this.budgets[i].name,
         x: this.months,
@@ -205,6 +218,7 @@ export class ChartsComponent implements OnInit {
         mode: 'lines+points',
         marker: {color: this.colors[i % this.colors.length]}
       }
+      // Pour chaque dépense, on calcule le montant pour chaque mois (data.y)
       for (let j = 0; j < this.expenses.length; j++) {
         if (this.expenses[j].budgetId == this.budgets[i].id) {
           if (this.expenses[j].type == "RECURRENT") {
@@ -232,11 +246,11 @@ export class ChartsComponent implements OnInit {
       }
       result.push(currentData);
     }
-
     return result;
   }
 
-  // FONCTIONS POUR CALCULER LA DATA DU GRAPH ANNUEL
+  // FONCTIONS POUR CALCULER LE MONTANT DES DEPENSES D'UN BUDGET (ANNUEL)
+  // Calcule le montant d'une dépenses récurrente sur une année
   calculateRecurrentExpenseAnnual(expense: Expense, month: number) {
     let value = 0;
     switch (expense.repetition) {
@@ -283,6 +297,7 @@ export class ChartsComponent implements OnInit {
               limit = 28;
             }
           }
+          // Calcule du nombre de semaine dans le mois
           while (day < limit) {
             week += 1;
             day += 7;
@@ -315,13 +330,14 @@ export class ChartsComponent implements OnInit {
     return value;
   }
 
+  // Calcule le nombre de mois sur lequel s'étend une dépense étalée
   calculateTotalMonthSpreadExpense(start: string, end: string) {
-    let startYear = parseInt(start.substring(0, 4));
-    let startMonth = parseInt(start.substring(5, 7));
-    let lastMonthY1 = 13; // On part de 13 pour ne pas fausser les calculs, car 12 mois séparent janvier de décembre et non 11
-    let endYear = parseInt(end.substring(0, 4));
-    let endMonth = parseInt(end.substring(5, 7));
-    let firstMonthLY = 1;
+    let startYear = parseInt(start.substring(0, 4)); // première année
+    let startMonth = parseInt(start.substring(5, 7)); // premier mois
+    let lastMonthY1 = 13; // On part de 13 pour ne pas fausser les calculs car (13-1) mois séparent janvier de décembre
+    let endYear = parseInt(end.substring(0, 4)); // dernière année
+    let endMonth = parseInt(end.substring(5, 7)); // dernier mois
+    let firstMonthLY = 1; // premier mois de la dernière année
 
     // + 1 an pour compenser les mois restants qui composent l'année restante: startMonth à lastMonthY1 et firstMonthLY à endMonth
     let monthBetweenYears = ((endYear) - (startYear + 1)) * 12;
@@ -335,11 +351,13 @@ export class ChartsComponent implements OnInit {
     return totalMonths;
   }
 
+  // Calcule le montant d'une dépense étalée sur une année
   calculateSpreadExpenseAnnual(expense: Expense) {
     let startYear = parseInt(expense.start.substring(0, 4));
     let endYear = parseInt(expense.end.substring(0, 4));
+    // Si l'année de début est différente de l'année de fin
     if (startYear !== endYear) {
-      let totalMonths = this.calculateTotalMonthSpreadExpense(expense.start, expense.end); //expense.end
+      let totalMonths = this.calculateTotalMonthSpreadExpense(expense.start, expense.end);
       let spreadAmount = Math.round(expense.amount / totalMonths * 10) / 10;
       let startMonth = parseInt(expense.start.substring(5, 7));
       let amount = 0;
@@ -347,14 +365,17 @@ export class ChartsComponent implements OnInit {
         amount += spreadAmount;
       }
       return amount;
-    } else {
+    } // Sinon on retourne le montant de la dépense
+    else {
       return expense.amount;
     }
   }
 
+  // Défini les informations annuelles pour le graphique global
   setAnnualData(): any[] {
     let result: { values: number[], labels: string[], type: string } = {values: [], labels: [], type: 'pie'};
     let currentYear = formatDate(new Date(), "yyyy-MM-DD", "en").substring(0, 4);
+    // Pour chaque budget, on calcule le montant total des dépenses sur l'année
     for (let i = 0; i < this.budgets.length; i++) {
       let value = 0;
       result.labels.push(this.budgets[i].name);
