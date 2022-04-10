@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
 import {formatDate} from "@angular/common";
@@ -18,12 +18,15 @@ export class BudgetService {
   public budgets: Budget[] = [];
   private subjectBudget = new BehaviorSubject(this.budgets);
 
-  constructor(private http: HttpClient, private expensesApi: ExpensesService) {}
+  constructor(private http: HttpClient, private expensesApi: ExpensesService) {
+  }
 
+  // Notifie les composants qui utilisent ce service d'une modification
   getUpdate(): Observable<any> {
     return this.subjectBudget.asObservable();
   }
 
+  // Récupère les Budgets de l'utilisateurs
   public getBudgets(): void {
     this.http.get<Budget[]>('http://localhost:8081/budgets')
       .subscribe(
@@ -34,6 +37,7 @@ export class BudgetService {
       );
   }
 
+  // Ajoute un budget
   public addBudget(budget: {}): void {
     this.http.post<Budget>('http://localhost:8081/newbudget', budget)
       .subscribe(data => {
@@ -42,6 +46,7 @@ export class BudgetService {
       });
   }
 
+  // Ajoute un budget avec une valeur initiale
   public addBudgetWithValue(budget: {}, amount: number): void {
     this.http.post<Budget>('http://localhost:8081/newbudget', budget)
       .subscribe(data => {
@@ -58,6 +63,7 @@ export class BudgetService {
       });
   }
 
+  // Modifie un budget existant
   public editBudget(budget: Budget): void {
     this.http.post<Budget>('http://localhost:8081/editbudget', budget)
       .subscribe(data => {
@@ -66,6 +72,7 @@ export class BudgetService {
       });
   }
 
+  // Supprime un budget
   public deleteBudget(budgetid: number): void {
     console.log(budgetid);
     this.http.post('http://localhost:8081/rmbudget', {

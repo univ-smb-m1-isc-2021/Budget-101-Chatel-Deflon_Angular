@@ -24,8 +24,10 @@ export class BudgetListComponent implements OnInit {
   private subscriptionBudgetListB: Subscription;
   private subscriptionBudgetListE: Subscription;
 
+  currentDate = formatDate(new Date(), "yyyy-MM-dd", "en");
+
   budgetsList: Budget[] = [];
-  displayedColumns: string[] = ['name', 'amount', 'lastexpense', 'actions']; //, 'amount', 'lastexpense', 'actions'
+  displayedColumns: string[] = ['name', 'amount', 'lastexpense', 'actions'];
   clickedRows = new Set<Budget>();
 
   budgets: any[] = [];
@@ -69,10 +71,11 @@ export class BudgetListComponent implements OnInit {
         // Set amount
         if (this.budgetsList[i].id == this.expenses[j].budgetId) {
           this.budgetsList[i].amount += this.expenses[j].amount;
-          // TODO : check la date pour prendre la plus récente
           // @ts-ignore
           if (this.budgetsList[i].lastexpense == "--") {
             this.budgetsList[i].lastexpense = this.expenses[j].label;
+          } else {
+            // TODO : check la date pour prendre la plus récente
           }
         }
       }

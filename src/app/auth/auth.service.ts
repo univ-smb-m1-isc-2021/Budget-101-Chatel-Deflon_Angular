@@ -29,8 +29,6 @@ import {map, tap} from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  // BASE_PATH: 'http://localhost:8080'
-  USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
   cachedRequests: Array<HttpRequest<any>> = [];
 
   public username: String = '';
@@ -39,42 +37,38 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
+  // Stockage du token jwt
   setToken(token: string) {
     return localStorage.setItem('jwt', token);
   }
 
+  // Récupération du token jwt
   getToken() {
     return localStorage.getItem('jwt');
   }
 
+  // Connexion d'un utilisateur
   login(username: string, password: string) {
     return this.http.post<MyApiResponse>(
       'http://localhost:8081/authenticate',
       {username, password},
     );
-    // pipe(tap((response: MyApiResponse) => {
-    //   console.log("LALALILALOU : " + response.token);
-    //   if (response) {
-    //     localStorage.setItem('jwt', response.token);
-    //   }
-    // }));
   }
 
+  // Inscription d'un nouvel utilisateur
   register(email: string, username: string, password: string) {
     return this.http.post('http://localhost:8081/register',
       {username, password, email},
     );
   }
 
+  // Vérifie si l'utilisateur est connecté
   public isAuthenticated(): boolean {
-    // get the token
-    const token = this.getToken();
-    // return a boolean reflecting
-    // whether or not the token is expired
-    return (token !== null);
-    // return tokenNotExpired(null, token);
+    const token = this.getToken(); // Récupère le jwt token
+    return (token !== null); // Retourne si le token est null ou non
   }
 
+  // Recupere les requêtes échouées
   public collectFailedRequest(request: any): void {
     this.cachedRequests.push(request);
   }
@@ -84,30 +78,10 @@ export class AuthService {
     // be called after the token is refreshed
   }
 
-  // createBasicAuthToken(username: String, password: String) {
-  //   return 'Basic ' + window.btoa(username + ':' + password);
-  // }
-  //
-  // registerSuccessfulLogin(username : string, password : string) {
-  //   sessionStorage.setItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME, username);
-  // }
-
+  // Deconnexion
   logout() {
     localStorage.removeItem('jwt');
-    // sessionStorage.removeItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME);
     this.username = "";
     this.password = "";
   }
-
-  // isUserLoggedIn() {
-  //   let user = sessionStorage.getItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME);
-  //   if (user === null) return false;
-  //   return true;
-  // }
-  //
-  // getLoggedInUserName() {
-  //   let user = sessionStorage.getItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME);
-  //   if (user === null) return '';
-  //   return user;
-  // }
 }

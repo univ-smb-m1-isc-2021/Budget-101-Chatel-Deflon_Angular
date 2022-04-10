@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
 import {Router} from "@angular/router";
+import {MailService} from "../../services/mail.service";
 
 @Component({
   selector: 'app-user-settings',
@@ -11,6 +12,7 @@ export class UserSettingsComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private mailService: MailService,
     private router: Router
   ) {
     if (!authService.isAuthenticated()) {
@@ -21,4 +23,7 @@ export class UserSettingsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  sendRecap(): void {
+    this.mailService.sendRecap();
+  }
 }

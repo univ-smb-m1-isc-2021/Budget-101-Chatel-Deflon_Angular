@@ -8,22 +8,27 @@ import {RegisterComponent} from "./components/register/register.component";
 
 const routes: Routes = [
   {
+    // Page d'accueil
     path: '',
     component: HomepageComponent
   },
   {
+    // Page pour gérer les budgets et dépenses
     path: 'gestion',
     component: ManagingDataComponent
   },
   {
+    // Page pour gérer les informations utilisateur
     path: 'utilisateur',
     component: UserSettingsComponent
   },
   {
+    // Page de connexion
     path: 'connexion',
     component: LoginComponent,
   },
   {
+    // Page d'inscription
     path: 'inscription',
     component: RegisterComponent,
   },

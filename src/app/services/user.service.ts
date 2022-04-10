@@ -17,14 +17,16 @@ export interface ModifUser {
 })
 export class UserService {
   public user: User = {username: "", email: ""};
-  private subjectUser = new BehaviorSubject(this.user); //need to create a subject
+  private subjectUser = new BehaviorSubject(this.user);
 
   constructor(private http: HttpClient) { }
 
-  getUpdate(): Observable<any> { //the receiver component calls this function
-    return this.subjectUser.asObservable(); //it returns as an observable to which the receiver funtion will subscribe
+  // Notifie les composants qui utilisent le service qu'il y a eu une modification
+  getUpdate(): Observable<any> {
+    return this.subjectUser.asObservable();
   }
 
+  // Récupère l'utilisateur courant
   public getUser(): void {
     this.http.get<User>('http://localhost:8081/user')
       .subscribe(user => {
@@ -33,6 +35,7 @@ export class UserService {
       });
   }
 
+  // Modifie l'email de l'utilisateur
   public editMail(data: ModifUser): any {
     this.http.post<User>('http://localhost:8081/editmail', data)
       .subscribe(data => {
