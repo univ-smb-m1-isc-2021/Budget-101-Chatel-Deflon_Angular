@@ -20,106 +20,62 @@ export interface Expense {
 })
 export class ExpensesService {
   public expenses: Expense[] = [];
-  private subjectName = new BehaviorSubject<any>(this.expenses); //need to create a subject
+  private subjectName = new BehaviorSubject(this.expenses); //need to create a subject
 
-  private addPunctualExpenseUrl: string;
-  private addRecurrentExpenseUrl: string;
-  private addSpreadExpenseUrl: string;
-  private editExpenseUrl: string;
-  private deleteExpenseUrl: string;
-  private expensesListUrl: string;
-
-  constructor(private http: HttpClient) {
-    this.addPunctualExpenseUrl = 'http://localhost:8081/newpuncexpense';
-    this.addRecurrentExpenseUrl = 'http://localhost:8081/newrecexpense';
-    this.addSpreadExpenseUrl = 'http://localhost:8081/newsprexpense';
-    this.editExpenseUrl = 'http://localhost:8081/editexpense';
-    this.deleteExpenseUrl = 'http://localhost:8081/rmexpense';
-    this.expensesListUrl = 'http://localhost:8081/expenses';
-  }
-
-  sendUpdate(message: string) { //the component that wants to update something, calls this fn
-    this.subjectName.next(message); //next() will feed the value in Subject
-  }
+  constructor(private http: HttpClient) { }
 
   getUpdate(): Observable<any> { //the receiver component calls this function
     return this.subjectName.asObservable(); //it returns as an observable to which the receiver funtion will subscribe
   }
 
   public getExpenses(): void {
-    this.http.get<Expense[]>(this.expensesListUrl)
+    this.http.get<Expense[]>('http://localhost:8081/expenses')
       .subscribe(
         data => {
           this.expenses = data;
-          this.sendUpdate("init");
+          this.subjectName.next(this.expenses);
         }
       );
-  }
-
-  public addExpenseLocal(expense: any): void {
-    this.expenses.push( {
-      amount: expense.amount,
-      budgetId : expense.budgetId ,
-      date: expense.date,
-      id: expense.id,
-      label: expense.label,
-      start: expense.start,
-      end: expense.end,
-      repetition: expense.repetition,
-      userId: expense.userId,
-      type: expense.type,
-    })
   }
 
   public addPunctualExpense(expense: {}): void {
-    this.http.post<any>(this.addPunctualExpenseUrl, expense)
+    this.http.post<any>('http://localhost:8081/newpuncexpense', expense)
       .subscribe( data => {
-        this.addExpenseLocal(data)
+        this.expenses.push(data);
+        this.subjectName.next(this.expenses);
       });
-    this.sendUpdate("add expense");
   }
 
   public addRecurrentExpense(expense: {}): void {
-    this.http.post<any>(this.addRecurrentExpenseUrl, expense)
+    this.http.post<any>('http://localhost:8081/newrecexpense', expense)
       .subscribe( data => {
-        this.addExpenseLocal(data)
-        }
-      );
-  }
-
-  public addSpreadExpense(expense: {}): void {
-    this.addExpenseLocal(expense)
-    this.http.post<any>(this.addSpreadExpenseUrl, expense)
-      .subscribe(data => {
-        this.addExpenseLocal(data)
+        this.expenses.push(data);
+        this.subjectName.next(this.expenses);
       });
   }
 
-  public editExpenseLocal(expense: Expense): void {
-    for (let i = 0; i < this.expenses.length; i++) {
-      if (this.expenses[i].id == expense.id) {
-        this.expenses[i] = expense;
-        break;
-      }
-    }
+  public addSpreadExpense(expense: {}): void {
+    this.http.post<any>('http://localhost:8081/newsprexpense', expense)
+      .subscribe(data => {
+        this.expenses.push(data);
+        this.subjectName.next(this.expenses);
+      });
   }
 
   public editExpense(expense: Expense): void {
-    this.editExpenseLocal(expense);
-    this.http.post<{}>(this.editExpenseUrl, expense);
-  }
-
-  public rmExpenseLocal(expenseid: number) {
-    let newExpenses = [];
-    for (let i = 0; i < this.expenses.length; i++) {
-      if (this.expenses[i].id !== expenseid) newExpenses.push(this.expenses[i]);
-    }
-    this.expenses = newExpenses;
+    this.http.post<Expense>('http://localhost:8081/editexpense', expense)
+      .subscribe(data => {
+        this.expenses = this.expenses.map(expense => expense.id == data.id ? data : expense);
+        this.subjectName.next(this.expenses);
+      });
   }
 
   public deleteExpense(expenseid: number): void {
-    this.rmExpenseLocal(expenseid);
-    this.http.post<{}>(this.deleteExpenseUrl, {id: expenseid})
-      .subscribe();
+    this.http.post('http://localhost:8081/rmexpense', {
+      id: expenseid
+    }).subscribe(response => {
+        this.expenses = this.expenses.filter(expense => expense.id !== expenseid);
+        this.subjectName.next(this.expenses);
+      });
   }
 }

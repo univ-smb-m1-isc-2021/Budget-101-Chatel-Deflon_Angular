@@ -80,7 +80,6 @@ export class ChartsComponent implements OnInit {
   }
 
   ngOnChanges(): void {
-    console.log(this.expenses);
     // @ts-ignore
     this.graphAnnual.data = this.setMonthlyData();
     // @ts-ignore

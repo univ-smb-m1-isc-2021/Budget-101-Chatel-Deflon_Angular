@@ -33,14 +33,10 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  async loadData() {
-    await this.userService.getUser();
-    await this.expensesApi.getExpenses();
-    await this.budgetApi.getBudgets();
-
-    this.userService.sendUpdate("init user");
-    this.expensesApi.sendUpdate("init expenses");
-    this.budgetApi.sendUpdate("init budget");
+  loadData() {
+    this.userService.getUser();
+    this.expensesApi.getExpenses();
+    this.budgetApi.getBudgets();
   }
 
   ngOnInit(): void {

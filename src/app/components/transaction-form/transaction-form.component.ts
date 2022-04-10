@@ -54,7 +54,7 @@ export class TransactionFormComponent implements OnInit {
   }
 
   // Ajout une nouvelle dépense
-  async addNewExpense() {
+  addNewExpense() {
 
     let amount = parseFloat(this.amountValue.value);
     if (this.typeValue.value == 'depense') {
@@ -68,8 +68,7 @@ export class TransactionFormComponent implements OnInit {
         budgetId: this.getBudgetId(this.budgetValue.value),
         date: this.dateValue.value
       }
-      await this.expensesApi.addPunctualExpense(punctualExpense);
-      this.expensesApi.sendUpdate("add punctual expense");
+      this.expensesApi.addPunctualExpense(punctualExpense);
     } else if (this.freqValue.value == 'RECURRENT') {
       let recurrentExpense = {
         label: this.labelValue.value,
@@ -78,8 +77,7 @@ export class TransactionFormComponent implements OnInit {
         date: this.dateFirstValue.value,
         repetition: this.repetitionValue.value,
       }
-      await this.expensesApi.addRecurrentExpense(recurrentExpense);
-      this.expensesApi.sendUpdate("add reccurent expense");
+      this.expensesApi.addRecurrentExpense(recurrentExpense);
     } else {
       let spreadExpense = {
         label: this.labelValue.value,
@@ -88,8 +86,7 @@ export class TransactionFormComponent implements OnInit {
         start: this.dateFirstValue.value,
         end: this.dateLastValue.value,
       }
-      await this.expensesApi.addSpreadExpense(spreadExpense);
-      this.expensesApi.sendUpdate("add spread expense");
+      this.expensesApi.addSpreadExpense(spreadExpense);
     }
   }
 

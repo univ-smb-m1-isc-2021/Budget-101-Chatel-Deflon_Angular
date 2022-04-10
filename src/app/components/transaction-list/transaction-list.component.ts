@@ -58,7 +58,6 @@ export class TransactionListComponent implements OnInit {
     this.subscriptionExpenseListE= this.expensesApi.getUpdate()
       .subscribe((_) => {
         this.expenses = this.expensesApi.expenses;
-        // console.log(this.expensesApi.expenses);
         this.ngOnChanges();
       });
   }
@@ -134,7 +133,5 @@ export class TransactionListComponent implements OnInit {
 
   deleteTransaction(id: number) {
     this.expensesApi.deleteExpense(id);
-    this.expensesApi.sendUpdate("del Trans");
-    // TODO : prévoir rechargement de la page ou au moins du module pour afficher les changements
   }
 }

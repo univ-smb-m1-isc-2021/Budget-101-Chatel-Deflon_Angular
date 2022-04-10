@@ -118,10 +118,7 @@ export class TransactionEditComponent implements OnInit, OnChanges {
     this.dataT.budget = this.budget.value;
     this.dataT.repetition = this.frequency.value;
 
-    // TODO : envoyer la transaction modifié au back
     this.expensesApi.editExpense(this.dataT);
-    // TODO : update le front avec la nouvelle liste de transactions
-    this.expensesApi.sendUpdate("edit Exp");
   }
 }
 

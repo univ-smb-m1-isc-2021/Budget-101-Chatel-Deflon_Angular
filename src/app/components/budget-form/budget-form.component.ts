@@ -38,9 +38,6 @@ export class BudgetFormComponent implements OnInit {
       // amount: amount si amount != 0 créer une depense
     };
 
-    // TODO : envoyer le nouveau budget au back
     await this.budgetApi.addBudget(budget);
-    // TODO : update le tableau au front
-    this.budgetApi.sendUpdate("add Budget");
   }
 }

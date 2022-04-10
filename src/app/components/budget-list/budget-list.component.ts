@@ -10,6 +10,7 @@ export interface Budget {
   id: number;
   name: string;
   amount: number;
+  userId: number;
   lastexpense: any[];
 }
 
@@ -23,6 +24,7 @@ export class BudgetListComponent implements OnInit {
   private subscriptionBudgetListB: Subscription;
   private subscriptionBudgetListE: Subscription;
 
+  budgetsList: Budget[] = [];
   displayedColumns: string[] = ['name', 'amount', 'lastexpense', 'actions']; //, 'amount', 'lastexpense', 'actions'
   clickedRows = new Set<Budget>();
 
@@ -36,14 +38,11 @@ export class BudgetListComponent implements OnInit {
     private budgetApi: BudgetService,
     private expensesApi: ExpensesService
   ) {
-    this.budgets = this.budgetApi.budgets;
     this.subscriptionBudgetListB = this.budgetApi.getUpdate()
       .subscribe((_) => {
         this.budgets = this.budgetApi.budgets;
         this.ngOnChanges();
       });
-
-    this.expenses = this.expensesApi.expenses;
     this.subscriptionBudgetListE = this.expensesApi.getUpdate()
       .subscribe((_) => {
         this.expenses = this.expensesApi.expenses;
@@ -51,26 +50,34 @@ export class BudgetListComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.budgets = this.budgetApi.budgets;
+    this.expenses = this.expensesApi.expenses;
+
+    this.budgets.forEach(val => this.budgetsList.push(Object.assign({}, val)));
+  }
 
   ngOnChanges(): void {
-    console.log(this.budgets);
-    console.log(this.budgetApi.budgets);
+    this.budgetsList = [];
+    this.budgets.forEach(val => this.budgetsList.push(Object.assign({}, val)));
     // Set the missing properties of budgets : amount & lastexpense
-    for (let i = 0; i < this.budgets.length; i++) {
-      this.budgets[i].amount = 0; // Set amount
-      this.budgets[i].lastexpense = "--"; // Set lastexpense
+    for (let i = 0; i < this.budgetsList.length; i++) {
+      this.budgetsList[i].amount = 0; // Set amount
+      // @ts-ignore
+      this.budgetsList[i].lastexpense = "--"; // Set lastexpense
       for (let j = 0; j < this.expenses.length; j++) {
         // Set amount
-        if (this.budgets[i].id == this.expenses[j].budgetId) {
-          this.budgets[i].amount += this.expenses[j].amount;
+        if (this.budgetsList[i].id == this.expenses[j].budgetId) {
+          this.budgetsList[i].amount += this.expenses[j].amount;
           // TODO : check la date pour prendre la plus récente
-          if (this.budgets[i].lastexpense == "--") {
-            this.budgets[i].lastexpense = this.expenses[j].label;
+          // @ts-ignore
+          if (this.budgetsList[i].lastexpense == "--") {
+            this.budgetsList[i].lastexpense = this.expenses[j].label;
           }
         }
       }
     }
+    console.log(this.budgetsList);
   }
 
   editBudget(id: number) {
@@ -95,6 +102,5 @@ export class BudgetListComponent implements OnInit {
 
   deleteBudget(id: number) {
     this.budgetApi.deleteBudget(id);
-    this.budgetApi.sendUpdate("del Budget");
   }
 }
