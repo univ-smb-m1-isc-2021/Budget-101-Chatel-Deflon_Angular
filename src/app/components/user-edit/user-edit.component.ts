@@ -20,6 +20,7 @@ export class UserEditComponent implements OnInit {
   options: FormGroup;
   nicknameValue = new FormControl(this.user.username);
   emailValue = new FormControl(this.user.email);
+  emailChanged = false;
 
   constructor(fb: FormBuilder, public userService: UserService) {
     this.options = fb.group({
@@ -48,5 +49,6 @@ export class UserEditComponent implements OnInit {
   editUser(): void {
     const data = {username: this.nicknameValue.value, email: this.emailValue.value};
     this.userService.editMail(data);
+    this.emailChanged = true;
   }
 }

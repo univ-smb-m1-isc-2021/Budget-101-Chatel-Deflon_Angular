@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {ExpensesService} from "../../services/expenses.service";
 import {Subscription} from "rxjs";
 import {BudgetService} from "../../services/budget.service";
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-transaction-form',
@@ -13,17 +14,15 @@ export class TransactionFormComponent implements OnInit {
   budgets: any[] = [];
   private subscriptionExpenseForm: Subscription;
 
-  currentDate = new Date();
-
   options: FormGroup;
   typeValue = new FormControl(''); // Type : dépense ou apport
   freqValue = new FormControl(''); // Fréquence : ponctuel, mensuel ou étendu
   labelValue = new FormControl(''); // Nom de la dépense
   amountValue = new FormControl(''); // Montant en €
   budgetValue = new FormControl(''); // Budget correspondant à la dépense
-  dateValue = new FormControl(this.currentDate); // Date de virement ponctuel
-  dateFirstValue = new FormControl(this.currentDate); // Date de premier virement
-  dateLastValue = new FormControl(this.currentDate); // Date de dernier virement
+  dateValue = new FormControl(formatDate(new Date(), "yyyy-MM-dd", "en")); // Date de virement ponctuel
+  dateFirstValue = new FormControl(formatDate(new Date(), "yyyy-MM-dd", "en")); // Date de premier virement
+  dateLastValue = new FormControl(formatDate(new Date(), "yyyy-MM-dd", "en")); // Date de dernier virement
   repetitionValue = new FormControl(''); // Fréquence de répétition
 
   constructor(

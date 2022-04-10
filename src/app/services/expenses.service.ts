@@ -62,8 +62,24 @@ export class ExpensesService {
       });
   }
 
-  public editExpense(expense: Expense): void {
-    this.http.post<Expense>('http://localhost:8081/editexpense', expense)
+  public editPunctualExpense(expense: {}): void {
+    this.http.post<any>('http://localhost:8081/editpuncexpense', expense)
+      .subscribe( data => {
+        this.expenses = this.expenses.map(expense => expense.id == data.id ? data : expense);
+        this.subjectName.next(this.expenses);
+      });
+  }
+
+  public editRecurrentExpense(expense: {}): void {
+    this.http.post<any>('http://localhost:8081/editrecexpense', expense)
+      .subscribe( data => {
+        this.expenses = this.expenses.map(expense => expense.id == data.id ? data : expense);
+        this.subjectName.next(this.expenses);
+      });
+  }
+
+  public editSpreadExpense(expense: {}): void {
+    this.http.post<any>('http://localhost:8081/editsprexpense', expense)
       .subscribe(data => {
         this.expenses = this.expenses.map(expense => expense.id == data.id ? data : expense);
         this.subjectName.next(this.expenses);

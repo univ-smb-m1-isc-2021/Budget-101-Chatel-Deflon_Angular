@@ -22,7 +22,7 @@
       <select required matNativeControl [formControl]="budget">
         <option label="--"></option>
         <option *ngFor="let budget of this.budgetsT"
-                [value]="budget.name">
+                [value]="budget.id" [selected]="budget.id == dataT.budgetId">
           {{budget.name}}
         </option>
       </select>
@@ -31,12 +31,12 @@
       <mat-label>Fréquence</mat-label>
       <select matNativeControl [formControl]="frequency">
         <option label="--"></option>
-        <option value="jours">Tous les jours</option>
-        <option value="semaines">Toutes les semaines</option>
-        <option value="mois">Tous les mois</option>
-        <option value="troismois">Tous les 3 mois</option>
-        <option value="annee">Tous les ans</option>
-        <option value="annee">Tous les 2 ans</option>
+        <option value="DAILY">Tous les jours</option>
+        <option value="WEEKLY">Toutes les semaines</option>
+        <option value="MONTHLY">Tous les mois</option>
+        <option value="THIRDLY">Tous les 3 mois</option>
+        <option value="YEARLY">Tous les ans</option>
+        <option value="BIYEARLY">Tous les 2 ans</option>
       </select>
     </mat-form-field>
     <button [disabled]="label.value == ''"

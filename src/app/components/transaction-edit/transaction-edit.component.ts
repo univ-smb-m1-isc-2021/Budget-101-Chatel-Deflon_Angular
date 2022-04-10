@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {BudgetService} from "../../services/budget.service";
 import {Subscription} from "rxjs";
 import {ExpensesService} from "../../services/expenses.service";
+import {formatDate} from "@angular/common";
 
 // TODO : retirer les id après avoir fini le debug
 export interface Transaction {
@@ -46,8 +47,8 @@ export class TransactionEditComponent implements OnInit, OnChanges {
   options: FormGroup;
   label = new FormControl(''); // Nom de la dépense
   amount = new FormControl(''); // Montant de la dépense
-  date = new FormControl(''); // Date de la dépense
-  enddate = new FormControl(''); // Date de fin de la dépense (si étalé)
+  date = new FormControl(formatDate(new Date(), "yyyy-MM-dd", "en")); // Date de la dépense
+  enddate = new FormControl(formatDate(new Date(), "yyyy-MM-dd", "en")); // Date de fin de la dépense (si étalé)
   budget = new FormControl(''); // Budget lié à la dépense
   frequency = new FormControl(''); // Fréquence de la dépense
 
@@ -106,19 +107,24 @@ export class TransactionEditComponent implements OnInit, OnChanges {
     this.dataT.label = this.label.value;
     this.dataT.amount = this.amount.value;
 
+    this.dataT.budgetId = this.budget.value;
+
     if (this.dataT.amount == null) this.dataT.amount = 0.0;
 
-    if (this.dataT.date == undefined) {
-      this.dataT.start = this.date.value;
-    } else {
+    if (this.dataT.type == "PUNCTUAL") {
       this.dataT.date = this.date.value;
+      this.expensesApi.editPunctualExpense(this.dataT);
+    } else if (this.dataT.type == "RECURRENT") {
+      this.dataT.start = this.date.value;
+      this.dataT.repetition = this.frequency.value;
+      this.expensesApi.editRecurrentExpense(this.dataT);
+    } else {
+      this.dataT.start = this.date.value;
+      this.dataT.end = this.enddate.value;
+      this.expensesApi.editSpreadExpense(this.dataT);
     }
 
-    this.dataT.end = this.enddate.value;
-    this.dataT.budget = this.budget.value;
-    this.dataT.repetition = this.frequency.value;
 
-    this.expensesApi.editExpense(this.dataT);
   }
 }
 

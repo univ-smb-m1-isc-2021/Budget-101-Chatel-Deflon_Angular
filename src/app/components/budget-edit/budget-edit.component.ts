@@ -1,6 +1,8 @@
 import {AfterViewInit, Component, Input, OnChanges, OnInit, OnDestroy} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {BudgetService} from "../../services/budget.service";
+import {formatDate} from "@angular/common";
+import {ExpensesService} from "../../services/expenses.service";
 
 // TODO : retirer les id après avoir fini le debug
 export interface Budget {
@@ -23,7 +25,11 @@ export class BudgetEditComponent implements OnInit, OnChanges {
   labelValue = new FormControl(''); // Nom du budget
   amountValue = new FormControl(''); // Montant du budget
 
-  constructor(fb: FormBuilder, private budgetApi: BudgetService) {
+  constructor(
+    fb: FormBuilder,
+    private budgetApi: BudgetService,
+    private expensesApi: ExpensesService
+  ) {
     this.options = fb.group({
       labelValue: this.labelValue,
       amountValue: this.amountValue
@@ -32,9 +38,7 @@ export class BudgetEditComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     if (this.data != undefined && this.update) {
-      // console.log(this.data);
       this.labelValue = new FormControl(this.data.name);
-      // this.amountValue = new FormControl(this.data.amount);
       this.update = false;
     }
   }
@@ -42,7 +46,6 @@ export class BudgetEditComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     if (this.data != undefined && this.update) {
       this.labelValue = new FormControl(this.data.name);
-      // this.amountValue = new FormControl(this.data.amount);
       this.update = false;
     }
   }
@@ -50,7 +53,15 @@ export class BudgetEditComponent implements OnInit, OnChanges {
   // Modification d'un budget
   editBudget(): void {
     if (this.data != undefined) {
-      let amount = this.amountValue.value;
+      if (this.amountValue.value != '') {
+        this.expensesApi.addPunctualExpense({
+          label: 'Montant mis à jour ' + this.labelValue.value,
+          amount: this.amountValue.value,
+          date: formatDate(new Date(), "yyyy-MM-dd", "en"),
+          type: "PUNCTUAL",
+          budgetId: this.data.id
+        });
+      }
 
       let budget = {
         id : this.data.id,

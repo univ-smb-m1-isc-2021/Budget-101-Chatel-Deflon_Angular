@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
+import {formatDate} from "@angular/common";
+import {ExpensesService} from "./expenses.service";
 
 export interface Budget {
   id: number;
@@ -16,7 +18,7 @@ export class BudgetService {
   public budgets: Budget[] = [];
   private subjectBudget = new BehaviorSubject(this.budgets);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private expensesApi: ExpensesService) {}
 
   getUpdate(): Observable<any> {
     return this.subjectBudget.asObservable();
@@ -37,6 +39,22 @@ export class BudgetService {
       .subscribe(data => {
         this.budgets.push(data);
         this.subjectBudget.next(this.budgets);
+      });
+  }
+
+  public addBudgetWithValue(budget: {}, amount: number): void {
+    this.http.post<Budget>('http://localhost:8081/newbudget', budget)
+      .subscribe(data => {
+        this.budgets.push(data);
+        this.subjectBudget.next(this.budgets);
+
+        this.expensesApi.addPunctualExpense({
+          label: 'Montant initial ' + data.name,
+          amount: amount,
+          date: formatDate(new Date(), "yyyy-MM-dd", "en"),
+          type: "PUNCTUAL",
+          budgetId: data.id
+        });
       });
   }
 

@@ -77,7 +77,6 @@ export class BudgetListComponent implements OnInit {
         }
       }
     }
-    console.log(this.budgetsList);
   }
 
   editBudget(id: number) {
@@ -101,6 +100,9 @@ export class BudgetListComponent implements OnInit {
   }
 
   deleteBudget(id: number) {
+    for (let i = 0; i < this.expensesApi.expenses.length; i++) {
+      if (this.expensesApi.expenses[i].budgetId == id) this.expensesApi.deleteExpense(this.expensesApi.expenses[i].id);
+    }
     this.budgetApi.deleteBudget(id);
   }
 }
