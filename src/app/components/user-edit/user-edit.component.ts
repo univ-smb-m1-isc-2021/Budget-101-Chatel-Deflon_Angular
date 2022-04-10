@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { User, UserService } from 'src/app/services/user.service';
-import {Subscription} from "rxjs";
+import { Subscription } from 'rxjs';
 
 export interface ModifUser {
   username: string;
@@ -27,12 +27,10 @@ export class UserEditComponent implements OnInit {
       emailValue: this.emailValue,
     });
     this.user = this.userService.user;
-    this.subscriptionUserEdit = this.userService.getUpdate()
-      .subscribe((_) => {
-        this.user = this.userService.user;
-        this.ngOnChange();
-      });
-
+    this.subscriptionUserEdit = this.userService.getUpdate().subscribe((_) => {
+      this.user = this.userService.user;
+      this.ngOnChange();
+    });
   }
 
   ngOnInit(): void {
@@ -46,8 +44,13 @@ export class UserEditComponent implements OnInit {
   }
 
   editUser(): void {
-    const data = {username: this.nicknameValue.value, email: this.emailValue.value};
-    this.userService.editMail(data);
-    this.userService.sendUpdate("edit user");
+    console.log('edit user');
+    const data = {
+      username: this.nicknameValue.value,
+      email: this.emailValue.value,
+    };
+    this.userService.editMail(data).subscribe((data: User) => {
+      this.emailValue.setValue(data.email);
+    });
   }
 }
