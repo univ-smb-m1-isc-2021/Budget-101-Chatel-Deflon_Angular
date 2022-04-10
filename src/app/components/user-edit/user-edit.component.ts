@@ -30,6 +30,7 @@ export class UserEditComponent implements OnInit {
     this.subscriptionUserEdit = this.userService.getUpdate()
       .subscribe((_) => {
         this.user = this.userService.user;
+        this.ngOnChange();
       });
 
   }
@@ -39,10 +40,14 @@ export class UserEditComponent implements OnInit {
     this.emailValue = new FormControl(this.user.email);
   }
 
+  ngOnChange(): void {
+    this.nicknameValue = new FormControl(this.user.username);
+    this.emailValue = new FormControl(this.user.email);
+  }
+
   editUser(): void {
-    console.log('edit user');
     const data = {username: this.nicknameValue.value, email: this.emailValue.value};
     this.userService.editMail(data);
-    this.userService.sendUpdate("update");
+    this.userService.sendUpdate("edit user");
   }
 }

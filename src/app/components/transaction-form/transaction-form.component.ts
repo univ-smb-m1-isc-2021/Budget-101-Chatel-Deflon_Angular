@@ -30,7 +30,6 @@ export class TransactionFormComponent implements OnInit {
     fb: FormBuilder,
     private budgetApi: BudgetService,
     private expensesApi: ExpensesService) {
-    console.log(this.currentDate);
     this.options = fb.group({
       typeValue: this.typeValue,
       freqValue: this.freqValue,
@@ -55,22 +54,23 @@ export class TransactionFormComponent implements OnInit {
   }
 
   // Ajout une nouvelle dépense
-  addNewExpense(): void {
+  async addNewExpense() {
 
     let amount = parseFloat(this.amountValue.value);
     if (this.typeValue.value == 'depense') {
       amount *= -1;
     }
 
-    if (this.freqValue.value == 'ponctuel') {
+    if (this.freqValue.value == 'PUNCTUAL') {
       let punctualExpense = {
         label: this.labelValue.value,
         amount: amount,
         budgetId: this.getBudgetId(this.budgetValue.value),
         date: this.dateValue.value
       }
-      this.expensesApi.addPunctualExpense(punctualExpense);
-    } else if (this.freqValue.value == 'recurrent') {
+      await this.expensesApi.addPunctualExpense(punctualExpense);
+      this.expensesApi.sendUpdate("add punctual expense");
+    } else if (this.freqValue.value == 'RECURRENT') {
       let recurrentExpense = {
         label: this.labelValue.value,
         amount: amount,
@@ -78,7 +78,8 @@ export class TransactionFormComponent implements OnInit {
         date: this.dateFirstValue.value,
         repetition: this.repetitionValue.value,
       }
-      this.expensesApi.addRecurrentExpense(recurrentExpense);
+      await this.expensesApi.addRecurrentExpense(recurrentExpense);
+      this.expensesApi.sendUpdate("add reccurent expense");
     } else {
       let spreadExpense = {
         label: this.labelValue.value,
@@ -87,10 +88,9 @@ export class TransactionFormComponent implements OnInit {
         start: this.dateFirstValue.value,
         end: this.dateLastValue.value,
       }
-      this.expensesApi.addSpreadExpense(spreadExpense);
+      await this.expensesApi.addSpreadExpense(spreadExpense);
+      this.expensesApi.sendUpdate("add spread expense");
     }
-
-    this.expensesApi.sendUpdate("add expense");
   }
 
   getBudgetId(name: string): number {

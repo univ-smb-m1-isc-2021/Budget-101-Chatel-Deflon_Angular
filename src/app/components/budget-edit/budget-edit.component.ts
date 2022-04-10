@@ -7,6 +7,7 @@ export interface Budget {
   id: number;
   name: string;
   lastexpense: any[];
+  userId: number;
 }
 
 @Component({
@@ -31,7 +32,7 @@ export class BudgetEditComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     if (this.data != undefined && this.update) {
-      console.log(this.data);
+      // console.log(this.data);
       this.labelValue = new FormControl(this.data.name);
       // this.amountValue = new FormControl(this.data.amount);
       this.update = false;
@@ -55,6 +56,7 @@ export class BudgetEditComponent implements OnInit, OnChanges {
         id : this.data.id,
         name: this.labelValue.value,
         amount: this.amountValue.value,
+        userId: this.data.userId
       };
 
       // TODO : envoyer le nouveau budget au back

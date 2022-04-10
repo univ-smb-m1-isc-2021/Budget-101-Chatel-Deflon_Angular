@@ -61,19 +61,18 @@ export class ChartsComponent implements OnInit {
     this.subscriptionChart = this.budgetApi.getUpdate()
       .subscribe((_) => {
         this.budgets = this.budgetApi.budgets;
+        this.ngOnChanges();
       });
 
     this.expenses = this.expensesApi.expenses;
     this.subscriptionName = this.expensesApi.getUpdate()
       .subscribe((_) => {
         this.expenses = this.expensesApi.expenses;
+        this.ngOnChanges();
       });
   }
 
   ngOnInit(): void {
-    console.log("INIT");
-    console.log(this.budgets);
-    console.log(this.expenses);
     // @ts-ignore
     this.graphAnnual.data = this.setMonthlyData();
     // @ts-ignore
@@ -81,8 +80,6 @@ export class ChartsComponent implements OnInit {
   }
 
   ngOnChanges(): void {
-    console.log("CHANGE")
-    console.log(this.budgets);
     console.log(this.expenses);
     // @ts-ignore
     this.graphAnnual.data = this.setMonthlyData();
@@ -355,17 +352,14 @@ export class ChartsComponent implements OnInit {
         if (this.expenses[j].budgetId == this.budgets[i].id) {
           if (this.expenses[j].type == "RECURRENT") {
             // Dépenses récurrentes
-            console.log("REC" + j);
             let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
             value += this.calculateRecurrentExpenseAnnual(this.expenses[j], month);
           } else if (this.expenses[j].type == "PUNCTUAL") {
             // Dépenses ponctuelles
-            console.log("PUNC" + j);
             let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
             value += this.expenses[j].amount;
           } else {
             // Dépenses étalées
-            console.log("SPREAD" + j);
             value += this.calculateSpreadExpenseAnnual(this.expenses[j]);
           }
         }

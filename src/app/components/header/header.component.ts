@@ -37,6 +37,10 @@ export class HeaderComponent implements OnInit {
     await this.userService.getUser();
     await this.expensesApi.getExpenses();
     await this.budgetApi.getBudgets();
+
+    this.userService.sendUpdate("init user");
+    this.expensesApi.sendUpdate("init expenses");
+    this.budgetApi.sendUpdate("init budget");
   }
 
   ngOnInit(): void {

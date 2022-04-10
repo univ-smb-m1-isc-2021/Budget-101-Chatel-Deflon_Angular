@@ -6,6 +6,7 @@ export interface Budget {
   id: number;
   name: string;
   amount: number;
+  userId: number;
 }
 
 @Injectable({
@@ -36,15 +37,11 @@ export class BudgetService {
   }
 
   public getBudgets(): void {
-    this.budgets.push({
-      id: 1,
-      name: "test",
-      amount: 0
-    })
     this.http.get<Budget[]>(this.budgetListUrl)
       .subscribe(
         data => {
           this.budgets = data;
+          this.sendUpdate("getbudgets");
         }
       );
   }
@@ -54,6 +51,7 @@ export class BudgetService {
       id: budget.id,
       name: budget.name,
       amount: budget.amount,
+      userId: budget.userId
     });
   }
 
@@ -70,6 +68,7 @@ export class BudgetService {
         this.budgets[i].id = budget.id;
         this.budgets[i].name = budget.name;
         this.budgets[i].amount = budget.amount;
+        this.budgets[i].userId = budget.userId;
       }
     }
   }

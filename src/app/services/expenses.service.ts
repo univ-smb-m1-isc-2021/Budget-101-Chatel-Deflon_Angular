@@ -11,6 +11,8 @@ export interface Expense {
   start: string;
   end: string;
   repetition: string;
+  type: string;
+  userId: number;
 }
 
 @Injectable({
@@ -56,24 +58,25 @@ export class ExpensesService {
 
   public addExpenseLocal(expense: any): void {
     this.expenses.push( {
-      id: expense.id,
       amount: expense.amount,
-      label: expense.label,
       budgetId : expense.budgetId ,
       date: expense.date,
+      id: expense.id,
+      label: expense.label,
       start: expense.start,
       end: expense.end,
       repetition: expense.repetition,
+      userId: expense.userId,
+      type: expense.type,
     })
   }
 
   public addPunctualExpense(expense: {}): void {
-    this.addExpenseLocal(expense)
     this.http.post<any>(this.addPunctualExpenseUrl, expense)
       .subscribe( data => {
-          this.addExpenseLocal(data)
-      }
-      );
+        this.addExpenseLocal(data)
+      });
+    this.sendUpdate("add expense");
   }
 
   public addRecurrentExpense(expense: {}): void {
@@ -92,8 +95,17 @@ export class ExpensesService {
       });
   }
 
-  public editExpense(expense: {}): void {
-    console.log(expense);
+  public editExpenseLocal(expense: Expense): void {
+    for (let i = 0; i < this.expenses.length; i++) {
+      if (this.expenses[i].id == expense.id) {
+        this.expenses[i] = expense;
+        break;
+      }
+    }
+  }
+
+  public editExpense(expense: Expense): void {
+    this.editExpenseLocal(expense);
     this.http.post<{}>(this.editExpenseUrl, expense);
   }
 

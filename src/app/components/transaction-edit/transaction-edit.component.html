@@ -7,13 +7,13 @@
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Solde</mat-label>
-      <input matInput required type="number" placeholder="0.00" min="1" [formControl]="amount">
+      <input matInput required type="number" placeholder="0.00" [formControl]="amount">
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Date</mat-label>
       <input matInput required type="date" placeholder="" [formControl]="date">
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field *ngIf="this.dataT.type == 'SPREAD'" appearance="fill">
       <mat-label>Date de fin</mat-label>
       <input matInput type="date" placeholder="" [formControl]="enddate">
     </mat-form-field>
@@ -27,7 +27,7 @@
         </option>
       </select>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field *ngIf="this.dataT.type == 'RECURRENT'" appearance="fill">
       <mat-label>Fréquence</mat-label>
       <select matNativeControl [formControl]="frequency">
         <option label="--"></option>

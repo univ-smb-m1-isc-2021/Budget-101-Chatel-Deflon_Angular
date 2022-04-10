@@ -58,11 +58,13 @@ export class TransactionListComponent implements OnInit {
     this.subscriptionExpenseListE= this.expensesApi.getUpdate()
       .subscribe((_) => {
         this.expenses = this.expensesApi.expenses;
+        // console.log(this.expensesApi.expenses);
         this.ngOnChanges();
       });
   }
 
   ngOnChanges(): void {
+    this.expensesList = [];
     this.expenses.forEach(val => this.expensesList.push(Object.assign({}, val)));
     for (let i = 0; i < this.expensesList.length; i++) {
       this.expensesList[i].budget = this.getBudget(this.expensesList[i].budgetId);
@@ -116,7 +118,7 @@ export class TransactionListComponent implements OnInit {
 
   getTransaction(id: number): any {
     for (let i = 0; i < this.expenses.length; i++) {
-      if (this.expenses[i].budgetid == id) {
+      if (this.expenses[i].id == id) {
         return this.expenses[i];
       }
     }

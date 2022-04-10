@@ -54,6 +54,8 @@ export class BudgetListComponent implements OnInit {
   ngOnInit(): void {}
 
   ngOnChanges(): void {
+    console.log(this.budgets);
+    console.log(this.budgetApi.budgets);
     // Set the missing properties of budgets : amount & lastexpense
     for (let i = 0; i < this.budgets.length; i++) {
       this.budgets[i].amount = 0; // Set amount

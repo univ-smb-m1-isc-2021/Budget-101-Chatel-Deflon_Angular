@@ -36,7 +36,11 @@ export class UserService {
   }
 
   public getUser(): void {
-    this.http.get<User>(this.getUserUrl).subscribe(user => { this.user = user; });
+    this.http.get<User>(this.getUserUrl)
+      .subscribe(user => {
+        this.user = user;
+        this.sendUpdate("init User");
+      });
   }
 
   public editMail(data: ModifUser): any {

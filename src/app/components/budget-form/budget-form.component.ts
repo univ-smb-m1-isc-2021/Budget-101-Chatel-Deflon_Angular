@@ -29,7 +29,7 @@ export class BudgetFormComponent implements OnInit {
   ngOnInit(): void {}
 
   // Ajout d'un nouveau budget
-  addNewBudget(): void {
+  async addNewBudget() {
     let amount = this.amountValue.value;
     if (amount == '') amount = 0.0;
 
@@ -39,7 +39,7 @@ export class BudgetFormComponent implements OnInit {
     };
 
     // TODO : envoyer le nouveau budget au back
-    this.budgetApi.addBudget(budget);
+    await this.budgetApi.addBudget(budget);
     // TODO : update le tableau au front
     this.budgetApi.sendUpdate("add Budget");
   }
