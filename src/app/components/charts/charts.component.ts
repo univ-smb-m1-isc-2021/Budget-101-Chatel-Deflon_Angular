@@ -17,7 +17,7 @@ export interface Expense {
   id: number;
   amount: number;
   label: string;
-  budgetId : number;
+  budgetId: number;
   date: string;
   start: string;
   end: string;
@@ -193,6 +193,7 @@ export class ChartsComponent implements OnInit {
   }
 
   setMonthlyData(): any[] {
+    let currentYear = formatDate(new Date(), "yyyy-MM-DD", "en").substring(0, 4);
     let currentData: annualData;
     let result = [];
     for (let i = 0; i < this.budgets.length; i++) {
@@ -206,17 +207,26 @@ export class ChartsComponent implements OnInit {
       }
       for (let j = 0; j < this.expenses.length; j++) {
         if (this.expenses[j].budgetId == this.budgets[i].id) {
-            if (this.expenses[j].type == "RECURRENT") {
-              // Dépenses récurrentes
+          if (this.expenses[j].type == "RECURRENT") {
+            // Dépenses récurrentes
+            let year = this.expenses[j].date.substring(0, 4);
+            if (year == currentYear) {
               let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
               currentData = this.calculateRecurrentExpenseMonthly(currentData, this.expenses[j], month);
-            } else if (this.expenses[j].type == "PUNCTUAL") {
-              // Dépenses ponctuelles
+            }
+          } else if (this.expenses[j].type == "PUNCTUAL") {
+            // Dépenses ponctuelles
+            let year = this.expenses[j].date.substring(0, 4);
+            if (year == currentYear) {
               let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
               currentData.y[month] += this.expenses[j].amount;
-            } else {
+            }
+          } else {
             // Dépenses étalées
-            currentData = this.calculateSpreadExpenseMonthly(currentData, this.expenses[j]);
+            let year = this.expenses[j].start.substring(0, 4);
+            if (year == currentYear) {
+              currentData = this.calculateSpreadExpenseMonthly(currentData, this.expenses[j]);
+            }
           }
         }
       }
@@ -343,7 +353,8 @@ export class ChartsComponent implements OnInit {
   }
 
   setAnnualData(): any[] {
-    let result: { values: number[], labels: string[], type: string } = { values: [], labels: [], type: 'pie' };
+    let result: { values: number[], labels: string[], type: string } = {values: [], labels: [], type: 'pie'};
+    let currentYear = formatDate(new Date(), "yyyy-MM-DD", "en").substring(0, 4);
     for (let i = 0; i < this.budgets.length; i++) {
       let value = 0;
       result.labels.push(this.budgets[i].name);
@@ -351,15 +362,24 @@ export class ChartsComponent implements OnInit {
         if (this.expenses[j].budgetId == this.budgets[i].id) {
           if (this.expenses[j].type == "RECURRENT") {
             // Dépenses récurrentes
-            let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
-            value += this.calculateRecurrentExpenseAnnual(this.expenses[j], month);
+            let year = this.expenses[j].date.substring(0, 4);
+            if (year == currentYear) {
+              let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
+              value += this.calculateRecurrentExpenseAnnual(this.expenses[j], month);
+            }
           } else if (this.expenses[j].type == "PUNCTUAL") {
             // Dépenses ponctuelles
-            let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
-            value += this.expenses[j].amount;
+            let year = this.expenses[j].date.substring(0, 4);
+            if (year == currentYear) {
+              let month = (parseInt(this.expenses[j].date.substring(5, 7)) - 1);
+              value += this.expenses[j].amount;
+            }
           } else {
             // Dépenses étalées
-            value += this.calculateSpreadExpenseAnnual(this.expenses[j]);
+            let year = this.expenses[j].start.substring(0, 4);
+            if (year == currentYear) {
+              value += this.calculateSpreadExpenseAnnual(this.expenses[j]);
+            }
           }
         }
       }
