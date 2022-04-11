@@ -12,6 +12,11 @@ COPY ./ /usr/local/app/
 # Install all the dependencies
 RUN npm install
 
+RUN npm audit fix
+
+# Fix build error
+RUN rm -rf node_modules/package-json
+
 # Generate the build of the application
 RUN npm run build
 
