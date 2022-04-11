@@ -10,15 +10,19 @@ WORKDIR /usr/local/app
 COPY ./ /usr/local/app/
 
 # Install all the dependencies
-RUN npm cache clean --force
+RUN rm node_modules
 
 RUN rm package-lock.json
+
+RUN npm cache clean --force
 
 RUN npm i
 
 RUN npm i esbuild
 
 RUN npm i pkg.json
+
+RUN npm i license-webpack-plugin@4
 
 RUN export NODE_OPTIONS=--max_old_space_size=4096
 
