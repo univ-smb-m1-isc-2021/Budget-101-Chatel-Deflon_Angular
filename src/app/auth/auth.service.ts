@@ -1,22 +1,3 @@
-// import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class AuthService {
-//   private loginUrl: string;
-
-//   constructor(private http: HttpClient) {
-//     this.loginUrl = 'http://localhost:8081/login';
-//   }
-
-//   public login(username: string, password: string): void {
-//     console.log("login")
-//     this.http.post<{}>(this.loginUrl, {username: username, password: password});
-//   }
-// }
-
 interface MyApiResponse {
   token: string;
 }
@@ -50,14 +31,14 @@ export class AuthService {
   // Connexion d'un utilisateur
   login(username: string, password: string) {
     return this.http.post<MyApiResponse>(
-      'http://localhost:8081/authenticate',
+      'http://gunter-101.oups.net/authenticate',
       {username, password},
     );
   }
 
   // Inscription d'un nouvel utilisateur
   register(email: string, username: string, password: string) {
-    return this.http.post('http://localhost:8081/register',
+    return this.http.post('http://gunter-101.oups.net/register',
       {username, password, email},
     );
   }

@@ -10,7 +10,7 @@ export class MailService {
 
   // Demande l'envoie du mail récapitulatif du mois
   public sendRecap(): void {
-    this.http.get('http://localhost:8081/recapmail')
+    this.http.get('http://gunter-101.oups.net/recapmail')
       .subscribe(response => {
         console.log(response);
       });
