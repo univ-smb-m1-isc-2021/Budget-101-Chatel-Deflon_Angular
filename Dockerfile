@@ -10,9 +10,9 @@ WORKDIR /usr/local/app
 COPY ./ /usr/local/app/
 
 # Install all the dependencies
-RUN npm i
-
 RUN npm cache clean --force
+
+RUN rm package-lock.json
 
 RUN npm i
 
