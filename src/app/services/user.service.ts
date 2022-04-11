@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
+import {AuthService} from "../auth/auth.service";
+import {Router} from "@angular/router";
 
 export interface User {
   username: string;
@@ -19,7 +21,10 @@ export class UserService {
   public user: User = {username: "", email: ""};
   private subjectUser = new BehaviorSubject(this.user);
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private router: Router) { }
 
   // Notifie les composants qui utilisent le service qu'il y a eu une modification
   getUpdate(): Observable<any> {
@@ -41,6 +46,15 @@ export class UserService {
       .subscribe(data => {
         this.user = data;
         this.subjectUser.next(this.user);
+      });
+  }
+
+  // Supprime l'utilisateur courant et toutes ses données
+  public deleteUser(): void {
+    this.http.get('http://localhost:8081/removeuser')
+      .subscribe( resp => {
+        this.authService.logout();
+        this.router.navigate(['/connexion']);
       });
   }
 }

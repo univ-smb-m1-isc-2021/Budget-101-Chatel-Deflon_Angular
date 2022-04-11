@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../auth/auth.service";
 import {Router} from "@angular/router";
 import {MailService} from "../../services/mail.service";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-user-settings',
@@ -13,6 +14,7 @@ export class UserSettingsComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private mailService: MailService,
+    private userService: UserService,
     private router: Router
   ) {
     // Si la personne n'est pas authentifiée, elle est redirigée vers la page de connexion
@@ -27,5 +29,10 @@ export class UserSettingsComponent implements OnInit {
   // Envoie un mail récapitulatif du mois à l'utilisateur
   sendRecap(): void {
     this.mailService.sendRecap();
+  }
+
+  // Supprime l'utilisateur courant et toutes ses données
+  deleteUser(): void {
+    this.userService.deleteUser();
   }
 }
