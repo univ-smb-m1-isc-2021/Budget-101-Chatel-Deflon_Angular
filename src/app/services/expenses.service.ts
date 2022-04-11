@@ -31,7 +31,7 @@ export class ExpensesService {
 
   // Récupère les dépenses de l'utilisateur
   public getExpenses(): void {
-    this.http.get<Expense[]>('http://gunter-101.oups.net/expenses')
+    this.http.get<Expense[]>('http://localhost:8081/expenses')
       .subscribe(
         data => {
           this.expenses = data;
@@ -42,7 +42,7 @@ export class ExpensesService {
 
   // Ajoute une dépense ponctuelle
   public addPunctualExpense(expense: {}): void {
-    this.http.post<any>('http://gunter-101.oups.net/newpuncexpense', expense)
+    this.http.post<any>('http://localhost:8081/newpuncexpense', expense)
       .subscribe( data => {
         this.expenses.push(data);
         this.subjectName.next(this.expenses);
@@ -51,7 +51,7 @@ export class ExpensesService {
 
   // Ajoute une dépense récurrente
   public addRecurrentExpense(expense: {}): void {
-    this.http.post<any>('http://gunter-101.oups.net/newrecexpense', expense)
+    this.http.post<any>('http://localhost:8081/newrecexpense', expense)
       .subscribe( data => {
         this.expenses.push(data);
         this.subjectName.next(this.expenses);
@@ -60,7 +60,7 @@ export class ExpensesService {
 
   // Ajoute une dépense étalée
   public addSpreadExpense(expense: {}): void {
-    this.http.post<any>('http://gunter-101.oups.net/newsprexpense', expense)
+    this.http.post<any>('http://localhost:8081/newsprexpense', expense)
       .subscribe(data => {
         this.expenses.push(data);
         this.subjectName.next(this.expenses);
@@ -69,7 +69,7 @@ export class ExpensesService {
 
   // Modifie une dépense ponctuelle
   public editPunctualExpense(expense: {}): void {
-    this.http.post<any>('http://gunter-101.oups.net/editpuncexpense', expense)
+    this.http.post<any>('http://localhost:8081/editpuncexpense', expense)
       .subscribe( data => {
         this.expenses = this.expenses.map(expense => expense.id == data.id ? data : expense);
         this.subjectName.next(this.expenses);
@@ -78,7 +78,7 @@ export class ExpensesService {
 
   // Modifie une dépense récurrente
   public editRecurrentExpense(expense: {}): void {
-    this.http.post<any>('http://gunter-101.oups.net/editrecexpense', expense)
+    this.http.post<any>('http://localhost:8081/editrecexpense', expense)
       .subscribe( data => {
         this.expenses = this.expenses.map(expense => expense.id == data.id ? data : expense);
         this.subjectName.next(this.expenses);
@@ -87,7 +87,7 @@ export class ExpensesService {
 
   // Modifie une dépense étalée
   public editSpreadExpense(expense: {}): void {
-    this.http.post<any>('http://gunter-101.oups.net/editsprexpense', expense)
+    this.http.post<any>('http://localhost:8081/editsprexpense', expense)
       .subscribe(data => {
         this.expenses = this.expenses.map(expense => expense.id == data.id ? data : expense);
         this.subjectName.next(this.expenses);
@@ -96,7 +96,7 @@ export class ExpensesService {
 
   // Supprime une dépense
   public deleteExpense(expenseid: number): void {
-    this.http.post('http://gunter-101.oups.net/rmexpense', {
+    this.http.post('http://localhost:8081/rmexpense', {
       id: expenseid
     }).subscribe(response => {
         this.expenses = this.expenses.filter(expense => expense.id !== expenseid);

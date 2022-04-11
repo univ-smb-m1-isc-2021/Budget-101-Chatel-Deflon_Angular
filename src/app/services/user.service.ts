@@ -33,7 +33,7 @@ export class UserService {
 
   // Récupère l'utilisateur courant
   public getUser(): void {
-    this.http.get<User>('http://gunter-101.oups.net/user')
+    this.http.get<User>('http://localhost:8081/user')
       .subscribe(user => {
         this.user = user;
         this.subjectUser.next(this.user);
@@ -42,7 +42,7 @@ export class UserService {
 
   // Modifie l'email de l'utilisateur
   public editMail(data: ModifUser): any {
-    this.http.post<User>('http://gunter-101.oups.net/editmail', data)
+    this.http.post<User>('http://localhost:8081/editmail', data)
       .subscribe(data => {
         this.user = data;
         this.subjectUser.next(this.user);
@@ -51,7 +51,7 @@ export class UserService {
 
   // Supprime l'utilisateur courant et toutes ses données
   public deleteUser(): void {
-    this.http.get('http://gunter-101.oups.net/removeuser')
+    this.http.get('http://localhost:8081/removeuser')
       .subscribe( resp => {
         this.authService.logout();
         this.router.navigate(['/connexion']);

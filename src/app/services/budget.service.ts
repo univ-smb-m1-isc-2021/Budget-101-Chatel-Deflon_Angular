@@ -28,7 +28,7 @@ export class BudgetService {
 
   // Récupère les Budgets de l'utilisateurs
   public getBudgets(): void {
-    this.http.get<Budget[]>('http://gunter-101.oups.net/budgets')
+    this.http.get<Budget[]>('http://localhost:8081/budgets')
       .subscribe(
         data => {
           this.budgets = data;
@@ -39,7 +39,7 @@ export class BudgetService {
 
   // Ajoute un budget
   public addBudget(budget: {}): void {
-    this.http.post<Budget>('http://gunter-101.oups.net/newbudget', budget)
+    this.http.post<Budget>('http://localhost:8081/newbudget', budget)
       .subscribe(data => {
         this.budgets.push(data);
         this.subjectBudget.next(this.budgets);
@@ -48,7 +48,7 @@ export class BudgetService {
 
   // Ajoute un budget avec une valeur initiale
   public addBudgetWithValue(budget: {}, amount: number): void {
-    this.http.post<Budget>('http://gunter-101.oups.net/newbudget', budget)
+    this.http.post<Budget>('http://localhost:8081/newbudget', budget)
       .subscribe(data => {
         this.budgets.push(data);
         this.subjectBudget.next(this.budgets);
@@ -65,7 +65,7 @@ export class BudgetService {
 
   // Modifie un budget existant
   public editBudget(budget: Budget): void {
-    this.http.post<Budget>('http://gunter-101.oups.net/editbudget', budget)
+    this.http.post<Budget>('http://localhost:8081/editbudget', budget)
       .subscribe(data => {
         this.budgets = this.budgets.map(budget => budget.id == data.id ? data : budget);
         this.subjectBudget.next(this.budgets);
@@ -75,7 +75,7 @@ export class BudgetService {
   // Supprime un budget
   public deleteBudget(budgetid: number): void {
     console.log(budgetid);
-    this.http.post('http://gunter-101.oups.net/rmbudget', {
+    this.http.post('http://localhost:8081/rmbudget', {
       id: budgetid
     }).subscribe(response => {
       this.budgets = this.budgets.filter(budget => budget.id !== budgetid);

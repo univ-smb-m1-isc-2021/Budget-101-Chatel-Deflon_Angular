@@ -1,6 +1,6 @@
 {
     "/api": {
-    "target": "http://gunter-101.oups.net",
+    "target": "http://localhost:8081",
     "secure": false
     }
 }

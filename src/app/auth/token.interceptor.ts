@@ -16,7 +16,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   // Intercepte toute requête émise par un service pour ajouter le token d'authentification dans le header de la requête
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (request.url != 'http://gunter-101.oups.net/authenticate' && request.url != 'http://gunter-101.oups.net/register') {
+    if (request.url != 'http://localhost:8081/authenticate' && request.url != 'http://localhost:8081/register') {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${this.auth.getToken()}`

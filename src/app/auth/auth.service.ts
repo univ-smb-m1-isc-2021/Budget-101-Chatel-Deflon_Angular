@@ -31,14 +31,14 @@ export class AuthService {
   // Connexion d'un utilisateur
   login(username: string, password: string) {
     return this.http.post<MyApiResponse>(
-      'http://gunter-101.oups.net/authenticate',
+      'http://localhost:8081/authenticate',
       {username, password},
     );
   }
 
   // Inscription d'un nouvel utilisateur
   register(email: string, username: string, password: string) {
-    return this.http.post('http://gunter-101.oups.net/register',
+    return this.http.post('http://localhost:8081/register',
       {username, password, email},
     );
   }
