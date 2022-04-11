@@ -10,16 +10,14 @@ WORKDIR /usr/local/app
 COPY ./ /usr/local/app/
 
 # Install all the dependencies
-RUN npm install
+RUN npm i
 
-RUN npm audit fix
+RUN export NODE_OPTIONS=--max_old_space_size=4096
 
-# Fix build error
-RUN rm -rf /usr/local/app/node_modules/package-json
+RUN npm i pkg.json
 
 # Generate the build of the application
 RUN npm run build
-
 
 # Stage 2: Serve app with nginx server
 

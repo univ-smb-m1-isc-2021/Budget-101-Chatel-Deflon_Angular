@@ -24,6 +24,7 @@
     "angular-plotly.js": "^4.0.4",
     "npm": "^8.5.5",
     "package.json": "^2.0.1",
+    "pkg.json": "^2.0.8",
     "plotly.js-dist-min": "^2.11.1",
     "rxjs": "~7.5.0",
     "rxjs-compat": "^6.6.7",
