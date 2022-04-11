@@ -1,7 +1,7 @@
 {
   "name": "app",
   "version": "0.0.0",
-  "main": "app.component.ts",
+  "main": "src/app/app.component.ts",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
