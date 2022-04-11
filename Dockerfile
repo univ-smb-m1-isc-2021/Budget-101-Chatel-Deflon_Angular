@@ -12,6 +12,10 @@ COPY ./ /usr/local/app/
 # Install all the dependencies
 RUN npm i
 
+RUN npm cache clean --force
+
+RUN npm i
+
 RUN npm i pkg.json
 
 RUN export NODE_OPTIONS=--max_old_space_size=4096
