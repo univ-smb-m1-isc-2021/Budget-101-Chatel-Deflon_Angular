@@ -26,7 +26,7 @@ RUN npm i license-webpack-plugin@4
 RUN export NODE_OPTIONS=--max_old_space_size=4096
 
 # Generate the build of the application
-RUN npm run build
+RUN npm run build --verbose
 
 # Stage 2: Serve app with nginx server
 
