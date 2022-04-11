@@ -16,6 +16,8 @@ RUN rm package-lock.json
 
 RUN npm i
 
+RUN npm i esbuild
+
 RUN npm i pkg.json
 
 RUN export NODE_OPTIONS=--max_old_space_size=4096
