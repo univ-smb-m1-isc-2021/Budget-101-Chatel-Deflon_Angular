@@ -10,7 +10,6 @@ WORKDIR /usr/local/app
 COPY ./ /usr/local/app/
 
 # Install all the dependencies
-RUN rm node_modules
 
 RUN rm package-lock.json
 
