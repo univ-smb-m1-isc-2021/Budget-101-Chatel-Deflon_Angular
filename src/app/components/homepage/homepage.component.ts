@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../services/api.service";
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from "../../auth/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-homepage',
@@ -7,25 +8,16 @@ import {ApiService} from "../../services/api.service";
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-  // todos: Todo[] = [];
-  public hello: string[] = [];
-
   constructor(
-    private apiService: ApiService
-  ) { }
-
-  ngOnInit(): void {
-    // this.apiService.getTodos().subscribe(todos => {
-    //   this.todos = todos;
-    // });
-
-    this.apiService.getHello().subscribe(data => {
-      this.hello = data;
-    })
+    private authService: AuthService,
+    private router: Router
+  ) {
+    // Si la personne n'est pas authentifiée, elle est redirigée vers la page de connexion
+    if (!authService.isAuthenticated()) {
+      this.router.navigate(["/connexion"]);
+    }
   }
 
-  // removeTodos(): void {
-  //   this.todos = [];
-  // }
-
+  ngOnInit(): void {
+  }
 }

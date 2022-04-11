@@ -1,0 +1,15 @@
+<mat-card>
+  <h1>Changer mon e-mail : </h1>
+  <div *ngIf="emailChanged">E-mail mis à jour</div>
+  <form id="formUser" [formGroup]="options" (ngSubmit)="editUser()">
+    <mat-form-field appearance="fill">
+      <mat-label>Pseudo</mat-label>
+      <input matInput required type="text" placeholder={{user.username}} [formControl]="nicknameValue">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>E-mail</mat-label>
+      <input matInput required type="email" placeholder={{user.email}} [formControl]="emailValue">
+    </mat-form-field>
+    <button mat-raised-button type="submit" id="editUser" form="formUser" color="primary">Modifier</button>
+  </form>
+</mat-card>

@@ -1,15 +1,7 @@
-<mat-toolbar class="topnav">
-  <img id="logo" routerLink="/" src="./assets/logo.png" />
-  <a routerLink="/">Accueil</a>
-  <a routerLink="/gestion">Gestion</a>
-  <a routerLink="/user">[Username]</a>
-  <a routerLink="/logout">Déconnexion</a>
-</mat-toolbar>
-
-<ul>
-    <li *ngFor="let book of hello">{{ book }}</li>
-</ul>
-
-<div>
-  **En développement**
-</div>
+<app-header></app-header>
+<mat-card>
+  <app-transaction-form></app-transaction-form>
+  <br/>
+  <app-charts></app-charts>
+</mat-card>
+<app-footer></app-footer>

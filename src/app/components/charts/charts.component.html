@@ -1,0 +1,14 @@
+<mat-card>
+  <h1>Tableau de bord :</h1>
+
+  <div class="dashboard-charts">
+    <plotly-plot *ngIf="graphAnnual.data !== null" [data]="graphAnnual.data"
+                 [layout]="graphAnnual.layout"></plotly-plot>
+  </div>
+
+  <div class="dashboard-charts">
+    <plotly-plot *ngIf="graphGlobal.data !== null" [data]="graphGlobal.data"
+                 [layout]="graphGlobal.layout"></plotly-plot>
+  </div>
+
+</mat-card>

@@ -1,37 +1,69 @@
-# App
+# Budget-101-Chatel-Deflon_Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.0.
+**Participants :**
+- Antoine Chatel
+- Elodie Deflon
 
-## Development server
+## Description :
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Serveur front de l'application "*Gunter-101, Application de gestion de budgets*"
 
-## Code scaffolding
+## Serveur back :
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+**Spring Boot :** https://github.com/univ-smb-m1-isc-2021/budget-101-chatel-deflon
 
-## Build
+## Pages web :
+- Page de connexion : "http://gunter-101.oups.net/connexion"
+- Page d'inscription : "http://gunter-101.oups.net/inscription"
+- Page d'accueil : "http://gunter-101.oups.net/"
+- Page de gestion des données : "http://gunter-101.oups.net/gestion"
+- Page de gestion de l'utilisateur : "http://gunter-101.oups.net/utilisateur"
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Fonctionnalités :
 
-## Running unit tests
+- **Application multi-utilisateurs :**
+  - Création et suppression d'utilisateurs
+  - Modification de l'adresse e-mail
+- **Gestion de budgets :**
+  - Création, modification et suppression des budgets
+  - Budgets constitués par 2 types de transactions (apport, dépense)
+- **Gestion de transactions :**
+  - Création, modification et suppression des transactions
+  - 2 types de transactions (apport, dépense)
+  - 3 sous-types de transactions :
+    - Ponctuelle : transaction à une date précise
+    - Récurrente : transaction qui se répète à une fréquence donnée
+    - Etalée : transaction étalée entre une date de début et une date de fin
+- **Visualisation des données pour l'année courante :**
+  - Un graphique à lignes représentant le solde de chaque budget pour chaque mois de l'année
+  - Un graphique camembert représentant le solde total de chaque budget 
+  - Un tableau listant les informations des budgets : nom, solde annuel, dernière transaction
+  - Un tableau listant les informatiosn des transactions : nom, montant, budget, dates, type, fréquence
+- **Envoie d'un mail récapitulatif :**
+  - Envoie du mail au clic sur le bouton "Envoyer Recap" sur la page "http://gunter-101.oups.net/utilisateur"
+  - Liste chaque budget et chaque transaction de l'utilisateur
+  
+## Arborescence du projet :
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **src/app :** fichiers de paramétrage global
+  - app.module.ts : import, export et déclaration des modules utilisés
+  - app-routing.module.ts : définition des routes de l'application
+- **src/app/auth :** authentification et interception des tokens pour la connexion des utilisateurs
+- **src/app/components :** tous les components qui constituent les différentes pages
+  - En-tête : header
+  - Pied de page : footer
+  - Page d'accueil : homepage
+    - transaction-form
+    - charts
+  - Page de gestion : managing-data
+    - budget-form
+    - budget-list
+    - budget-edit
+    - transaction-list
+    - transaction-edit
+  - Page de l'utilisateur : user-settings
+    - user-edit
+  - Page de connexion : login
+  - Page d'inscription : register
+- **src/app/services :** tous les services qui interrogent et stocke les données de l'API
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-
-## Docker commands
-
-- docker build -t angular-app:latest  .
-- docker run -d -p 8080:80 angular-app:latest
-### Utilitaire docker
-
-- docker image ls
-- docker ps
-- docker image rm

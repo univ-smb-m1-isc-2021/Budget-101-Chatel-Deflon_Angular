@@ -1,0 +1,76 @@
+<mat-card id="div-ajout-depense">
+  <h1>Ajout de transaction : </h1>
+  <form id="formAdd" [formGroup]="options" (ngSubmit)="addNewExpense()">
+    <div id="formType">
+      <label>Type * :</label>
+      <mat-radio-group required [formControl]="typeValue">
+        <mat-radio-button value="depense">Dépense</mat-radio-button>
+        <mat-radio-button value="apport">Apport</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div id="formFrequency">
+      <label>Fréquence * :</label>
+      <mat-radio-group required [formControl]="freqValue">
+        <mat-radio-button value="PUNCTUAL">Ponctuel</mat-radio-button>
+        <mat-radio-button value="RECURRENT">Récurrent</mat-radio-button>
+        <mat-radio-button value="SPREAD">Etalé</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <mat-form-field *ngIf="typeValue.value == 'depense' || typeValue.value == 'apport'"
+                    appearance="fill">
+      <mat-label>Label</mat-label>
+      <input matInput required type="text" placeholder="Courses" [formControl]="labelValue">
+    </mat-form-field>
+    <mat-form-field *ngIf="typeValue.value == 'depense' || typeValue.value == 'apport'"
+                    appearance="fill">
+      <mat-label>Montant</mat-label>
+      <input matInput required type="number" placeholder="10.00" min="1" [formControl]="amountValue">
+    </mat-form-field>
+    <mat-form-field *ngIf="typeValue.value == 'depense' || typeValue.value == 'apport'"
+                    appearance="fill">
+      <mat-label>Budget</mat-label>
+      <select required matNativeControl [formControl]="budgetValue">
+        <option label="--"></option>
+        <option *ngFor="let budget of this.budgets"
+                [value]="budget.name">
+          {{budget.name}}
+        </option>
+      </select>
+    </mat-form-field>
+    <mat-form-field appearance="fill"
+                    *ngIf="freqValue.value == 'PUNCTUAL'">
+      <mat-label>Date</mat-label>
+      <input matInput required type="date" [formControl]="dateValue">
+    </mat-form-field>
+    <mat-form-field appearance="fill"
+                    *ngIf="freqValue.value == 'RECURRENT' || freqValue.value == 'SPREAD'">
+      <mat-label>Premier virement</mat-label>
+      <input matInput required type="date" [formControl]="dateFirstValue">
+    </mat-form-field>
+    <mat-form-field appearance="fill"
+                    *ngIf="freqValue.value == 'SPREAD'">
+      <mat-label>Dernier virement</mat-label>
+      <input matInput required type="date" [formControl]="dateLastValue">
+    </mat-form-field>
+    <mat-form-field appearance="fill"
+                    *ngIf="freqValue.value == 'RECURRENT'">
+      <mat-label>Répétition</mat-label>
+      <select matNativeControl required [formControl]="repetitionValue">
+        <option label="--"></option>
+        <option value="DAILY">Tous les jours</option>
+        <option value="WEEKLY">Toutes les semaines</option>
+        <option value="MONTHLY">Tous les mois</option>
+        <option value="THIRDLY">Tous les 3 mois</option>
+        <option value="YEARLY">Tous les ans</option>
+        <option value="BIYEARLY">Tous les 2 ans</option>
+      </select>
+    </mat-form-field>
+    <br/>
+  </form>
+  <mat-card-actions>
+    <button [disabled]="((typeValue.value != 'depense' && typeValue.value != 'apport') ||
+                         (freqValue.value != 'PUNCTUAL' && freqValue.value != 'RECURRENT' && freqValue.value != 'SPREAD'))"
+            mat-raised-button type="submit" id="submitForm" form="formAdd" color="primary">Enregistrer
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,15 @@
+<mat-card>
+  <h1>Modifier budget : </h1>
+  <form id="formEdit" [formGroup]="options" (ngSubmit)="editBudget()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nom</mat-label>
+      <input matInput required type="text" placeholder="Voiture" [formControl]="labelValue">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Solde</mat-label>
+      <input matInput type="number" placeholder="0.00" [formControl]="amountValue">
+    </mat-form-field>
+    <button [disabled]="labelValue.value == ''"
+            mat-raised-button type="submit" id="editForm" form="formEdit" color="primary">Modifier</button>
+  </form>
+</mat-card>

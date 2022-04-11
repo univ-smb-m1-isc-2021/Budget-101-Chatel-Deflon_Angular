@@ -1,0 +1,6 @@
+{
+    "/api": {
+    "target": "http://gunter-101.oups.net",
+    "secure": false
+    }
+}

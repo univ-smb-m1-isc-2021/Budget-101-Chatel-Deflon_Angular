@@ -1,0 +1,14 @@
+<app-header></app-header>
+<mat-card>
+  <app-user-edit></app-user-edit>
+  <br/>
+  <mat-card>
+    <h1>Recevoir le récapitulatif du mois par e-mail : </h1>
+    <button mat-raised-button color="primary" (click)="sendRecap()">Envoyer Recap</button>
+  </mat-card>
+  <mat-card id="deleteUser">
+    <h1>Supprimer mon compte :</h1>
+    <button mat-raised-button color="warn" (click)="deleteUser()">Supprimer mon compte et toutes mes données</button>
+  </mat-card>
+</mat-card>
+<app-footer></app-footer>
