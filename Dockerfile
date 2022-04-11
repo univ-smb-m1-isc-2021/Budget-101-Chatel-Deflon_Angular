@@ -15,7 +15,7 @@ RUN npm install
 RUN npm audit fix
 
 # Fix build error
-RUN rm -rf node_modules/package-json
+RUN rm -rf /usr/local/app/node_modules/package-json
 
 # Generate the build of the application
 RUN npm run build
