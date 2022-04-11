@@ -14,7 +14,7 @@ RUN npm i
 
 RUN export NODE_OPTIONS=--max_old_space_size=4096
 
-RUN npm i pkg.json
+RUN npm i --save-dev license-webpack-plugin@4
 
 # Generate the build of the application
 RUN npm run build
